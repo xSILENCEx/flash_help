@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/toast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:amap_location/amap_location.dart';
-//import 'package:simple_permissions/simple_permissions.dart';
+import 'package:flutter_amap_location/flutter_amap_location.dart';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NewTaskPage extends StatefulWidget {
   @override
@@ -22,7 +25,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
   int _chooseClass = 0;
   double _taskMoney = 0.00;
   int _taskIntegral = 0;
-  String _location;
+  String _location = '未提供位置信息';
 
   List<String> _taskLabels = ['取件', '外卖', '洗衣', '排队', '功课', '修图', '手工', '代购', '其它'];
   List<bool> _isTaskChosen;
@@ -32,9 +35,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   List<String> _picturePath = new List();
 
-  bool _isLocationOpen = true;
+  bool _isLocationOpen = false;
 
   DateTime _pickTime;
+
+  String location;
 
   @override
   void initState() {
@@ -42,6 +47,83 @@ class _NewTaskPageState extends State<NewTaskPage> {
     _isTaskChosen = new List(_taskLabels.length);
     _isTaskChosen.fillRange(0, _isTaskChosen.length, false);
     _pickTime = DateTime.now();
+    FlutterAmapLocation.listenLocation(_onLocationEvent, _onLocationError);
+  }
+
+  void _onLocationEvent(Object event) {
+    Map<String, Object> loc = Map.castFrom(event);
+    print(loc['address']);
+
+    setState(() {
+      _location = loc['address'];
+    });
+  }
+
+  void _onLocationError(Object event) {
+    print(event);
+  }
+
+  Future<void> _getLocationOnce() async {
+    String address;
+    try {
+      FlutterAmapLocation.setOnceLocation(true);
+      await FlutterAmapLocation.startLocation();
+    } on PlatformException catch (e) {
+      address = "Failed to get address: '${e.message}'";
+    }
+
+    setState(() {
+      _location = address;
+    });
+  }
+
+  _checkPermission(PermissionGroup per) async {
+    bool checkResult = false;
+    ServiceStatus serviceStatus = await PermissionHandler().checkServiceStatus(per);
+    if (serviceStatus == ServiceStatus.notApplicable) {
+      print('未授权,开始请求');
+      PermissionStatus permission = await PermissionHandler().checkPermissionStatus(per);
+      switch (permission) {
+        case PermissionStatus.unknown:
+          {
+            Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+            if (permissions['Permission'] == PermissionStatus.disabled) {
+            } else {
+              checkResult = true;
+            }
+          }
+          break;
+        case PermissionStatus.granted:
+          {
+            checkResult = true;
+          }
+          break;
+        case PermissionStatus.restricted:
+          {
+            Toast.toast(context, 'restricted状态');
+          }
+          break;
+        case PermissionStatus.denied:
+          {
+            Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+            if (permissions['Permission'] == PermissionStatus.disabled) {
+            } else {
+              checkResult = true;
+            }
+          }
+          break;
+        case PermissionStatus.disabled:
+          {
+            Toast.toast(context, 'disabled状态');
+          }
+          break;
+      }
+    } else {
+      checkResult = true;
+      print('已授权');
+    }
+
+    return checkResult;
   }
 
   @override
@@ -50,363 +132,355 @@ class _NewTaskPageState extends State<NewTaskPage> {
     _controllerTaskName.dispose();
     _controllerTaskInfo.dispose();
     _controllerTaskReward.dispose();
-//    AMapLocationClient.shutdown();
   }
-
-  Future<void> _ready() async {
-    if (_isLocationOpen) {
-      try {
-        print('正在尝试定位...');
-//        await AMapLocationClient.startup(new AMapLocationOption(desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyHundredMeters));
-//        var l = await AMapLocationClient.getLocation(true);
-//        print(l.isSuccess());
-//        _location = l.citycode;
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
-
-//  void _checkPermission() async {
-//    bool hasPermission = await SimplePermissions.checkPermission(Permission.WhenInUseLocation);
-//    if (!hasPermission) {
-//      PermissionStatus requestPermissionResult = await SimplePermissions.requestPermission(Permission.WhenInUseLocation);
-//      if (requestPermissionResult.index != 4) {
-//        Toast.toast(context, '获取定位权限失败');
-//        return;
-//      }
-//    }
-//    AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
-//      if (!mounted) return;
-//    });
-//
-//    AMapLocationClient.startLocation();
-//  }
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder(
-      builder: (context, child) {
-        return new Scaffold(
-          appBar: new AppBar(
-            centerTitle: true,
-            leading: new IconButton(
-                icon: Icon(Icons.close, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            title: Text('发布新的悬赏', style: TextStyle(fontSize: ScreenUtil().setSp(50))),
-            elevation: 0.2,
-            actions: <Widget>[
-              new IconButton(
-                  icon: Icon(Icons.help_outline, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
-                  onPressed: () {
-                    Toast.toast(context, '帮助');
-                  }),
-            ],
-          ),
-          body: new ListView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
-            children: <Widget>[
-              new Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
-                child: new TextField(
-                  textInputAction: TextInputAction.next,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(0),
-                    hintText: '悬赏标题',
-                    border: InputBorder.none,
-                  ),
-                  controller: _controllerTaskName,
-                  style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
-                  onEditingComplete: () {
-                    FocusScope.of(context).requestFocus(_focusNode);
-                  },
-                ),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-              ),
-              new Container(
-                width: double.infinity,
-                height: 0.5,
-                color: Color(AppColors.AppBorderColor),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
-              ),
-              new Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
-                child: new TextField(
-                  maxLength: 300,
-                  maxLines: 6,
-                  focusNode: _focusNode,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(0),
-                    hintText: '悬赏描述',
-                    border: InputBorder.none,
-                  ),
-                  controller: _controllerTaskInfo,
-                  style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
-                ),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
-              ),
-              new Container(
-                width: double.infinity,
-                height: ScreenUtil().setWidth(300),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-                padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
-                child: new ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: _picturePath.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == _picturePath.length)
-                      return _buildAddPicture();
-                    else
-                      return _buildPictureItem(index);
-                  },
-                  scrollDirection: Axis.horizontal,
-                ),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
-                  boxShadow: [
-                    new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0),
-                  ],
-                ),
-              ),
-              new Container(
-                width: double.infinity,
-                height: 0.5,
-                color: Color(AppColors.AppBorderColor),
-                margin: EdgeInsets.only(left: 5, right: 5),
-              ),
-              new Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
-                padding: EdgeInsets.only(left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30)),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Row(
-                      children: <Widget>[
-                        new Icon(
-                          _isLocationOpen ? Icons.location_on : Icons.location_off,
-                          color: Color(_isLocationOpen ? AppColors.AppLabelColor : AppColors.AppDeepColor),
-                          size: ScreenUtil().setWidth(50),
-                        ),
-                        new Text(_isLocationOpen ? '$_location' : '已隐藏当前位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                      ],
-                    ),
-                    new FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isLocationOpen = !_isLocationOpen;
-                        });
-                      },
-                      child: new Text(_isLocationOpen ? '隐藏发布位置' : '显示发布位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                    ),
-                  ],
-                ),
-              ),
-              new Container(
-                height: ScreenUtil().setWidth(150),
-                margin: EdgeInsets.only(left: 5, right: 5, top: 10),
-                padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text('任务类型', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                    new ListView.builder(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _taskClass.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildClassItem(index);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              _chooseClass < 2
-                  ? new Container(
-                      height: ScreenUtil().setWidth(150),
-                      margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-                      decoration: BoxDecoration(
-                        color: Color(AppColors.AppLightColor),
-                        borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                        boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                      ),
-                      child: new FlatButton(
-                        padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-                        onPressed: () {
-                          _buildDialog();
-                        },
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            new Text('悬赏${_taskClass[_chooseClass]}', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                            new Text(_chooseClass == 0 ? '￥$_taskMoney' : '$_taskIntegral', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                        ),
-                      ),
-                    )
-                  : new Container(),
-              new Container(
-                height: ScreenUtil().setWidth(150),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-                padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text('任务标签  ', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                    new Flexible(
-                      child: new ListView.builder(
-                        padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _taskLabels.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _buildTaskLabelList(index);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              new Container(
-                height: ScreenUtil().setWidth(150),
-                margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-                padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppLightColor),
-                  borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                  boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                ),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text('时间限制', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                    new ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _timeLimit.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildTimeLimitItem(index);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              _chooseLimit > 0
-                  ? new Container(
-                      height: ScreenUtil().setWidth(150),
-                      margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
-                      decoration: BoxDecoration(
-                        color: Color(AppColors.AppLightColor),
-                        borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                        boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
-                      ),
-                      child: new FlatButton(
-                        padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-                        onPressed: () {
-                          DatePicker.showDateTimePicker(
-                            context,
-                            showTitleActions: true,
-                            onConfirm: (date) {
-                              if (date.isAfter(_pickTime)) {
-                                setState(() {
-                                  _pickTime = date;
-                                });
-                              } else {
-                                Toast.toast(context, '不能早于当前时间');
-                              }
-                            },
-                            currentTime: _pickTime,
-                            locale: LocaleType.zh,
-                            theme: DatePickerTheme(
-                              cancelStyle: TextStyle(color: Color(AppColors.AppBlackColor1), fontSize: 16),
-                              itemStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 18),
-                              doneStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 16),
-                              backgroundColor: Color(AppColors.AppWhiteColor),
-                            ),
-                          );
-                        },
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            new Text('点击设置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                            new Text(
-                              '${_pickTime.year} 年 ${_pickTime.month.toString().padLeft(2, '0')} 月 ${_pickTime.day.toString().padLeft(2, '0')} 日 ${_pickTime.hour.toString().padLeft(2, '0')}:${_pickTime.minute.toString().padLeft(2, '0')}:00  之前',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(40),
-                              ),
-                            ),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                        ),
-                      ),
-                    )
-                  : new Container(),
-            ],
-          ),
-          bottomNavigationBar: new Container(
-            child: new RaisedButton(
-              color: Color(AppColors.AppLabelColor),
-              child: new Text('确认发布', style: TextStyle(color: Color(AppColors.AppWhiteColor))),
+    return new Scaffold(
+      appBar: new AppBar(
+        centerTitle: true,
+        leading: new IconButton(
+            icon: Icon(Icons.close, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        title: Text('发布新的悬赏', style: TextStyle(fontSize: ScreenUtil().setSp(50))),
+        elevation: 0.2,
+        actions: <Widget>[
+          new IconButton(
+              icon: Icon(Icons.help_outline, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
               onPressed: () {
-                Toast.toast(context, '暂未开放');
+                Toast.toast(context, '帮助');
+              }),
+        ],
+      ),
+      body: new ListView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
+        children: <Widget>[
+          new Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
+            child: new TextField(
+              textInputAction: TextInputAction.next,
+              maxLines: 1,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                hintText: '悬赏标题',
+                border: InputBorder.none,
+              ),
+              controller: _controllerTaskName,
+              style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
+              onEditingComplete: () {
+                FocusScope.of(context).requestFocus(_focusNode);
               },
             ),
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
             decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Color(AppColors.AppBorderColor), width: 0.5),
-                bottom: BorderSide.none,
-                left: BorderSide.none,
-                right: BorderSide.none,
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+          ),
+          new Container(
+            width: double.infinity,
+            height: 0.5,
+            color: Color(AppColors.AppBorderColor),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
+          ),
+          new Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
+            child: new TextField(
+              maxLength: 300,
+              maxLines: 6,
+              focusNode: _focusNode,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                hintText: '悬赏描述',
+                border: InputBorder.none,
               ),
+              controller: _controllerTaskInfo,
+              style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
+            ),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
+          ),
+          new Container(
+            width: double.infinity,
+            height: ScreenUtil().setWidth(300),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+            child: new ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: _picturePath.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == _picturePath.length)
+                  return _buildAddPicture();
+                else
+                  return _buildPictureItem(index);
+              },
+              scrollDirection: Axis.horizontal,
+            ),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
+              boxShadow: [
+                new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0),
+              ],
             ),
           ),
-        );
-      },
-      future: _ready(),
+          new Container(
+            width: double.infinity,
+            height: 0.5,
+            color: Color(AppColors.AppBorderColor),
+            margin: EdgeInsets.only(left: 5, right: 5),
+          ),
+          new Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
+            padding: EdgeInsets.only(left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30)),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    new Icon(
+                      _isLocationOpen ? Icons.location_on : Icons.location_off,
+                      color: Color(_isLocationOpen ? AppColors.AppLabelColor : AppColors.AppDeepColor),
+                      size: ScreenUtil().setWidth(50),
+                    ),
+                    new Text(_isLocationOpen ? '已显示当前位置' : '已隐藏当前位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                  ],
+                ),
+                new FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
+                  ),
+                  onPressed: () async {
+                    if (!_isLocationOpen) {
+                      _isLocationOpen = await _checkPermission(PermissionGroup.location);
+                      if (_isLocationOpen) {
+                        await _getLocationOnce();
+                      }
+                    } else {
+                      setState(() {
+                        _isLocationOpen = false;
+                        _location = '未提供位置信息';
+                      });
+                    }
+                  },
+                  child: new Text(_isLocationOpen ? '隐藏发布位置' : '显示发布位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                ),
+              ],
+            ),
+          ),
+          _isLocationOpen
+              ? new Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
+                  padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppLightColor),
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
+                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+                  ),
+                  child: new Text(
+                    '$_location',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(38),
+                      color: Color(AppColors.AppTextColor2),
+                    ),
+                  ),
+                )
+              : new Container(),
+          new Container(
+            height: ScreenUtil().setWidth(150),
+            margin: EdgeInsets.only(left: 5, right: 5, top: 10),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.circular(AppStyle.appRadius),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text('任务类型', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new ListView.builder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _taskClass.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildClassItem(index);
+                  },
+                ),
+              ],
+            ),
+          ),
+          _chooseClass < 2
+              ? new Container(
+                  height: ScreenUtil().setWidth(150),
+                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppLightColor),
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+                  ),
+                  child: new FlatButton(
+                    padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+                    onPressed: () {
+                      _buildDialog();
+                    },
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Text('悬赏${_taskClass[_chooseClass]}', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                        new Text(_chooseClass == 0 ? '￥$_taskMoney' : '$_taskIntegral', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                      ],
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                    ),
+                  ),
+                )
+              : new Container(),
+          new Container(
+            height: ScreenUtil().setWidth(150),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.circular(AppStyle.appRadius),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text('任务标签  ', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new Flexible(
+                  child: new ListView.builder(
+                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _taskLabels.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _buildTaskLabelList(index);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new Container(
+            height: ScreenUtil().setWidth(150),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+            decoration: BoxDecoration(
+              color: Color(AppColors.AppLightColor),
+              borderRadius: BorderRadius.circular(AppStyle.appRadius),
+              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+            ),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text('时间限制', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _timeLimit.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildTimeLimitItem(index);
+                  },
+                ),
+              ],
+            ),
+          ),
+          _chooseLimit > 0
+              ? new Container(
+                  height: ScreenUtil().setWidth(150),
+                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppLightColor),
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
+                  ),
+                  child: new FlatButton(
+                    padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+                    onPressed: () {
+                      DatePicker.showDateTimePicker(
+                        context,
+                        showTitleActions: true,
+                        onConfirm: (date) {
+                          if (date.isAfter(_pickTime)) {
+                            setState(() {
+                              _pickTime = date;
+                            });
+                          } else {
+                            Toast.toast(context, '不能早于当前时间');
+                          }
+                        },
+                        currentTime: _pickTime,
+                        locale: LocaleType.zh,
+                        theme: DatePickerTheme(
+                          cancelStyle: TextStyle(color: Color(AppColors.AppBlackColor1), fontSize: 16),
+                          itemStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 18),
+                          doneStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 16),
+                          backgroundColor: Color(AppColors.AppWhiteColor),
+                        ),
+                      );
+                    },
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Text('点击设置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                        new Text(
+                          '${_pickTime.year} 年 ${_pickTime.month.toString().padLeft(2, '0')} 月 ${_pickTime.day.toString().padLeft(2, '0')} 日 ${_pickTime.hour.toString().padLeft(2, '0')}:${_pickTime.minute.toString().padLeft(2, '0')}:00  之前',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(40),
+                          ),
+                        ),
+                      ],
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                    ),
+                  ),
+                )
+              : new Container(),
+        ],
+      ),
+      bottomNavigationBar: new Container(
+        child: new RaisedButton(
+          color: Color(AppColors.AppLabelColor),
+          child: new Text('确认发布', style: TextStyle(color: Color(AppColors.AppWhiteColor))),
+          onPressed: () {
+            Toast.toast(context, '暂未开放');
+          },
+        ),
+        padding: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Color(AppColors.AppBorderColor), width: 0.5),
+            bottom: BorderSide.none,
+            left: BorderSide.none,
+            right: BorderSide.none,
+          ),
+        ),
+      ),
     );
   }
 
@@ -527,6 +601,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                 setState(() {
                   _picturePath.removeAt(index);
                 });
+                print(_picturePath.toString());
                 Toast.toast(context, '取消第$index张图片');
               },
               child: new Icon(
@@ -564,11 +639,16 @@ class _NewTaskPageState extends State<NewTaskPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
-        onPressed: () {
-          setState(() {
-            _picturePath.add('哈哈哈哈');
-          });
-          Toast.toast(context, '添加一张图片');
+        onPressed: () async{
+          if(await _checkPermission(PermissionGroup.storage)){
+
+//            setState(() {
+//              _picturePath.add('哈哈哈哈');
+//            });
+            print(_picturePath.toString());
+          }else{
+            Toast.toast(context, '请授权访问本地文件');
+          }
         },
         child: new Container(
           width: double.infinity,

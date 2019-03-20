@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flash_help/auxiliary/toast.dart';
+import 'package:connectivity/connectivity.dart';
 
 class AppColors {
   static const AppDeepColor = 0xFFEDEDED;
@@ -55,6 +56,18 @@ class AppInfo {
 
   static openTop() async {
     await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
+  }
+
+  static checkInternet(BuildContext context) async{
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }else{
+      Toast.toast(context, '请检查网络');
+      return false;
+    }
   }
 }
 

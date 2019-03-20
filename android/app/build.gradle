@@ -43,9 +43,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [
-                AMAP_KEY : "775cd3f20bc3130b19500d3e28ddcc8f", /// 高德地图key
-        ]
+//        manifestPlaceholders = [
+//                AMAP_KEY : "2cdf9d7487c67b6cf3c536180844f2be", /// 高德地图key
+//        ]
     }
 
     signingConfigs {
