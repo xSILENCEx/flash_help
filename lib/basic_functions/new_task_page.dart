@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flash_help/auxiliary/content.dart';
@@ -9,12 +7,16 @@ import 'package:flutter_amap_location/flutter_amap_location.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:photo/photo.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_view/photo_view.dart';
+
 class NewTaskPage extends StatefulWidget {
   @override
   _NewTaskPageState createState() => new _NewTaskPageState();
 }
 
-class _NewTaskPageState extends State<NewTaskPage> {
+class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClientMixin {
   TextEditingController _controllerTaskName = new TextEditingController();
   TextEditingController _controllerTaskInfo = new TextEditingController();
   TextEditingController _controllerTaskReward = new TextEditingController();
@@ -39,8 +41,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   DateTime _pickTime;
 
-  String location;
-
   @override
   void initState() {
     super.initState();
@@ -63,6 +63,49 @@ class _NewTaskPageState extends State<NewTaskPage> {
     print(event);
   }
 
+  void _pickAsset(PickType type, {List<AssetPathEntity> pathList}) async {
+    List<AssetEntity> imgList = await PhotoPicker.pickAsset(
+      context: context,
+      themeColor: Color(AppColors.AppLabelColor),
+      padding: 1.0,
+      dividerColor: Color(AppColors.AppWhiteColor),
+      disableColor: Color(AppColors.AppWhiteColor),
+      itemRadio: 0.88,
+      maxSelected: 10,
+      provider: I18nProvider.chinese,
+      rowCount: 3,
+      textColor: Color(AppColors.AppWhiteColor),
+      thumbSize: 150,
+      sortDelegate: SortDelegate.common,
+      checkBoxBuilderDelegate: DefaultCheckBoxBuilderDelegate(
+        activeColor: Colors.white,
+        unselectedColor: Colors.white,
+      ),
+      badgeDelegate: const DurationBadgeDelegate(),
+      pickType: type,
+      photoPathList: pathList,
+    );
+
+    if (imgList == null) {
+    } else {
+      for (var e in imgList) {
+        var file = await e.file;
+        print(imgList.length);
+        print(_picturePath.length);
+        if (_picturePath.length > 9) {
+          Toast.toast(context, '最多选择10张图片');
+          break;
+        } else {
+          _picturePath.add(file.absolute.path);
+        }
+      }
+      List<AssetEntity> preview = [];
+      preview.addAll(imgList);
+      print(_picturePath.toString());
+    }
+    setState(() {});
+  }
+
   Future<void> _getLocationOnce() async {
     String address;
     try {
@@ -79,48 +122,41 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   _checkPermission(PermissionGroup per) async {
     bool checkResult = false;
-    ServiceStatus serviceStatus = await PermissionHandler().checkServiceStatus(per);
-    if (serviceStatus == ServiceStatus.notApplicable) {
-      print('未授权,开始请求');
-      PermissionStatus permission = await PermissionHandler().checkPermissionStatus(per);
-      switch (permission) {
-        case PermissionStatus.unknown:
-          {
-            Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
-            if (permissions['Permission'] == PermissionStatus.disabled) {
-            } else {
-              checkResult = true;
-            }
-          }
-          break;
-        case PermissionStatus.granted:
-          {
+    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(per);
+    switch (permission) {
+      case PermissionStatus.unknown:
+        {
+          Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+          if (permissions['Permission'] == PermissionStatus.disabled) {
+          } else {
             checkResult = true;
           }
-          break;
-        case PermissionStatus.restricted:
-          {
-            Toast.toast(context, 'restricted状态');
+        }
+        break;
+      case PermissionStatus.granted:
+        {
+          checkResult = true;
+        }
+        break;
+      case PermissionStatus.restricted:
+        {
+          Toast.toast(context, 'restricted状态');
+        }
+        break;
+      case PermissionStatus.denied:
+        {
+          Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+          if (permissions['Permission'] == PermissionStatus.disabled) {
+          } else {
+            checkResult = true;
           }
-          break;
-        case PermissionStatus.denied:
-          {
-            Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
-            if (permissions['Permission'] == PermissionStatus.disabled) {
-            } else {
-              checkResult = true;
-            }
-          }
-          break;
-        case PermissionStatus.disabled:
-          {
-            Toast.toast(context, 'disabled状态');
-          }
-          break;
-      }
-    } else {
-      checkResult = true;
-      print('已授权');
+        }
+        break;
+      case PermissionStatus.disabled:
+        {
+          Toast.toast(context, 'disabled状态');
+        }
+        break;
     }
 
     return checkResult;
@@ -216,10 +252,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
             child: new ListView.builder(
+              addAutomaticKeepAlives: true,
               physics: BouncingScrollPhysics(),
-              itemCount: _picturePath.length + 1,
+              itemCount: _picturePath.length < 10 ? _picturePath.length + 1 : _picturePath.length,
               itemBuilder: (BuildContext context, int index) {
-                if (index == _picturePath.length)
+                if (index == _picturePath.length && _picturePath.length < 10)
                   return _buildAddPicture();
                 else
                   return _buildPictureItem(index);
@@ -572,23 +609,50 @@ class _NewTaskPageState extends State<NewTaskPage> {
       decoration: BoxDecoration(
         color: Color(AppColors.AppDeepColor),
         borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
+        image: DecorationImage(image: AssetImage("${Uri.encodeFull(_picturePath[index])}"), fit: BoxFit.cover),
       ),
       margin: EdgeInsets.only(right: 5),
-      child: new FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
-        ),
-        padding: EdgeInsets.all(0),
-        onPressed: () {
-          Toast.toast(context, '点击了第$index张图片');
-        },
-        child: new Container(
-          alignment: Alignment.topRight,
+      child: new Hero(
+        tag: 'p$index',
+        child: new FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
+          ),
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+              return new PreviewPicture(index: index, url: _picturePath[index]);
+            }));
+          },
           child: new Container(
-            width: ScreenUtil().setWidth(60),
-            height: ScreenUtil().setWidth(60),
-            child: new FlatButton(
-              shape: RoundedRectangleBorder(
+            alignment: Alignment.topRight,
+            child: new Container(
+              width: ScreenUtil().setWidth(60),
+              height: ScreenUtil().setWidth(60),
+              child: new FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(AppStyle.appRadius * 40),
+                    bottomRight: Radius.circular(AppStyle.appRadius * 40),
+                    bottomLeft: Radius.circular(AppStyle.appRadius * 40),
+                    topRight: Radius.circular(AppStyle.appRadius * 10),
+                  ),
+                ),
+                padding: EdgeInsets.all(0),
+                onPressed: () {
+                  setState(() {
+                    _picturePath.removeAt(index);
+                  });
+                  print(_picturePath.toString());
+                },
+                child: new Icon(
+                  Icons.close,
+                  color: Color(AppColors.AppLightColor),
+                  size: 10,
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: Color(AppColors.AppLabelColor),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(AppStyle.appRadius * 40),
                   bottomRight: Radius.circular(AppStyle.appRadius * 40),
@@ -596,30 +660,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   topRight: Radius.circular(AppStyle.appRadius * 10),
                 ),
               ),
-              padding: EdgeInsets.all(0),
-              onPressed: () {
-                setState(() {
-                  _picturePath.removeAt(index);
-                });
-                print(_picturePath.toString());
-                Toast.toast(context, '取消第$index张图片');
-              },
-              child: new Icon(
-                Icons.close,
-                color: Color(AppColors.AppLightColor),
-                size: 10,
-              ),
+              margin: EdgeInsets.all(2),
             ),
-            decoration: BoxDecoration(
-              color: Color(AppColors.AppLabelColor),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(AppStyle.appRadius * 40),
-                bottomRight: Radius.circular(AppStyle.appRadius * 40),
-                bottomLeft: Radius.circular(AppStyle.appRadius * 40),
-                topRight: Radius.circular(AppStyle.appRadius * 10),
-              ),
-            ),
-            margin: EdgeInsets.all(2),
           ),
         ),
       ),
@@ -639,16 +681,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
-        onPressed: () async{
-          if(await _checkPermission(PermissionGroup.storage)){
-
-//            setState(() {
-//              _picturePath.add('哈哈哈哈');
-//            });
-            print(_picturePath.toString());
-          }else{
-            Toast.toast(context, '请授权访问本地文件');
-          }
+        onPressed: () async {
+          _pickAsset(PickType.onlyImage);
         },
         child: new Container(
           width: double.infinity,
@@ -786,6 +820,37 @@ class _NewTaskPageState extends State<NewTaskPage> {
           ),
         );
       },
+    );
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+}
+
+class PreviewPicture extends StatelessWidget {
+  final int index;
+  final String url;
+
+  const PreviewPicture({Key key, @required this.index, @required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Material(
+      child: new InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        child: new Center(
+          child: new PhotoView(
+            heroTag: "p$index",
+            imageProvider: AssetImage("$url"),
+            minScale: 0.1,
+          ),
+        ),
+        onTap: () async {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }
