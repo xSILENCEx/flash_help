@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flash_help/auxiliary/http_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/toast.dart';
@@ -82,8 +83,13 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
 
   bool _isMenuOpen = false;
 
+  List<String> _chineseCalendar = new List(2);
+
   @override
   initState() {
+    super.initState();
+    _chineseCalendar[0] = '正在联网获取农历...';
+    _chineseCalendar[1] = ' ';
     _controllerAnimated = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _rota = new Tween<double>(begin: 0.0, end: 3.0).animate(CurvedAnimation(
       parent: _controllerAnimated,
@@ -93,7 +99,11 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
         curve: _curve,
       ),
     ));
-    super.initState();
+    _getChineseCal();
+  }
+
+  void _getChineseCal() async {
+    _chineseCalendar = await HttpSetting.getCnCalendar(context);
   }
 
   @override
@@ -154,7 +164,7 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
                 body: new Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new HelloTime(controller: _controllerAnimated, curve: _curve),
+                    new HelloTime(controller: _controllerAnimated, curve: _curve, data: _chineseCalendar),
                     new GridView.builder(
                       padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(300)),
                       shrinkWrap: true,
@@ -274,10 +284,10 @@ class _ToolItemState extends State<ToolItem> {
     Icons.color_lens,
     Icons.center_focus_weak,
     Icons.share,
-    Icons.account_balance_wallet,
+    Icons.cancel,
     Icons.edit,
   ];
-  List<String> _titles = ['发布悬赏', '隐身模式', '夜间模式', '主题颜色', '扫一扫', '分享软件', '更多功能', '编辑'];
+  List<String> _titles = ['发布悬赏', '隐身模式', '夜间模式', '主题颜色', '扫一扫', '分享软件', '退出软件', '编辑'];
 
   get curve => widget.curve;
   get controller => widget.controller;
@@ -371,8 +381,9 @@ class _ToolItemState extends State<ToolItem> {
 class HelloTime extends StatefulWidget {
   final AnimationController controller;
   final Curve curve;
+  final List<String> data;
 
-  const HelloTime({Key key, this.controller, this.curve}) : super(key: key);
+  const HelloTime({Key key, @required this.controller, @required this.curve, @required this.data}) : super(key: key);
 
   @override
   _HelloTimeState createState() => new _HelloTimeState();
@@ -383,9 +394,11 @@ class _HelloTimeState extends State<HelloTime> {
 
   get curve => widget.curve;
   get controller => widget.controller;
+  get cnCal => widget.data;
 
   @override
   void initState() {
+    super.initState();
     _alpha = new Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: controller,
       curve: Interval(
@@ -394,7 +407,6 @@ class _HelloTimeState extends State<HelloTime> {
         curve: curve,
       ),
     ));
-    super.initState();
   }
 
   @override
@@ -430,7 +442,7 @@ class _HelloTimeState extends State<HelloTime> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Text(
-                        '${DateTime.now().year.toString().padLeft(2, '0')} / ${DateTime.now().month.toString().padLeft(2, '0')} / ${DateTime.now().day.toString().padLeft(2, '0')}',
+                        '${DateTime.now().year.toString().padLeft(2, '0')} / ${DateTime.now().month.toString().padLeft(2, '0')} / ${DateTime.now().day.toString().padLeft(2, '0')} ${cnCal[1]}',
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(50),
                           fontWeight: FontWeight.bold,
@@ -438,7 +450,7 @@ class _HelloTimeState extends State<HelloTime> {
                         ),
                       ),
                       new Text(
-                        '康定 晴',
+                        cnCal[0],
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(30),
                           fontWeight: FontWeight.bold,

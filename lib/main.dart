@@ -30,7 +30,7 @@ class FlashHelp extends StatelessWidget {
       title: '闪帮',
       theme: ThemeData(
         platform: TargetPlatform.android,
-        primaryColor: Color(AppColors.AppWhiteColor),
+        primaryColor: Color(AppColors.AppLabelColor),
         cardColor: Color(AppColors.AppTranslateColor),
         scaffoldBackgroundColor: Color(AppColors.AppWhiteColor),
       ),

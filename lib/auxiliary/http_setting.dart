@@ -81,10 +81,12 @@ class HttpSetting {
           "userId": "${task.uId}",
           "taskName": "${task.taskTitle}",
           "taskInfo": "${task.taskDescribe}",
-          "taskPhoto": "${task.pictureList.toString()}",//图片
+          "taskPhoto": "${task.pictureList.toString()}",
+          //图片
           "taskLocation": "${task.location}",
           "taskType": "${task.taskType}",
-          "taskLabel": "${task.taskLabels.toString()}",//标签
+          "taskLabel": "${task.taskLabels.toString()}",
+          //标签
           "taskTimeLimit": "${task.taskLimit}",
           "taskSate": "${task.taskState}",
           "taskStartTime": "${task.taskSendTime}",
@@ -103,11 +105,39 @@ class HttpSetting {
         Toast.toast(context, '${taskR["msg"]}');
         return false;
       }
-
     } catch (e) {
       Toast.toast(context, '无法连接到服务器\n错误代码:${response.statusCode}');
       print('错误信息' + e);
       return false;
+    }
+  }
+
+  static Future getCnCalendar(BuildContext context) async {
+    var response;
+    var calendarMap;
+    try {
+      var url = "http://www.sojson.com/open/api/lunar/json.shtml";
+
+      response = await http.get(url);
+
+      print("服务器响应码: ${response.statusCode}");
+      print("响应结果: ${response.body}");
+
+      calendarMap = await json.decode(response.body.toString());
+
+      if (calendarMap["status"] == 200) {
+        return [
+          "农历${calendarMap["data"]['cnmonth']}月${calendarMap["data"]['cnday']}  ${calendarMap["data"]['jieqi']['${DateTime.now().day}'] == null ? '' : calendarMap["data"]['jieqi']['${DateTime.now().day}']}",
+          "${calendarMap["data"]['festivalList'].toString()=='[]'?'':calendarMap["data"]['festivalList'][0]}"
+        ];
+      } else {
+        Toast.toast(context, '更新农历失败 请检查网络');
+        return null;
+      }
+    } catch (e) {
+      Toast.toast(context, '无法连接到服务器\n错误代码:${response.statusCode}');
+      print('错误信息:$e');
+      return null;
     }
   }
 }

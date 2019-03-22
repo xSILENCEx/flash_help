@@ -25,7 +25,7 @@ class AppColors {
   static const AppTextColor1 = 0xFF808080;
   static const AppTextColor2 = 0xFF4B4B4B;
   static const AppBlackColor1 = 0xDD000000;
-  static const AppBlackColor2 = 0x1F000000;
+  static const AppBlackColor2 = 0x5F000000;
   static const AppBlackColor3 = 0x55000000;
   static const AppTranslateColor = 0x00000000;
   static const AppWaveColor = 0x05000000;

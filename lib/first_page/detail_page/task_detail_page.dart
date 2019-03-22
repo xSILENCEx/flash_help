@@ -42,6 +42,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     return new WillPopScope(
       child: new Scaffold(
         appBar: new AppBar(
+          backgroundColor: Color(AppColors.AppWhiteColor),
           brightness: Brightness.light,
           centerTitle: true,
           elevation: 0.5,
@@ -49,6 +50,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             icon: Icon(
               Icons.arrow_back_ios,
               size: ScreenUtil().setWidth(60),
+              color: Color(AppColors.AppTextColor2),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -67,6 +69,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               icon: Icon(
                 Icons.more_vert,
                 size: ScreenUtil().setWidth(60),
+                color: Color(AppColors.AppTextColor2),
               ),
               onPressed: () {
                 Toast.toast(context, '更多');

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/sql_setting.dart';
 import 'package:flash_help/auxiliary/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserSettingPage extends StatelessWidget {
   @override
@@ -137,8 +138,20 @@ class SettingItem extends StatelessWidget {
         color: Color(AppColors.AppTextColor),
       ),
       onTap: () {
-        Toast.toast(context, itemTitle[index]);
+        if (itemTitle[index] == '用户协议') {
+          _launchURL();
+        } else
+          Toast.toast(context, itemTitle[index]);
       },
     );
+  }
+
+  _launchURL() async {
+    const url = 'http://me.liugl.cn/otherFiles/Agreement.html';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -42,6 +42,19 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
   DateTime _pickTime;
 
   @override
+  void dispose() {
+    super.dispose();
+    _focusNode.dispose();
+    _taskClass.clear();
+    _taskLabels.clear();
+    _timeLimit.clear();
+    _picturePath.clear();
+    _controllerTaskName.dispose();
+    _controllerTaskInfo.dispose();
+    _controllerTaskReward.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _isTaskChosen = new List(_taskLabels.length);
@@ -160,14 +173,6 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
     }
 
     return checkResult;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controllerTaskName.dispose();
-    _controllerTaskInfo.dispose();
-    _controllerTaskReward.dispose();
   }
 
   @override

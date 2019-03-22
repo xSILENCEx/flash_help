@@ -79,6 +79,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
       child: new Scaffold(
         backgroundColor: Color(AppColors.AppDeepColor),
         appBar: new AppBar(
+          backgroundColor: Color(AppColors.AppWhiteColor),
           brightness: Brightness.light,
           centerTitle: true,
           elevation: 0.0,
