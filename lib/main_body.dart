@@ -13,6 +13,7 @@ import 'package:flash_help/msg_page/msg_page.dart';
 import 'package:flash_help/my_page/my_page.dart';
 import 'package:flash_help/near_page/near_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 
 class MainBody extends StatelessWidget {
   final PageController _pageController = new PageController(initialPage: 0);
@@ -282,7 +283,7 @@ class _ToolItemState extends State<ToolItem> {
     Icons.visibility_off,
     Icons.brightness_4,
     Icons.color_lens,
-    Icons.center_focus_weak,
+    Boxicons.bxFullscreen,
     Icons.share,
     Icons.cancel,
     Icons.edit,

@@ -54,6 +54,7 @@ class _PersonalPageState extends State<PersonalPage> {
                   labelStyle: TextStyle(
                     fontSize: ScreenUtil().setSp(40),
                   ),
+                  labelColor: Color(AppColors.AppLabelColor),
                   tabs: [
                     Tab(text: '发布的悬赏'),
                     Tab(text: '获得的评价'),

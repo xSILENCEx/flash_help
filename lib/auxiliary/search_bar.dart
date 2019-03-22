@@ -3,6 +3,7 @@ import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/toast.dart';
 import 'package:flash_help/basic_functions/search_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 
 class SearchBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
@@ -64,7 +65,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
                 Toast.toast(context, '新的通知');
               },
               child: new Icon(
-                Icons.notifications_none,
+                Boxicons.bxBell,
                 color: Color(AppColors.AppWhiteColor),
                 size: ScreenUtil().setWidth(50),
               ),

@@ -181,7 +181,7 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       appBar: new AppBar(
         centerTitle: true,
         leading: new IconButton(
-            icon: Icon(Icons.close, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
+            icon: Icon(Icons.close, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
             onPressed: () {
               Navigator.pop(context);
             }),
@@ -189,7 +189,7 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
         elevation: 0.2,
         actions: <Widget>[
           new IconButton(
-              icon: Icon(Icons.help_outline, color: Color(AppColors.AppLabelColor), size: ScreenUtil().setWidth(60)),
+              icon: Icon(Icons.help_outline, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
               onPressed: () {
                 Toast.toast(context, '帮助');
               }),

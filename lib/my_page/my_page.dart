@@ -329,7 +329,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
           return new Container(
             height: ScreenUtil().setWidth(2),
             color: Color(AppColors.AppDeepColor),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(150), right: ScreenUtil().setWidth(150)),
           );
         },
       ),
@@ -495,8 +495,8 @@ class FunctionItem extends StatelessWidget {
     } else if (index == 8) {
       return ListTile(
         leading: new Container(
-          width: ScreenUtil().setWidth(90),
-          height: ScreenUtil().setWidth(90),
+          width: ScreenUtil().setWidth(80),
+          height: ScreenUtil().setWidth(80),
           decoration: BoxDecoration(
             color: Color(AppColors.AppLabelColor),
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
@@ -504,7 +504,7 @@ class FunctionItem extends StatelessWidget {
           alignment: Alignment.center,
           child: new Icon(
             _icons[index],
-            size: ScreenUtil().setWidth(50),
+            size: ScreenUtil().setWidth(40),
             color: Color(
               AppColors.AppWhiteColor,
             ),
@@ -548,8 +548,8 @@ class FunctionItem extends StatelessWidget {
     } else if (index > 8 && index < 12) {
       return new ListTile(
         leading: new Container(
-          width: ScreenUtil().setWidth(90),
-          height: ScreenUtil().setWidth(90),
+          width: ScreenUtil().setWidth(80),
+          height: ScreenUtil().setWidth(80),
           decoration: BoxDecoration(
             color: Color(AppColors.AppLabelColor),
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
@@ -557,7 +557,7 @@ class FunctionItem extends StatelessWidget {
           alignment: Alignment.center,
           child: new Icon(
             _icons[index],
-            size: ScreenUtil().setWidth(50),
+            size: ScreenUtil().setWidth(40),
             color: Color(
               AppColors.AppWhiteColor,
             ),
@@ -587,8 +587,8 @@ class FunctionItem extends StatelessWidget {
     } else
       return new ListTile(
         leading: new Container(
-          width: ScreenUtil().setWidth(90),
-          height: ScreenUtil().setWidth(90),
+          width: ScreenUtil().setWidth(80),
+          height: ScreenUtil().setWidth(80),
           decoration: BoxDecoration(
             color: Color(AppColors.AppLabelColor),
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
@@ -596,7 +596,7 @@ class FunctionItem extends StatelessWidget {
           alignment: Alignment.center,
           child: new Icon(
             _icons[index],
-            size: ScreenUtil().setWidth(50),
+            size: ScreenUtil().setWidth(40),
             color: Color(
               AppColors.AppWhiteColor,
             ),

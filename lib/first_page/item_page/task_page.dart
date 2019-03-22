@@ -7,6 +7,7 @@ import 'package:flash_help/auxiliary/toast.dart';
 import 'package:flash_help/first_page/detail_page/task_detail_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_menu/dropdown_menu.dart';
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 
 class RewardPage extends StatefulWidget {
   @override
@@ -298,7 +299,7 @@ class OperationBar extends StatefulWidget {
 }
 
 class _OperationBarState extends State<OperationBar> {
-  bool _good = false, _star = false;
+  bool _like = false, _star = false;
   @override
   Widget build(BuildContext context) {
     return new Row(
@@ -307,19 +308,19 @@ class _OperationBarState extends State<OperationBar> {
         new Flexible(
             child: new IconButton(
                 icon: Icon(
-                  Icons.thumb_up,
+                  _like ? Boxicons.bxsLike:Boxicons.bxLike,
                   size: ScreenUtil().setWidth(56),
-                  color: Color(_good ? AppColors.AppLabelColor : AppColors.AppBorderColor),
+                  color: Color(_like ? AppColors.AppLabelColor : AppColors.AppBorderColor),
                 ),
                 onPressed: () {
                   setState(() {
-                    _good = !_good;
+                    _like = !_like;
                   });
                 })),
         new Flexible(
             child: new IconButton(
                 icon: Icon(
-                  _star ? Icons.star : Icons.star_border,
+                  _star ? Boxicons.bxsStar : Boxicons.bxStar,
                   size: ScreenUtil().setWidth(58),
                   color: Color(_star ? AppColors.AppLabelColor : AppColors.AppBorderColor),
                 ),

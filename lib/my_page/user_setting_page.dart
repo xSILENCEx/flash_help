@@ -56,7 +56,7 @@ class UserSettingPage extends StatelessWidget {
           return new Container(
             height: ScreenUtil().setWidth(2),
             color: Color(AppColors.AppDeepColor),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(150), right: ScreenUtil().setWidth(150)),
           );
         },
       ),
@@ -134,7 +134,7 @@ class SettingItem extends StatelessWidget {
       ),
       trailing: new Icon(
         Icons.arrow_forward_ios,
-        size: ScreenUtil().setWidth(60),
+        size: ScreenUtil().setWidth(50),
         color: Color(AppColors.AppTextColor),
       ),
       onTap: () {

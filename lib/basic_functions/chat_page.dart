@@ -4,6 +4,7 @@ import 'package:flash_help/auxiliary/toast.dart';
 import 'package:flash_help/basic_classes.dart';
 import 'package:flash_help/first_page/detail_page/personal_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 
 class ChatPage extends StatefulWidget {
   final String itemTag;
@@ -35,8 +36,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
 
   Future _sendMsg() async {
     _listMsg.add(new Msg(1, 1, _controllerEdit.text, new DateTime.now()));
-    setState(() {});
     _controllerEdit.clear();
+    setState(() {});
     Future.delayed(const Duration(milliseconds: 100), () {
       _controllerScroll.animateTo(
         _controllerScroll.position.maxScrollExtent,
@@ -223,9 +224,9 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                       onChanged: (value) {
                         setState(() {});
                       },
-                      onEditingComplete: () {
+                      onEditingComplete: () async{
                         if (_controllerEdit.text.length != 0) {
-                          _sendMsg();
+                          await _sendMsg();
                         } else
                           FocusScope.of(context).requestFocus(FocusNode());
                       },
@@ -264,14 +265,14 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
               padding: EdgeInsets.all(0),
-              onPressed: () {
+              onPressed: () async{
                 if (_controllerEdit.text.length == 0) {
                   Toast.toast(context, '添加');
                 } else {
-                  _sendMsg();
+                  await _sendMsg();
                 }
               },
-              child: new Icon(_controllerEdit.text.length == 0 ? Icons.add : Icons.send,
+              child: new Icon(_controllerEdit.text.length == 0 ? Icons.add : Boxicons.bxsSend,
                   color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
               color: Color(AppColors.AppLabelColor2),
             ),
