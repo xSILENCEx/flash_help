@@ -14,6 +14,7 @@ import 'package:flash_help/my_page/my_page.dart';
 import 'package:flash_help/near_page/near_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:boxicons_flutter/boxicons_flutter.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class MainBody extends StatelessWidget {
   final PageController _pageController = new PageController(initialPage: 0);
@@ -289,6 +290,7 @@ class _ToolItemState extends State<ToolItem> {
     Icons.edit,
   ];
   List<String> _titles = ['发布悬赏', '隐身模式', '夜间模式', '主题颜色', '扫一扫', '分享软件', '退出软件', '编辑'];
+  String _barcode = "";
 
   get curve => widget.curve;
   get controller => widget.controller;
@@ -305,6 +307,10 @@ class _ToolItemState extends State<ToolItem> {
       ),
     ));
     super.initState();
+  }
+
+  Future _scan() async {
+    Toast.toast(context, '暂未开放');
   }
 
   @override
@@ -354,6 +360,15 @@ class _ToolItemState extends State<ToolItem> {
                         }
                       }
                       break;
+                    case 4:
+                      {
+                        await _scan();
+                      }
+                      break;
+                    default:
+                      {
+                        Toast.toast(context, '暂未开放');
+                      }
                   }
                 },
                 child: Icon(

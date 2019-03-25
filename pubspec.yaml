@@ -41,6 +41,7 @@ dependencies:
   photo: ^0.3.3
   dropdown_menu: ^1.1.1
   boxicons_flutter: ^1.1.0
+  barcode_scan: ^1.0.0
 
 dev_dependencies:
   flutter_test:

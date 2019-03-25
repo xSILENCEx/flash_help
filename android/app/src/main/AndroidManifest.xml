@@ -51,6 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity"/>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2cdf9d7487c67b6cf3c536180844f2be" />
