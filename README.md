@@ -1,5 +1,10 @@
 ﻿# flash_help，这是一个大学生创业项目,preview文件夹下有AOT安装包，可以下载体验
 
+![image](https://github.com/xSILENCEx/flash_help/blob/master/preview/fh1.png)
+
+![image](https://github.com/xSILENCEx/flash_help/blob/master/preview/fh2.png)
+
+![image](https://github.com/xSILENCEx/flash_help/blob/master/preview/fh3.png)
 
 ![image](https://github.com/xSILENCEx/flash_help/blob/master/preview/01.png)
 
