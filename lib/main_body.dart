@@ -33,7 +33,8 @@ class MainBody extends StatelessWidget {
     return new WillPopScope(
       onWillPop: () async {
         Toast.toast(context, '再按一次退出');
-        if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt) > Duration(seconds: 1)) {
+        if (_lastPressedAt == null ||
+            DateTime.now().difference(_lastPressedAt) > Duration(seconds: 1)) {
           _lastPressedAt = DateTime.now();
           return false;
         }
@@ -92,7 +93,8 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
     super.initState();
     _chineseCalendar[0] = '正在联网获取农历...';
     _chineseCalendar[1] = ' ';
-    _controllerAnimated = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _controllerAnimated =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _rota = new Tween<double>(begin: 0.0, end: 3.0).animate(CurvedAnimation(
       parent: _controllerAnimated,
       curve: Interval(
@@ -166,23 +168,36 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
                 body: new Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new HelloTime(controller: _controllerAnimated, curve: _curve, data: _chineseCalendar),
+                    new HelloTime(
+                        controller: _controllerAnimated,
+                        curve: _curve,
+                        data: _chineseCalendar),
                     new GridView.builder(
-                      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(300)),
+                      padding:
+                          EdgeInsets.only(bottom: ScreenUtil().setWidth(300)),
                       shrinkWrap: true,
                       itemCount: 8,
                       physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4, crossAxisSpacing: 2.0, childAspectRatio: 1.0, mainAxisSpacing: 2.0),
+                      gridDelegate:
+                          new SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              crossAxisSpacing: 2.0,
+                              childAspectRatio: 1.0,
+                              mainAxisSpacing: 2.0),
                       itemBuilder: (BuildContext context, int index) {
-                        return new ToolItem(controller: _controllerAnimated, curve: _curve, index: index);
+                        return new ToolItem(
+                            controller: _controllerAnimated,
+                            curve: _curve,
+                            index: index);
                       },
                     ),
                   ],
                 ),
                 backgroundColor: Color(AppColors.AppBlackColor2),
-                floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-                floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                floatingActionButtonAnimator:
+                    FloatingActionButtonAnimator.scaling,
                 floatingActionButton: new Container(
                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(60)),
                   width: ScreenUtil().setWidth(140),
@@ -191,7 +206,8 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
                     child: new FloatingActionButton(
                       elevation: 0.0,
                       backgroundColor: Color(AppColors.AppTranslateColor),
-                      child: new ShutIcon(controller: _controllerAnimated, curve: _curve),
+                      child: new ShutIcon(
+                          controller: _controllerAnimated, curve: _curve),
                       onPressed: () {
                         _isMenuOpen = false;
                         _controllerAnimated.reverse();
@@ -271,7 +287,8 @@ class ToolItem extends StatefulWidget {
   final Curve curve;
   final int index;
 
-  const ToolItem({Key key, this.controller, this.curve, this.index}) : super(key: key);
+  const ToolItem({Key key, this.controller, this.curve, this.index})
+      : super(key: key);
 
   @override
   _ToolItemState createState() => new _ToolItemState();
@@ -289,7 +306,16 @@ class _ToolItemState extends State<ToolItem> {
     Icons.cancel,
     Icons.edit,
   ];
-  List<String> _titles = ['发布悬赏', '隐身模式', '夜间模式', '主题颜色', '扫一扫', '分享软件', '退出软件', '编辑'];
+  List<String> _titles = [
+    '发布悬赏',
+    '隐身模式',
+    '夜间模式',
+    '主题颜色',
+    '扫一扫',
+    '分享软件',
+    '退出软件',
+    '编辑'
+  ];
   String _barcode = "";
 
   get curve => widget.curve;
@@ -337,12 +363,14 @@ class _ToolItemState extends State<ToolItem> {
                     case 0:
                       {
                         if (AppInfo.getLogFlag()) {
-                          Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                          Navigator.of(context)
+                              .push(new MaterialPageRoute(builder: (_) {
                             return new NewTaskPage();
                           }));
                         } else {
                           Toast.toast(context, '请先登录');
-                          Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                          Navigator.of(context)
+                              .push(new MaterialPageRoute(builder: (_) {
                             return new LoginPage();
                           }));
                         }
@@ -354,7 +382,8 @@ class _ToolItemState extends State<ToolItem> {
                           Toast.toast(context, '隐身模式');
                         } else {
                           Toast.toast(context, '请先登录');
-                          Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                          Navigator.of(context)
+                              .push(new MaterialPageRoute(builder: (_) {
                             return new LoginPage();
                           }));
                         }
@@ -374,7 +403,8 @@ class _ToolItemState extends State<ToolItem> {
                 child: Icon(
                   _icons[index],
                   size: ScreenUtil().setWidth(60),
-                  color: Color(AppColors.AppLabelColor).withOpacity(_alpha.value),
+                  color:
+                      Color(AppColors.AppLabelColor).withOpacity(_alpha.value),
                 ),
               ),
               margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
@@ -399,7 +429,12 @@ class HelloTime extends StatefulWidget {
   final Curve curve;
   final List<String> data;
 
-  const HelloTime({Key key, @required this.controller, @required this.curve, @required this.data}) : super(key: key);
+  const HelloTime(
+      {Key key,
+      @required this.controller,
+      @required this.curve,
+      @required this.data})
+      : super(key: key);
 
   @override
   _HelloTimeState createState() => new _HelloTimeState();
@@ -448,7 +483,8 @@ class _HelloTimeState extends State<HelloTime> {
                       letterSpacing: ScreenUtil().setWidth(4),
                       fontSize: ScreenUtil().setWidth(100),
                       fontWeight: FontWeight.bold,
-                      color: Color(AppColors.AppWhiteColor).withOpacity(_alpha.value),
+                      color: Color(AppColors.AppWhiteColor)
+                          .withOpacity(_alpha.value),
                     ),
                   ),
                   new Container(
@@ -462,7 +498,8 @@ class _HelloTimeState extends State<HelloTime> {
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(50),
                           fontWeight: FontWeight.bold,
-                          color: Color(AppColors.AppWhiteColor).withOpacity(_alpha.value),
+                          color: Color(AppColors.AppWhiteColor)
+                              .withOpacity(_alpha.value),
                         ),
                       ),
                       new Text(
@@ -470,7 +507,8 @@ class _HelloTimeState extends State<HelloTime> {
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(30),
                           fontWeight: FontWeight.bold,
-                          color: Color(AppColors.AppWhiteColor).withOpacity(_alpha.value),
+                          color: Color(AppColors.AppWhiteColor)
+                              .withOpacity(_alpha.value),
                         ),
                       ),
                     ],

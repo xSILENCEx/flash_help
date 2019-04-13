@@ -55,16 +55,17 @@ class AppInfo {
   }
 
   static openTop() async {
-    await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    await SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
   }
 
-  static checkInternet(BuildContext context) async{
+  static checkInternet(BuildContext context) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
       return true;
     } else if (connectivityResult == ConnectivityResult.wifi) {
       return true;
-    }else{
+    } else {
       Toast.toast(context, '请检查网络');
       return false;
     }

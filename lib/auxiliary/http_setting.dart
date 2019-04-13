@@ -7,14 +7,16 @@ import 'package:flash_help/basic_classes.dart';
 import 'package:http/http.dart' as http;
 
 class HttpSetting {
-  static Future userAccountLogin(String username, String password, BuildContext context) async {
+  static Future userAccountLogin(
+      String username, String password, BuildContext context) async {
     //登录功能
     var response;
     var userMap;
     try {
       var url = "http://47.102.133.157:8080/FlashHelp/LoginServlet";
 
-      response = await http.post(url, body: {"username": "$username", "password": "$password"});
+      response = await http
+          .post(url, body: {"username": "$username", "password": "$password"});
 
       print("服务器响应码: ${response.statusCode}");
       print("响应结果: ${response.body}");
@@ -38,14 +40,16 @@ class HttpSetting {
     }
   }
 
-  static Future userAccountReg(String username, String password, BuildContext context) async {
+  static Future userAccountReg(
+      String username, String password, BuildContext context) async {
     //注册功能
     var response;
     var userMap;
     try {
       var url = "http://47.102.133.157:8080/FlashHelp/RegisteServlet";
 
-      response = await http.post(url, body: {"account": "$username", "password": "$password"});
+      response = await http
+          .post(url, body: {"account": "$username", "password": "$password"});
 
       print("服务器响应码: ${response.statusCode}");
       print("响应结果: ${response.body}");
@@ -128,7 +132,7 @@ class HttpSetting {
       if (calendarMap["status"] == 200) {
         return [
           "农历${calendarMap["data"]['cnmonth']}月${calendarMap["data"]['cnday']}  ${calendarMap["data"]['jieqi']['${DateTime.now().day}'] == null ? '' : calendarMap["data"]['jieqi']['${DateTime.now().day}']}",
-          "${calendarMap["data"]['festivalList'].toString()=='[]'?'':calendarMap["data"]['festivalList'][0]}"
+          "${calendarMap["data"]['festivalList'].toString() == '[]' ? '' : calendarMap["data"]['festivalList'][0]}"
         ];
       } else {
         Toast.toast(context, '更新农历失败 请检查网络');

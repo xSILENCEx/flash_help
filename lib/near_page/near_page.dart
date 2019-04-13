@@ -63,7 +63,9 @@ class _NearPageState extends State<NearPage> {
                     decoration: new BoxDecoration(
                       color: Color(AppColors.AppWhiteColor),
                       borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                      image: DecorationImage(image: NetworkImage(_sweeperUrl[index]), fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: NetworkImage(_sweeperUrl[index]),
+                          fit: BoxFit.cover),
                     ),
                   );
                 },
@@ -109,7 +111,8 @@ class _NearPageState extends State<NearPage> {
                       itemCount: _personNum,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        return new PersonItem(index: index, name: WordPair.random().asPascalCase);
+                        return new PersonItem(
+                            index: index, name: WordPair.random().asPascalCase);
                       },
                     ),
                   ),
@@ -155,7 +158,9 @@ class _NearPageState extends State<NearPage> {
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        return new TaskItem(index: index, reward: Random().nextInt(999).toDouble());
+                        return new TaskItem(
+                            index: index,
+                            reward: Random().nextInt(999).toDouble());
                       },
                     ),
                   ),
@@ -224,10 +229,16 @@ class TaskItem extends StatelessWidget {
                 child: new Container(
                   height: ScreenUtil().setWidth(360),
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(_url), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
+                    image: DecorationImage(
+                        image: AssetImage(_url), fit: BoxFit.cover),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppStyle.appRadius),
+                        topRight: Radius.circular(AppStyle.appRadius)),
                     boxShadow: [
-                      BoxShadow(color: Color(AppColors.AppShadowColor2), offset: Offset(0.0, 0.0), blurRadius: 3.0),
+                      BoxShadow(
+                          color: Color(AppColors.AppShadowColor2),
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 3.0),
                     ],
                   ),
                 ),
@@ -235,11 +246,16 @@ class TaskItem extends StatelessWidget {
             ),
             new Container(
               width: double.infinity,
-              margin: EdgeInsets.only(left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30), top: ScreenUtil().setWidth(30)),
+              margin: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(30),
+                  right: ScreenUtil().setWidth(30),
+                  top: ScreenUtil().setWidth(30)),
               padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
               child: new Text(
                 '任务标题  任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介',
-                style: TextStyle(fontSize: ScreenUtil().setSp(38), color: Color(AppColors.AppTextColor1)),
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(38),
+                    color: Color(AppColors.AppTextColor1)),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
@@ -256,7 +272,8 @@ class TaskItem extends StatelessWidget {
                   margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
                     color: Color(AppColors.AppDeepColor),
-                    borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                    borderRadius:
+                        BorderRadius.circular(AppStyle.appRadius * 40),
                     border: Border.all(
                       color: Color(AppColors.AppBorderColor),
                     ),
@@ -300,7 +317,8 @@ class PersonItem extends StatelessWidget {
   final int index;
   final String name;
 
-  const PersonItem({Key key, @required this.index, @required this.name}) : super(key: key);
+  const PersonItem({Key key, @required this.index, @required this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +332,10 @@ class PersonItem extends StatelessWidget {
           color: Color(AppColors.AppWhiteColor),
           borderRadius: BorderRadius.circular(AppStyle.appRadius),
           boxShadow: [
-            BoxShadow(color: Color(AppColors.AppShadowColor2), offset: Offset(0, 1), blurRadius: 4.0),
+            BoxShadow(
+                color: Color(AppColors.AppShadowColor2),
+                offset: Offset(0, 1),
+                blurRadius: 4.0),
           ],
         ),
         alignment: Alignment.center,
@@ -329,7 +350,8 @@ class PersonItem extends StatelessWidget {
                 decoration: new BoxDecoration(
                   color: Color(AppColors.AppWhiteColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-                  border: Border.all(color: Color(AppColors.AppBorderColor), width: 2),
+                  border: Border.all(
+                      color: Color(AppColors.AppBorderColor), width: 2),
                   image: DecorationImage(
                     image: AssetImage(AppStyle.userPicture2),
                     fit: BoxFit.cover,
@@ -360,7 +382,10 @@ class PersonItem extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-          return new PersonalPage(headTag: 'headpicture$index', name: name, headUrl: AppStyle.userPicture2);
+          return new PersonalPage(
+              headTag: 'headpicture$index',
+              name: name,
+              headUrl: AppStyle.userPicture2);
         }));
       },
     );

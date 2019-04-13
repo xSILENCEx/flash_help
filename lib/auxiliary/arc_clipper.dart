@@ -51,11 +51,13 @@ class ArcClipper extends CustomClipper<Path> {
 
     var firstPoint = Offset(size.width / 2, size.height);
     var firstControlPoint = Offset(size.width / 4, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstPoint.dx, firstPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstPoint.dx, firstPoint.dy);
 
     var secondPoint = Offset(size.width, size.height - 30);
     var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondPoint.dx, secondPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondPoint.dx, secondPoint.dy);
 
     path.lineTo(size.width, 0.0);
     path.close();
@@ -79,10 +81,14 @@ class BottomClipper extends CustomClipper<Path> {
     path.lineTo(size.width, 0.0);
     path.lineTo(size.width * 0.62, 0.0);
 
-    path.quadraticBezierTo(size.width * 0.585, 0.0, size.width * 0.575, size.height * 0.2);
-    path.quadraticBezierTo(size.width * 0.55, size.height * 0.65, size.width * 0.5, size.height * 0.65);
-    path.quadraticBezierTo(size.width * 0.45, size.height * 0.65, size.width * 0.425, size.height * 0.2);
-    path.quadraticBezierTo(size.width * 0.415, 0.0, size.width * 0.38, size.height * 0.0);
+    path.quadraticBezierTo(
+        size.width * 0.585, 0.0, size.width * 0.575, size.height * 0.2);
+    path.quadraticBezierTo(size.width * 0.55, size.height * 0.65,
+        size.width * 0.5, size.height * 0.65);
+    path.quadraticBezierTo(size.width * 0.45, size.height * 0.65,
+        size.width * 0.425, size.height * 0.2);
+    path.quadraticBezierTo(
+        size.width * 0.415, 0.0, size.width * 0.38, size.height * 0.0);
 
     path.close();
 
