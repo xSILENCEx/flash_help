@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flash_help/auxiliary/toast.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppColors {
   static const AppDeepColor = 0xFFEDEDED;
@@ -34,12 +35,16 @@ class AppColors {
   static const AppItemColor2 = 0xFF55E25C;
   static const AppItemColor3 = 0xFF9886FF;
   static const AppWaringColor = 0xFFFF544A;
+
+  static const AppLightTheme = 0xFF2196F3;
+  static const AppDarkTheme = 0xFF606060;
+  static int AppThemeColor = AppLabelColor;
 }
 
 class AppInfo {
   static bool logFlag = false;
   static const AppName = "闪帮";
-  static const AppVersion = "0.0.2";
+  static const AppVersion = "0.0.3";
   static bool isNightModeOpen = false;
 
   static getLogFlag() {
@@ -74,6 +79,8 @@ class AppInfo {
 
 class AppStyle {
   static double appRadius = 8;
+  static double sizeScale = 1.00;
+  static double appTitleFS = ScreenUtil().setSp(60) * sizeScale;
   static String userPicture1 = 'images/user_me.jpg';
   static String userPicture2 = 'images/user_2.jpg';
   static String unLog = 'images/unlog.jpg';

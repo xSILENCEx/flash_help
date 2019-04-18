@@ -16,7 +16,8 @@ class NewTaskPage extends StatefulWidget {
   _NewTaskPageState createState() => new _NewTaskPageState();
 }
 
-class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClientMixin {
+class _NewTaskPageState extends State<NewTaskPage>
+    with AutomaticKeepAliveClientMixin {
   TextEditingController _controllerTaskName = new TextEditingController();
   TextEditingController _controllerTaskInfo = new TextEditingController();
   TextEditingController _controllerTaskReward = new TextEditingController();
@@ -29,7 +30,17 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
   int _taskIntegral = 0;
   String _location = '未提供位置信息';
 
-  List<String> _taskLabels = ['取件', '外卖', '洗衣', '排队', '功课', '修图', '手工', '代购', '其它'];
+  List<String> _taskLabels = [
+    '取件',
+    '外卖',
+    '洗衣',
+    '排队',
+    '功课',
+    '修图',
+    '手工',
+    '代购',
+    '其它'
+  ];
   List<bool> _isTaskChosen;
 
   List<String> _timeLimit = ['时间不限', '限定时间'];
@@ -135,11 +146,13 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
 
   _checkPermission(PermissionGroup per) async {
     bool checkResult = false;
-    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(per);
+    PermissionStatus permission =
+        await PermissionHandler().checkPermissionStatus(per);
     switch (permission) {
       case PermissionStatus.unknown:
         {
-          Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+          Map<PermissionGroup, PermissionStatus> permissions =
+              await PermissionHandler().requestPermissions([per]);
           if (permissions['Permission'] == PermissionStatus.disabled) {
           } else {
             checkResult = true;
@@ -158,7 +171,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
         break;
       case PermissionStatus.denied:
         {
-          Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([per]);
+          Map<PermissionGroup, PermissionStatus> permissions =
+              await PermissionHandler().requestPermissions([per]);
           if (permissions['Permission'] == PermissionStatus.disabled) {
           } else {
             checkResult = true;
@@ -181,15 +195,20 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       appBar: new AppBar(
         centerTitle: true,
         leading: new IconButton(
-            icon: Icon(Icons.close, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
+            icon: Icon(Icons.close,
+                color: Color(AppColors.AppWhiteColor),
+                size: ScreenUtil().setWidth(60)),
             onPressed: () {
               Navigator.pop(context);
             }),
-        title: Text('发布新的悬赏', style: TextStyle(fontSize: ScreenUtil().setSp(50))),
+        title:
+            Text('发布新的悬赏', style: TextStyle(fontSize: ScreenUtil().setSp(50))),
         elevation: 0.2,
         actions: <Widget>[
           new IconButton(
-              icon: Icon(Icons.help_outline, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
+              icon: Icon(Icons.help_outline,
+                  color: Color(AppColors.AppWhiteColor),
+                  size: ScreenUtil().setWidth(60)),
               onPressed: () {
                 Toast.toast(context, '帮助');
               }),
@@ -211,23 +230,25 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                 border: InputBorder.none,
               ),
               controller: _controllerTaskName,
-              style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
+              style: TextStyle(
+                  fontSize: ScreenUtil().setSp(42),
+                  color: Color(AppColors.AppTextColor1)),
               onEditingComplete: () {
                 FocusScope.of(context).requestFocus(_focusNode);
               },
             ),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
           ),
           new Container(
             width: double.infinity,
             height: 0.5,
             color: Color(AppColors.AppBorderColor),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
+            margin: EdgeInsets.only(
+                left: ScreenUtil().setWidth(15),
+                right: ScreenUtil().setWidth(15)),
           ),
           new Container(
             width: double.infinity,
@@ -242,24 +263,25 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                 border: InputBorder.none,
               ),
               controller: _controllerTaskInfo,
-              style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
+              style: TextStyle(
+                  fontSize: ScreenUtil().setSp(42),
+                  color: Color(AppColors.AppTextColor1)),
             ),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
           ),
           new Container(
             width: double.infinity,
             height: ScreenUtil().setWidth(300),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
             child: new ListView.builder(
               addAutomaticKeepAlives: true,
               physics: BouncingScrollPhysics(),
-              itemCount: _picturePath.length < 10 ? _picturePath.length + 1 : _picturePath.length,
+              itemCount: _picturePath.length < 10
+                  ? _picturePath.length + 1
+                  : _picturePath.length,
               itemBuilder: (BuildContext context, int index) {
                 if (index == _picturePath.length && _picturePath.length < 10)
                   return _buildAddPicture();
@@ -270,10 +292,6 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
             ),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
-              boxShadow: [
-                new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0),
-              ],
             ),
           ),
           new Container(
@@ -284,11 +302,11 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
           ),
           new Container(
             width: double.infinity,
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(30),
+                right: ScreenUtil().setWidth(30)),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -297,10 +315,13 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                   children: <Widget>[
                     new Icon(
                       _isLocationOpen ? Icons.location_on : Icons.location_off,
-                      color: Color(_isLocationOpen ? AppColors.AppLabelColor : AppColors.AppDeepColor),
+                      color: Color(_isLocationOpen
+                          ? AppColors.AppLabelColor
+                          : AppColors.AppDeepColor),
                       size: ScreenUtil().setWidth(50),
                     ),
-                    new Text(_isLocationOpen ? '已显示当前位置' : '已隐藏当前位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                    new Text(_isLocationOpen ? '已显示当前位置' : '已隐藏当前位置',
+                        style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                   ],
                 ),
                 new FlatButton(
@@ -309,7 +330,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                   ),
                   onPressed: () async {
                     if (!_isLocationOpen) {
-                      _isLocationOpen = await _checkPermission(PermissionGroup.location);
+                      _isLocationOpen =
+                          await _checkPermission(PermissionGroup.location);
                       if (_isLocationOpen) {
                         await _getLocationOnce();
                       }
@@ -320,7 +342,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                       });
                     }
                   },
-                  child: new Text(_isLocationOpen ? '隐藏发布位置' : '显示发布位置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                  child: new Text(_isLocationOpen ? '隐藏发布位置' : '显示发布位置',
+                      style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                 ),
               ],
             ),
@@ -329,13 +352,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
               ? new Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
-                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15)),
                   padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
                     color: Color(AppColors.AppLightColor),
-                    borderRadius:
-                        BorderRadius.only(bottomLeft: Radius.circular(AppStyle.appRadius), bottomRight: Radius.circular(AppStyle.appRadius)),
-                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
                   ),
                   child: new Text(
                     '$_location',
@@ -348,21 +367,22 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
               : new Container(),
           new Container(
             height: ScreenUtil().setWidth(150),
-            margin: EdgeInsets.only(left: 5, right: 5, top: 10),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.circular(AppStyle.appRadius),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text('任务类型', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new Text('任务类型',
+                    style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                 new ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setWidth(20),
+                      bottom: ScreenUtil().setWidth(20)),
                   scrollDirection: Axis.horizontal,
                   itemCount: _taskClass.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -375,11 +395,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
           _chooseClass < 2
               ? new Container(
                   height: ScreenUtil().setWidth(150),
-                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
                     color: Color(AppColors.AppLightColor),
-                    borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
                   ),
                   child: new FlatButton(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
@@ -389,8 +406,13 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Text('悬赏${_taskClass[_chooseClass]}', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-                        new Text(_chooseClass == 0 ? '￥$_taskMoney' : '$_taskIntegral', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                        new Text('悬赏${_taskClass[_chooseClass]}',
+                            style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                        new Text(
+                            _chooseClass == 0
+                                ? '￥$_taskMoney'
+                                : '$_taskIntegral',
+                            style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                       ],
                     ),
                     shape: RoundedRectangleBorder(
@@ -401,20 +423,21 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
               : new Container(),
           new Container(
             height: ScreenUtil().setWidth(150),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.circular(AppStyle.appRadius),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text('任务标签  ', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new Text('任务标签  ',
+                    style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                 new Flexible(
                   child: new ListView.builder(
-                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                    padding: EdgeInsets.only(
+                        top: ScreenUtil().setWidth(20),
+                        bottom: ScreenUtil().setWidth(20)),
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemCount: _taskLabels.length,
@@ -428,20 +451,21 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
           ),
           new Container(
             height: ScreenUtil().setWidth(150),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
               color: Color(AppColors.AppLightColor),
-              borderRadius: BorderRadius.circular(AppStyle.appRadius),
-              boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text('时间限制', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                new Text('时间限制',
+                    style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                 new ListView.builder(
                   shrinkWrap: true,
-                  padding: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(20)),
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setWidth(20),
+                      bottom: ScreenUtil().setWidth(20)),
                   scrollDirection: Axis.horizontal,
                   itemCount: _timeLimit.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -454,11 +478,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
           _chooseLimit > 0
               ? new Container(
                   height: ScreenUtil().setWidth(150),
-                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15), right: ScreenUtil().setWidth(15), top: ScreenUtil().setWidth(30)),
+                  margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
                     color: Color(AppColors.AppLightColor),
-                    borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                    boxShadow: [new BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 1), blurRadius: 2.0)],
                   ),
                   child: new FlatButton(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
@@ -478,9 +500,15 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                         currentTime: _pickTime,
                         locale: LocaleType.zh,
                         theme: DatePickerTheme(
-                          cancelStyle: TextStyle(color: Color(AppColors.AppBlackColor1), fontSize: 16),
-                          itemStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 18),
-                          doneStyle: TextStyle(color: Color(AppColors.AppLabelColor), fontSize: 16),
+                          cancelStyle: TextStyle(
+                              color: Color(AppColors.AppBlackColor1),
+                              fontSize: 16),
+                          itemStyle: TextStyle(
+                              color: Color(AppColors.AppLabelColor),
+                              fontSize: 18),
+                          doneStyle: TextStyle(
+                              color: Color(AppColors.AppLabelColor),
+                              fontSize: 16),
                           backgroundColor: Color(AppColors.AppWhiteColor),
                         ),
                       );
@@ -488,7 +516,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Text('点击设置', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+                        new Text('点击设置',
+                            style: TextStyle(fontSize: ScreenUtil().setSp(40))),
                         new Text(
                           '${_pickTime.year} 年 ${_pickTime.month.toString().padLeft(2, '0')} 月 ${_pickTime.day.toString().padLeft(2, '0')} 日 ${_pickTime.hour.toString().padLeft(2, '0')}:${_pickTime.minute.toString().padLeft(2, '0')}:00  之前',
                           style: TextStyle(
@@ -508,12 +537,14 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       bottomNavigationBar: new Container(
         child: new RaisedButton(
           color: Color(AppColors.AppLabelColor),
-          child: new Text('确认发布', style: TextStyle(color: Color(AppColors.AppWhiteColor))),
+          child: new Text('确认发布',
+              style: TextStyle(color: Color(AppColors.AppWhiteColor))),
           onPressed: () {
             Toast.toast(context, '暂未开放');
           },
         ),
-        padding: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
+        padding: EdgeInsets.only(
+            left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(color: Color(AppColors.AppBorderColor), width: 0.5),
@@ -532,7 +563,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       width: ScreenUtil().setWidth(110),
       child: new FlatButton(
         padding: EdgeInsets.all(0),
-        color: _chooseClass == index ? Color(AppColors.AppLabelColor) : Color(AppColors.AppWhiteColor),
+        color: _chooseClass == index
+            ? Color(AppColors.AppLabelColor)
+            : Color(AppColors.AppWhiteColor),
         onPressed: () {
           setState(() {
             _chooseClass = index;
@@ -541,10 +574,15 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
         child: new Text(
           _taskClass[index],
           style: TextStyle(
-              color: _chooseClass == index ? Color(AppColors.AppWhiteColor) : Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(35)),
+              color: _chooseClass == index
+                  ? Color(AppColors.AppWhiteColor)
+                  : Color(AppColors.AppTextColor1),
+              fontSize: ScreenUtil().setSp(35)),
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(AppColors.AppTextColor1), width: _chooseClass == index ? 0.0 : 1.0),
+          side: BorderSide(
+              color: Color(AppColors.AppTextColor1),
+              width: _chooseClass == index ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
       ),
@@ -557,7 +595,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       width: _taskLabels[index].length * ScreenUtil().setWidth(55),
       child: new FlatButton(
         padding: EdgeInsets.all(0),
-        color: _isTaskChosen[index] ? Color(AppColors.AppLabelColor) : Color(AppColors.AppWhiteColor),
+        color: _isTaskChosen[index]
+            ? Color(AppColors.AppLabelColor)
+            : Color(AppColors.AppWhiteColor),
         onPressed: () {
           setState(() {
             _isTaskChosen[index] = !_isTaskChosen[index];
@@ -565,9 +605,14 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
         },
         child: new Text(_taskLabels[index],
             style: TextStyle(
-                color: _isTaskChosen[index] ? Color(AppColors.AppWhiteColor) : Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(35))),
+                color: _isTaskChosen[index]
+                    ? Color(AppColors.AppWhiteColor)
+                    : Color(AppColors.AppTextColor1),
+                fontSize: ScreenUtil().setSp(35))),
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(AppColors.AppTextColor1), width: _isTaskChosen[index] ? 0.0 : 1.0),
+          side: BorderSide(
+              color: Color(AppColors.AppTextColor1),
+              width: _isTaskChosen[index] ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
       ),
@@ -580,7 +625,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       width: _timeLimit[index].length * ScreenUtil().setWidth(52),
       child: new FlatButton(
         padding: EdgeInsets.all(0),
-        color: _chooseLimit == index ? Color(AppColors.AppLabelColor) : Color(AppColors.AppWhiteColor),
+        color: _chooseLimit == index
+            ? Color(AppColors.AppLabelColor)
+            : Color(AppColors.AppWhiteColor),
         onPressed: () {
           setState(() {
             _chooseLimit = index;
@@ -589,9 +636,14 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
         },
         child: new Text(_timeLimit[index],
             style: TextStyle(
-                color: _chooseLimit == index ? Color(AppColors.AppWhiteColor) : Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(35))),
+                color: _chooseLimit == index
+                    ? Color(AppColors.AppWhiteColor)
+                    : Color(AppColors.AppTextColor1),
+                fontSize: ScreenUtil().setSp(35))),
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(AppColors.AppTextColor1), width: _chooseLimit == index ? 0.0 : 1.0),
+          side: BorderSide(
+              color: Color(AppColors.AppTextColor1),
+              width: _chooseLimit == index ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
       ),
@@ -599,7 +651,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
   }
 
   _checkRewardInput() {
-    if (_controllerTaskReward.text.length > 0 && num.parse(_controllerTaskReward.text) > 0) {
+    if (_controllerTaskReward.text.length > 0 &&
+        num.parse(_controllerTaskReward.text) > 0) {
       if (_chooseClass == 0) {
         _taskMoney = double.parse(_controllerTaskReward.text);
       } else
@@ -614,7 +667,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
       decoration: BoxDecoration(
         color: Color(AppColors.AppDeepColor),
         borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
-        image: DecorationImage(image: AssetImage("${Uri.encodeFull(_picturePath[index])}"), fit: BoxFit.cover),
+        image: DecorationImage(
+            image: AssetImage("${Uri.encodeFull(_picturePath[index])}"),
+            fit: BoxFit.cover),
       ),
       margin: EdgeInsets.only(right: 5),
       child: new Hero(
@@ -735,7 +790,9 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                         width: double.infinity,
                         height: ScreenUtil().setWidth(2),
                         color: Color(AppColors.AppTextColor),
-                        margin: EdgeInsets.only(top: ScreenUtil().setWidth(40), bottom: ScreenUtil().setWidth(60)),
+                        margin: EdgeInsets.only(
+                            top: ScreenUtil().setWidth(40),
+                            bottom: ScreenUtil().setWidth(60)),
                       ),
                       new Container(
                         height: ScreenUtil().setWidth(120),
@@ -744,17 +801,24 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                           right: ScreenUtil().setWidth(80),
                           bottom: ScreenUtil().setWidth(40),
                         ),
-                        padding: EdgeInsets.only(left: ScreenUtil().setWidth(60), right: ScreenUtil().setWidth(60)),
+                        padding: EdgeInsets.only(
+                            left: ScreenUtil().setWidth(60),
+                            right: ScreenUtil().setWidth(60)),
                         decoration: BoxDecoration(
                           color: Color(AppColors.AppDeepColor),
-                          borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                          borderRadius:
+                              BorderRadius.circular(AppStyle.appRadius * 40),
                         ),
                         child: new TextField(
                           autofocus: true,
-                          style: TextStyle(fontSize: ScreenUtil().setSp(38), color: Color(AppColors.AppTextColor1)),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(38),
+                              color: Color(AppColors.AppTextColor1)),
                           controller: _controllerTaskReward,
                           decoration: InputDecoration(
-                            hintText: _chooseClass == 0 ? '￥$_taskMoney' : '$_taskIntegral',
+                            hintText: _chooseClass == 0
+                                ? '￥$_taskMoney'
+                                : '$_taskIntegral',
                             border: InputBorder.none,
                           ),
                           maxLines: 1,
@@ -772,7 +836,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                           new Flexible(
                             child: new FlatButton(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                                borderRadius:
+                                    BorderRadius.circular(AppStyle.appRadius),
                               ),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -794,7 +859,8 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                           new Flexible(
                             child: new FlatButton(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                                borderRadius:
+                                    BorderRadius.circular(AppStyle.appRadius),
                               ),
                               onPressed: () {
                                 _checkRewardInput();
@@ -817,7 +883,10 @@ class _NewTaskPageState extends State<NewTaskPage> with AutomaticKeepAliveClient
                       ),
                     ],
                   ),
-                  margin: EdgeInsets.only(top: ScreenUtil().setWidth(500), left: ScreenUtil().setWidth(160), right: ScreenUtil().setWidth(160)),
+                  margin: EdgeInsets.only(
+                      top: ScreenUtil().setWidth(500),
+                      left: ScreenUtil().setWidth(160),
+                      right: ScreenUtil().setWidth(160)),
                   padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
                 ),
               ],
@@ -837,7 +906,8 @@ class PreviewPicture extends StatelessWidget {
   final int index;
   final String url;
 
-  const PreviewPicture({Key key, @required this.index, @required this.url}) : super(key: key);
+  const PreviewPicture({Key key, @required this.index, @required this.url})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

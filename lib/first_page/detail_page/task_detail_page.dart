@@ -13,10 +13,12 @@ class TaskDetailPage extends StatefulWidget {
   final String pictureTag;
   final String reward;
 
-  const TaskDetailPage({Key key, @required this.pictureTag, @required this.reward}) : super(key: key);
+  const TaskDetailPage(
+      {Key key, @required this.pictureTag, @required this.reward})
+      : super(key: key);
 
   @override
-  _TaskDetailPageState createState() => new _TaskDetailPageState();
+  _TaskDetailPageState createState() => _TaskDetailPageState();
 }
 
 class _TaskDetailPageState extends State<TaskDetailPage> {
@@ -25,9 +27,23 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   String _name;
 
-  List<String> _taskLabels = ['取件', '外卖', '洗衣', '排队', '功课', '修图', '手工', '代购', '其它'];
+  List<String> _taskLabels = [
+    '取件',
+    '外卖',
+    '洗衣',
+    '排队',
+    '功课',
+    '修图',
+    '手工',
+    '代购',
+    '其它'
+  ];
 
-  List<String> _pictureUrl = ['images/task_main.jpeg', 'images/task_2.jpg', 'images/task_3.jpg'];
+  List<String> _pictureUrl = [
+    'images/task_main.jpeg',
+    'images/task_2.jpg',
+    'images/task_3.jpg'
+  ];
 
   int _talkCount = 5;
 
@@ -39,14 +55,14 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
-      child: new Scaffold(
-        appBar: new AppBar(
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
           backgroundColor: Color(AppColors.AppWhiteColor),
           brightness: Brightness.light,
           centerTitle: true,
           elevation: 0.5,
-          leading: new IconButton(
+          leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
               size: ScreenUtil().setWidth(60),
@@ -56,7 +72,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               Navigator.pop(context);
             },
           ),
-          title: new Text(
+          title: Text(
             '￥$_reward',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -65,7 +81,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             ),
           ),
           actions: <Widget>[
-            new IconButton(
+            IconButton(
               icon: Icon(
                 Icons.more_vert,
                 size: ScreenUtil().setWidth(60),
@@ -77,35 +93,42 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             )
           ],
         ),
-        body: new ListView(
+        body: ListView(
           children: <Widget>[
-            new ListTile(
+            ListTile(
               dense: true,
-              leading: new Hero(
+              leading: Hero(
                 tag: 'headpicture',
-                child: new Container(
+                child: Container(
                   width: ScreenUtil().setWidth(140),
                   height: ScreenUtil().setWidth(140),
                   decoration: BoxDecoration(
                     color: Color(AppColors.AppDeepColor),
-                    borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                    borderRadius:
+                        BorderRadius.circular(AppStyle.appRadius * 40),
                     image: DecorationImage(
                       image: AssetImage(AppStyle.userPicture1),
                       fit: BoxFit.cover,
                     ),
-                    border: Border.all(color: Color(AppColors.AppWhiteColor), width: 2),
+                    border: Border.all(
+                        color: Color(AppColors.AppWhiteColor), width: 2),
                   ),
                 ),
               ),
-              title: new Text(
+              title: Text(
                 _name,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              subtitle: new Text('这个人很懒，什么都没有留下'),
-              trailing: new Container(
-                padding: new EdgeInsets.all(ScreenUtil().setWidth(10)),
-                child: new Text('在线', style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(35))),
-                decoration: new BoxDecoration(color: Color(AppColors.AppLabelColor), borderRadius: BorderRadius.circular(AppStyle.appRadius / 4)),
+              subtitle: Text('这个人很懒，什么都没有留下'),
+              trailing: Container(
+                padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                child: Text('在线',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: ScreenUtil().setSp(35))),
+                decoration: BoxDecoration(
+                    color: Color(AppColors.AppLabelColor),
+                    borderRadius:
+                        BorderRadius.circular(AppStyle.appRadius / 4)),
               ),
               contentPadding: EdgeInsets.only(
                 left: ScreenUtil().setWidth(20),
@@ -114,8 +137,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 bottom: ScreenUtil().setWidth(10),
               ),
               onTap: () {
-                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                  return new PersonalPage(
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  return PersonalPage(
                     headTag: 'headpicture',
                     name: _name,
                     headUrl: null,
@@ -126,17 +149,17 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             _buildInterval(),
             _buildTaskDetailItem(),
             _buildInterval(),
-            new Container(
+            Container(
               color: Color(AppColors.AppWhiteColor),
               height: ScreenUtil().setWidth(600),
               padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: new ListView.builder(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
                 itemCount: _pictureUrl.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == 0) {
-                    return new Hero(
+                    return Hero(
                       tag: _picTag,
                       child: _pictureBuilder(_pictureUrl[index], index),
                     );
@@ -146,8 +169,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               ),
             ),
             _buildInterval(),
-            new Container(
-              child: new ListView.separated(
+            Container(
+              child: ListView.separated(
                 padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(100)),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -156,7 +179,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   return _buildTalkItem(index);
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return new Container(
+                  return Container(
                     color: Color(AppColors.AppDeepColor),
                     height: ScreenUtil().setWidth(4),
                   );
@@ -165,16 +188,16 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             ),
           ],
         ),
-        bottomNavigationBar: new BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           notchMargin: double.parse(ScreenUtil().setWidth(20).toString()),
           shape: CircularNotchedRectangle(),
-          child: new BottomItems(),
+          child: BottomItems(),
         ),
-        floatingActionButton: new Container(
+        floatingActionButton: Container(
           width: ScreenUtil().setWidth(140),
           height: ScreenUtil().setWidth(140),
-          child: new FittedBox(
-            child: new ThreeStateFab(),
+          child: FittedBox(
+            child: ThreeStateFab(),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -187,14 +210,14 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   _pictureBuilder(String url, int index) {
-    return new Material(
+    return Material(
       color: Colors.transparent,
-      child: new InkWell(
+      child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        child: new Hero(
+        child: Hero(
           tag: "p$index",
-          child: new Container(
+          child: Container(
             width: 300,
             margin: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
@@ -207,8 +230,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           ),
         ),
         onTap: () async {
-          Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-            return new PictureDetail(index: index, url: _pictureUrl[index]);
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return PictureDetail(index: index, url: _pictureUrl[index]);
           }));
         },
       ),
@@ -216,9 +239,12 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   _buildTaskItem(int index) {
-    return new Container(
+    return Container(
       alignment: Alignment.center,
-      child: new Text('${_taskLabels[index]}', style: TextStyle(color: Color(AppColors.AppWhiteColor), fontSize: ScreenUtil().setSp(35))),
+      child: Text('${_taskLabels[index]}',
+          style: TextStyle(
+              color: Color(AppColors.AppWhiteColor),
+              fontSize: ScreenUtil().setSp(35))),
       decoration: BoxDecoration(
         color: Color(AppColors.AppLabelColor2),
         borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
@@ -233,32 +259,43 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   _buildTaskDetailItem() {
     var _pickTime = DateTime.now();
-    return new Container(
+    return Container(
       color: Color(AppColors.AppWhiteColor),
-      padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-      child: new Column(
+      padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+      child: Column(
         children: <Widget>[
-          new Container(
-            padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-            child: new Text(
+          Container(
+            padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+            child: Text(
               '任务标题  任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务',
-              style: TextStyle(fontSize: ScreenUtil().setSp(38)),
+              style: TextStyle(fontSize: ScreenUtil().setSp(36)),
             ),
             decoration: BoxDecoration(
               color: Color(AppColors.AppDeepColor),
               borderRadius: BorderRadius.circular(AppStyle.appRadius),
             ),
           ),
-          new Row(
+          Row(
             children: <Widget>[
-              new Text('现金任务', style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(40))),
-              new Flexible(
-                child: new Container(
-                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
+              Text(
+                '现金任务',
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(40),
+                ),
+              ),
+              Flexible(
+                child: Container(
+                  margin: EdgeInsets.only(
+                    left: ScreenUtil().setWidth(20),
+                    top: ScreenUtil().setWidth(10),
+                    bottom: ScreenUtil().setWidth(10),
+                  ),
                   alignment: Alignment.center,
                   height: ScreenUtil().setWidth(120),
-                  child: new ListView.builder(
-                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(35), bottom: ScreenUtil().setWidth(35)),
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(
+                        top: ScreenUtil().setWidth(35),
+                        bottom: ScreenUtil().setWidth(35)),
                     itemCount: _taskLabels.length,
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
@@ -270,24 +307,11 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               ),
             ],
           ),
-          new Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text('发布时间', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+              Text('截止时间', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
               _dateBuilder(_pickTime, ScreenUtil().setSp(40)),
-            ],
-          ),
-          new Container(
-            width: double.infinity,
-            height: 0.5,
-            color: Color(AppColors.AppBorderColor),
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(28), bottom: ScreenUtil().setWidth(28)),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Text('剩余时间', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
-              new Text('无限制', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
             ],
           ),
         ],
@@ -296,7 +320,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   _dateBuilder(DateTime date, double fontSize) {
-    return new Text(
+    return Text(
       '${date.year} 年 '
           '${date.month.toString().padLeft(2, '0')} 月 '
           '${date.day.toString().padLeft(2, '0')} 日 '
@@ -308,37 +332,73 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   _buildInterval() {
-    return new Container(
+    return Container(
       height: 20,
       color: Color(AppColors.AppDeepColor),
     );
   }
 
   _buildTalkItem(int index) {
-    return new ListTile(
-      title: new Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return ListTile(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(80),
-            height: ScreenUtil().setWidth(80),
-            decoration: BoxDecoration(
-              color: Color(AppColors.AppDeepColor),
-              borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-              border: Border.all(
-                color: Color(AppColors.AppBorderColor),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: ScreenUtil().setWidth(80),
+                height: ScreenUtil().setWidth(80),
+                margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
+                decoration: BoxDecoration(
+                  color: Color(AppColors.AppDeepColor),
+                  borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                  border: Border.all(
+                    color: Color(AppColors.AppBorderColor),
+                  ),
+                ),
               ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '留言用户$index',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: ScreenUtil().setSp(30),
+                    ),
+                  ),
+                  _dateBuilder(DateTime.now(), ScreenUtil().setSp(32)),
+                ],
+              ),
+            ],
+          ),
+          Container(
+            width: ScreenUtil().setWidth(120),
+            height: ScreenUtil().setWidth(60),
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
+              ),
+              padding: EdgeInsets.all(0),
+              color: Color(AppColors.AppLabelColor),
+              child: Text(
+                '关注',
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(28),
+                  color: Color(AppColors.AppWhiteColor),
+                ),
+              ),
+              onPressed: () {},
             ),
           ),
-          new Text('  留言用户$index   ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(40))),
-          _dateBuilder(new DateTime.now(), ScreenUtil().setSp(32)),
         ],
       ),
-      subtitle: new Container(
+      subtitle: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setWidth(20)),
         padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
-        child: new Text(
-          '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎啊嘎嘎嘎嘎哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈，这是什么沙雕软件',
+        child: Text(
+          '哈哈哈哈哈哈哈嘎嘎嘎嘎嘎嘎啊嘎嘎嘎嘎哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈，这是什么沙雕软件',
           style: TextStyle(fontSize: ScreenUtil().setSp(38)),
         ),
         decoration: BoxDecoration(
@@ -346,7 +406,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           borderRadius: BorderRadius.circular(AppStyle.appRadius),
         ),
       ),
-      contentPadding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+      contentPadding: EdgeInsets.all(ScreenUtil().setWidth(30)),
     );
   }
 }
@@ -359,28 +419,28 @@ class PictureDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      child: new InkWell(
+    return Material(
+      child: InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
-        child: new Stack(
+        child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            new Center(
-              child: new PhotoView(
+            Center(
+              child: PhotoView(
                 heroTag: "p$index",
                 imageProvider: AssetImage(url),
                 minScale: 0.1,
               ),
             ),
-            new Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                new Container(
+                Container(
                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(200)),
                   width: ScreenUtil().setWidth(280),
                   height: ScreenUtil().setWidth(90),
-                  child: new FlatButton(
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppStyle.appRadius),
                     ),
@@ -388,7 +448,7 @@ class PictureDetail extends StatelessWidget {
                     onPressed: () {
                       Toast.toast(context, '查看原图');
                     },
-                    child: new Text(
+                    child: Text(
                       '查看原图',
                       style: TextStyle(
                         color: Color(AppColors.AppWhiteColor),
@@ -397,15 +457,17 @@ class PictureDetail extends StatelessWidget {
                     ),
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(AppColors.AppWhiteColor), width: ScreenUtil().setWidth(2)),
+                    border: Border.all(
+                        color: Color(AppColors.AppWhiteColor),
+                        width: ScreenUtil().setWidth(2)),
                     borderRadius: BorderRadius.circular(AppStyle.appRadius),
                   ),
                 ),
-                new Container(
+                Container(
                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(200)),
                   width: ScreenUtil().setWidth(280),
                   height: ScreenUtil().setWidth(90),
-                  child: new FlatButton(
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppStyle.appRadius),
                     ),
@@ -413,7 +475,7 @@ class PictureDetail extends StatelessWidget {
                     onPressed: () {
                       Toast.toast(context, '下载图片');
                     },
-                    child: new Text(
+                    child: Text(
                       '下载图片',
                       style: TextStyle(
                         color: Color(AppColors.AppWhiteColor),
@@ -422,7 +484,9 @@ class PictureDetail extends StatelessWidget {
                     ),
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(AppColors.AppWhiteColor), width: ScreenUtil().setWidth(2)),
+                    border: Border.all(
+                        color: Color(AppColors.AppWhiteColor),
+                        width: ScreenUtil().setWidth(2)),
                     borderRadius: BorderRadius.circular(AppStyle.appRadius),
                   ),
                 ),
@@ -443,7 +507,8 @@ class ThreeStateFab extends StatefulWidget {
   _ThreeStateFabState createState() => _ThreeStateFabState();
 }
 
-class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProviderStateMixin {
+class _ThreeStateFabState extends State<ThreeStateFab>
+    with SingleTickerProviderStateMixin {
   AnimationController _animationController;
 
   Animation<Color> _iconColor;
@@ -457,9 +522,12 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
 
   @override
   initState() {
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
-    _iconSize = new Tween<double>(begin: ScreenUtil().setWidth(60), end: ScreenUtil().setWidth(40)).animate(CurvedAnimation(
+    _iconSize = Tween<double>(
+            begin: ScreenUtil().setWidth(60), end: ScreenUtil().setWidth(40))
+        .animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
         0.00,
@@ -468,7 +536,10 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
       ),
     ));
 
-    _iconColor = new ColorTween(begin: Color(AppColors.AppWhiteColor), end: Color(AppColors.AppLabelColor)).animate(CurvedAnimation(
+    _iconColor = ColorTween(
+            begin: Color(AppColors.AppWhiteColor),
+            end: Color(AppColors.AppLabelColor))
+        .animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
         0.00,
@@ -477,7 +548,10 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
       ),
     ));
 
-    _proColor = new ColorTween(begin: Color(AppColors.AppLabelColor), end: Color(AppColors.AppWhiteColor)).animate(CurvedAnimation(
+    _proColor = ColorTween(
+            begin: Color(AppColors.AppLabelColor),
+            end: Color(AppColors.AppWhiteColor))
+        .animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
         0.20,
@@ -486,7 +560,7 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
       ),
     ));
 
-    _rotaIcon = new Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    _rotaIcon = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
         0.00,
@@ -512,10 +586,10 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: _animationController,
       builder: (BuildContext context, Widget child) {
-        return new FloatingActionButton(
+        return FloatingActionButton(
           onPressed: () async {
             if (AppInfo.getLogFlag()) {
               if (_isAccept)
@@ -537,19 +611,19 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
             } else {
               Toast.toast(context, '请先登录');
               Future.delayed(const Duration(milliseconds: 1000), () {
-                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                  return new LoginPage();
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  return LoginPage();
                 }));
               });
             }
           },
           isExtended: false,
-          child: new Transform.rotate(
+          child: Transform.rotate(
             origin: Offset(0.0, 0.0),
             angle: _rotaIcon.value * math.pi * 1.5,
             child: _isAcceptProgress
                 ? _buildProgress(_proColor)
-                : new Icon(
+                : Icon(
                     _isAccept ? Icons.check : Icons.assistant_photo,
                     size: _iconSize.value,
                     color: _iconColor.value,
@@ -561,12 +635,12 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
   }
 
   _buildProgress(Animation<Color> color) {
-    return new Container(
+    return Container(
       alignment: Alignment.center,
       child: SizedBox(
         width: ScreenUtil().setWidth(60),
         height: ScreenUtil().setWidth(60),
-        child: new CircularProgressIndicator(
+        child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation(
               color.value,
             ),
@@ -578,7 +652,7 @@ class _ThreeStateFabState extends State<ThreeStateFab> with SingleTickerProvider
 
 class BottomItems extends StatefulWidget {
   @override
-  _BottomItemsState createState() => new _BottomItemsState();
+  _BottomItemsState createState() => _BottomItemsState();
 }
 
 class _BottomItemsState extends State<BottomItems> {
@@ -592,13 +666,13 @@ class _BottomItemsState extends State<BottomItems> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       height: ScreenUtil().setWidth(150),
       margin: EdgeInsets.only(right: ScreenUtil().setWidth(260)),
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Flexible(
-            child: new FlatButton(
+          Flexible(
+            child: FlatButton(
               onPressed: () {
                 setState(() {
                   _isLiked ? _likeCount-- : _likeCount++;
@@ -608,24 +682,30 @@ class _BottomItemsState extends State<BottomItems> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: new Container(
+              child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                child: new Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Icon(Icons.thumb_up,
-                        color: Color(_isLiked ? AppColors.AppLabelColor : AppColors.AppTextColor1), size: ScreenUtil().setWidth(50)),
-                    new Container(width: ScreenUtil().setWidth(20)),
-                    new Text('99+', style: TextStyle(color: Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(36))),
+                    Icon(Icons.thumb_up,
+                        color: Color(_isLiked
+                            ? AppColors.AppLabelColor
+                            : AppColors.AppTextColor1),
+                        size: ScreenUtil().setWidth(50)),
+                    Container(width: ScreenUtil().setWidth(20)),
+                    Text('99+',
+                        style: TextStyle(
+                            color: Color(AppColors.AppTextColor1),
+                            fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
               ),
               padding: EdgeInsets.all(0),
             ),
           ),
-          new Flexible(
-            child: new FlatButton(
+          Flexible(
+            child: FlatButton(
               onPressed: () {
                 setState(() {
                   _isStared ? _starCount-- : _starCount++;
@@ -635,58 +715,70 @@ class _BottomItemsState extends State<BottomItems> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: new Container(
+              child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                child: new Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Icon(_isStared ? Icons.star : Icons.star_border,
-                        color: Color(_isStared ? AppColors.AppLabelColor : AppColors.AppTextColor1), size: ScreenUtil().setWidth(50)),
-                    new Container(width: ScreenUtil().setWidth(20)),
-                    new Text('99+', style: TextStyle(color: Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(36))),
+                    Icon(_isStared ? Icons.star : Icons.star_border,
+                        color: Color(_isStared
+                            ? AppColors.AppLabelColor
+                            : AppColors.AppTextColor1),
+                        size: ScreenUtil().setWidth(50)),
+                    Container(width: ScreenUtil().setWidth(20)),
+                    Text('99+',
+                        style: TextStyle(
+                            color: Color(AppColors.AppTextColor1),
+                            fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
               ),
               padding: EdgeInsets.all(0),
             ),
           ),
-          new Flexible(
-            child: new FlatButton(
+          Flexible(
+            child: FlatButton(
               onPressed: () {},
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: new Container(
+              child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                child: new Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Icon(Icons.textsms, size: ScreenUtil().setWidth(50)),
-                    new Container(width: ScreenUtil().setWidth(20)),
-                    new Text('99+', style: TextStyle(color: Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(36))),
+                    Icon(Icons.textsms, size: ScreenUtil().setWidth(50)),
+                    Container(width: ScreenUtil().setWidth(20)),
+                    Text('99+',
+                        style: TextStyle(
+                            color: Color(AppColors.AppTextColor1),
+                            fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
               ),
               padding: EdgeInsets.all(0),
             ),
           ),
-          new Flexible(
-            child: new FlatButton(
+          Flexible(
+            child: FlatButton(
               onPressed: () {},
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
-              child: new Container(
+              child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                child: new Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Icon(Icons.share, size: ScreenUtil().setWidth(50)),
-                    new Container(width: ScreenUtil().setWidth(20)),
-                    new Text('99+', style: TextStyle(color: Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(36))),
+                    Icon(Icons.share, size: ScreenUtil().setWidth(50)),
+                    Container(width: ScreenUtil().setWidth(20)),
+                    Text('99+',
+                        style: TextStyle(
+                            color: Color(AppColors.AppTextColor1),
+                            fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
               ),
