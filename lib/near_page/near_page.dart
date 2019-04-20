@@ -18,7 +18,7 @@ class NearPage extends StatefulWidget {
 }
 
 class _NearPageState extends State<NearPage> {
-  List<String> _sweeperUrl = [
+  final List<String> _sweeperUrl = [
     'http://img02.sogoucdn.com/app/a/200716/34a5d3dcd1e4a161467d6255e61b2652',
     'http://tc.sinaimg.cn/maxwidth.800/tc.service.weibo.com/mmbiz_qpic_cn/e097afcb83c69e3f0af7b677e19bfa04.jpg',
     'http://img.mp.itc.cn/upload/20160825/1d77345e8fe84a6280ec74bc7db885ab_th.jpg'

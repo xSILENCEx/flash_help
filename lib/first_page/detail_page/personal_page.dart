@@ -319,7 +319,7 @@ class _PersonalPageState extends State<PersonalPage> {
                                 fontSize: ScreenUtil().setSp(35),
                                 color: Color(AppColors.AppMainColor))),
                         decoration: BoxDecoration(
-                          color: Color(AppColors.AppThemeColor2),
+                          color: Color(AppColors.AppDotColor),
                           borderRadius:
                               BorderRadius.circular(AppStyle.appRadius / 4),
                         ),

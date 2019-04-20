@@ -14,7 +14,10 @@ void main() async {
   } catch (e) {
     print('检查登录状态出错$e');
   } //检查是否登录
-  runApp(FlashHelp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(FlashHelp());
+  });
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);

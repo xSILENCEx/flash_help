@@ -11,8 +11,8 @@ class AppColors {
   static const DMainColor = 0xFF111111;
   static const LThemeColor = 0xFF2196F3;
   static const DThemeColor = 0xFF111111;
-  static const LThemeColor2 = LThemeColor + 0xFF0B0B0B;
-  static const DThemeColor2 = DThemeColor + 0xFF0B0B0B;
+  static const LThemeColor2 = LThemeColor + 0xFF0C0C0C;
+  static const DThemeColor2 = DThemeColor + 0xFF0C0C0C;
   static const LTitleColor = 0xFF666666;
   static const DTitleColor = 0xFF999999;
   static const LSubtitleColor = 0xFFAAAAAA;
@@ -22,8 +22,8 @@ class AppColors {
 
   static int AppDeepColor = LDeepColor;
   static int AppMainColor = LMainColor;
-  static int AppThemeColor = DThemeColor;
-  static int AppThemeColor2 = DThemeColor2;
+  static int AppThemeColor = LThemeColor;
+  static int AppThemeColor2 = LThemeColor2;
   static int AppTitleColor = LTitleColor;
   static int AppSubtitleColor = LSubtitleColor;
   static int AppDotColor = DotColor1;
