@@ -17,20 +17,20 @@ import 'package:boxicons_flutter/boxicons_flutter.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 class MainBody extends StatelessWidget {
-  final PageController _pageController = new PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
 
   final List<Widget> _pages = [
-    new HomePage(),
-    new NearPage(),
-    new MsgPage(),
-    new MyPage(),
+    HomePage(),
+    NearPage(),
+    MsgPage(),
+    MyPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 2160)..init(context);
     DateTime _lastPressedAt;
-    return new WillPopScope(
+    return WillPopScope(
       onWillPop: () async {
         Toast.toast(context, '再按一次退出');
         if (_lastPressedAt == null ||
@@ -40,12 +40,12 @@ class MainBody extends StatelessWidget {
         }
         return true;
       },
-      child: new Scaffold(
-        body: new Stack(
+      child: Scaffold(
+        body: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            new Material(
-              child: new PageView.builder(
+            Material(
+              child: PageView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 controller: _pageController,
                 itemBuilder: (BuildContext context, int index) {
@@ -53,18 +53,18 @@ class MainBody extends StatelessWidget {
                 },
               ),
             ),
-            new MyAppBar(
+            MyAppBar(
               controller: _pageController,
               navHeight: ScreenUtil().setWidth(130),
             ),
           ],
         ),
-        floatingActionButton: new Container(
+        floatingActionButton: Container(
           margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(60)),
           width: ScreenUtil().setWidth(140),
           height: ScreenUtil().setWidth(140),
-          child: new FittedBox(
-            child: new AddFab(),
+          child: FittedBox(
+            child: AddFab(),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -86,7 +86,7 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
 
   bool _isMenuOpen = false;
 
-  List<String> _chineseCalendar = new List(2);
+  List<String> _chineseCalendar = List(2);
 
   @override
   initState() {
@@ -95,7 +95,7 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
     _chineseCalendar[1] = ' ';
     _controllerAnimated =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    _rota = new Tween<double>(begin: 0.0, end: 3.0).animate(CurvedAnimation(
+    _rota = Tween<double>(begin: 0.0, end: 3.0).animate(CurvedAnimation(
       parent: _controllerAnimated,
       curve: Interval(
         0.00,
@@ -128,33 +128,35 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedBuilder(
-        animation: _controllerAnimated,
-        builder: (BuildContext context, Widget child) {
-          return new FloatingActionButton(
-            onPressed: () {
-              _animate();
-            },
-            child: new Transform.rotate(
-              origin: Offset(0.0, 0.0),
-              angle: _rota.value * math.pi / 4.0,
-              child: new Icon(
-                Icons.add,
-                color: Color(AppColors.AppWhiteColor),
-                size: ScreenUtil().setWidth(60),
-              ),
+    return AnimatedBuilder(
+      animation: _controllerAnimated,
+      builder: (BuildContext context, Widget child) {
+        return FloatingActionButton(
+          onPressed: () {
+            _animate();
+          },
+          child: Transform.rotate(
+            origin: Offset(0.0, 0.0),
+            angle: _rota.value * math.pi / 4.0,
+            child: Icon(
+              Icons.add,
+              color: Color(AppColors.AppMainColor),
+              size: ScreenUtil().setWidth(60),
             ),
-          );
-        });
+          ),
+          backgroundColor: Color(AppColors.AppThemeColor),
+        );
+      },
+    );
   }
 
   _showToolsDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new Material(
-          color: Color(AppColors.AppTranslateColor),
-          child: new InkWell(
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
@@ -162,30 +164,29 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
               Navigator.pop(context);
               _isMenuOpen = false;
             },
-            child: new BackdropFilter(
+            child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-              child: new Scaffold(
-                body: new Column(
+              child: Scaffold(
+                body: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new HelloTime(
+                    HelloTime(
                         controller: _controllerAnimated,
                         curve: _curve,
                         data: _chineseCalendar),
-                    new GridView.builder(
+                    GridView.builder(
                       padding:
                           EdgeInsets.only(bottom: ScreenUtil().setWidth(300)),
                       shrinkWrap: true,
                       itemCount: 8,
                       physics: NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          new SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 2.0,
-                              childAspectRatio: 1.0,
-                              mainAxisSpacing: 2.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 2.0,
+                          childAspectRatio: 1.0,
+                          mainAxisSpacing: 2.0),
                       itemBuilder: (BuildContext context, int index) {
-                        return new ToolItem(
+                        return ToolItem(
                             controller: _controllerAnimated,
                             curve: _curve,
                             index: index);
@@ -193,20 +194,20 @@ class _AddFabState extends State<AddFab> with SingleTickerProviderStateMixin {
                     ),
                   ],
                 ),
-                backgroundColor: Color(AppColors.AppBlackColor2),
+                backgroundColor: Color(AppColors.AppMaskColor),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
                 floatingActionButtonAnimator:
                     FloatingActionButtonAnimator.scaling,
-                floatingActionButton: new Container(
+                floatingActionButton: Container(
                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(60)),
                   width: ScreenUtil().setWidth(140),
                   height: ScreenUtil().setWidth(140),
-                  child: new FittedBox(
-                    child: new FloatingActionButton(
+                  child: FittedBox(
+                    child: FloatingActionButton(
                       elevation: 0.0,
-                      backgroundColor: Color(AppColors.AppTranslateColor),
-                      child: new ShutIcon(
+                      backgroundColor: Colors.transparent,
+                      child: ShutIcon(
                           controller: _controllerAnimated, curve: _curve),
                       onPressed: () {
                         _isMenuOpen = false;
@@ -237,7 +238,7 @@ class ShutIcon extends StatefulWidget {
   const ShutIcon({Key key, this.controller, this.curve}) : super(key: key);
 
   @override
-  _ShutIconState createState() => new _ShutIconState();
+  _ShutIconState createState() => _ShutIconState();
 }
 
 class _ShutIconState extends State<ShutIcon> {
@@ -248,11 +249,11 @@ class _ShutIconState extends State<ShutIcon> {
 
   @override
   void initState() {
-    _rota = new Tween<double>(
+    _rota = Tween<double>(
       begin: 0.0,
       end: 3.0,
     ).animate(
-      new CurvedAnimation(
+      CurvedAnimation(
         parent: controller,
         curve: Interval(
           0.2,
@@ -266,14 +267,14 @@ class _ShutIconState extends State<ShutIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: widget.controller,
       builder: (BuildContext context, Widget child) {
-        return new Transform.rotate(
+        return Transform.rotate(
           angle: _rota.value * math.pi / 4.0,
-          child: new Icon(
+          child: Icon(
             Icons.add,
-            color: Color(AppColors.AppWhiteColor),
+            color: Color(AppColors.AppMainColor),
             size: ScreenUtil().setWidth(60),
           ),
         );
@@ -291,7 +292,7 @@ class ToolItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ToolItemState createState() => new _ToolItemState();
+  _ToolItemState createState() => _ToolItemState();
 }
 
 class _ToolItemState extends State<ToolItem> {
@@ -324,7 +325,7 @@ class _ToolItemState extends State<ToolItem> {
 
   @override
   void initState() {
-    _alpha = new Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    _alpha = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: controller,
       curve: Interval(
         0.40,
@@ -341,18 +342,18 @@ class _ToolItemState extends State<ToolItem> {
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: controller,
       builder: (BuildContext context, Widget child) {
-        return new Column(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Container(
+            Container(
               width: ScreenUtil().setWidth(140),
               height: ScreenUtil().setWidth(140),
-              child: new FlatButton(
+              child: FlatButton(
                 padding: EdgeInsets.all(0),
-                color: Color(AppColors.AppWhiteColor).withOpacity(_alpha.value),
+                color: Color(AppColors.AppMainColor).withOpacity(_alpha.value),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
                 ),
@@ -364,14 +365,14 @@ class _ToolItemState extends State<ToolItem> {
                       {
                         if (AppInfo.getLogFlag()) {
                           Navigator.of(context)
-                              .push(new MaterialPageRoute(builder: (_) {
-                            return new NewTaskPage();
+                              .push(MaterialPageRoute(builder: (_) {
+                            return NewTaskPage();
                           }));
                         } else {
                           Toast.toast(context, '请先登录');
                           Navigator.of(context)
-                              .push(new MaterialPageRoute(builder: (_) {
-                            return new LoginPage();
+                              .push(MaterialPageRoute(builder: (_) {
+                            return LoginPage();
                           }));
                         }
                       }
@@ -383,8 +384,8 @@ class _ToolItemState extends State<ToolItem> {
                         } else {
                           Toast.toast(context, '请先登录');
                           Navigator.of(context)
-                              .push(new MaterialPageRoute(builder: (_) {
-                            return new LoginPage();
+                              .push(MaterialPageRoute(builder: (_) {
+                            return LoginPage();
                           }));
                         }
                       }
@@ -404,15 +405,15 @@ class _ToolItemState extends State<ToolItem> {
                   _icons[index],
                   size: ScreenUtil().setWidth(60),
                   color:
-                      Color(AppColors.AppLabelColor).withOpacity(_alpha.value),
+                      Color(AppColors.AppThemeColor).withOpacity(_alpha.value),
                 ),
               ),
               margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
             ),
-            new Text(
+            Text(
               _titles[index],
               style: TextStyle(
-                color: Color(AppColors.AppWhiteColor).withOpacity(_alpha.value),
+                color: Color(AppColors.AppMainColor).withOpacity(_alpha.value),
                 fontSize: ScreenUtil().setSp(30),
                 fontWeight: FontWeight.bold,
               ),
@@ -437,7 +438,7 @@ class HelloTime extends StatefulWidget {
       : super(key: key);
 
   @override
-  _HelloTimeState createState() => new _HelloTimeState();
+  _HelloTimeState createState() => _HelloTimeState();
 }
 
 class _HelloTimeState extends State<HelloTime> {
@@ -450,7 +451,7 @@ class _HelloTimeState extends State<HelloTime> {
   @override
   void initState() {
     super.initState();
-    _alpha = new Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    _alpha = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: controller,
       curve: Interval(
         0.40,
@@ -463,51 +464,51 @@ class _HelloTimeState extends State<HelloTime> {
   @override
   Widget build(BuildContext context) {
     List<String> _week = ['一', '二', '三', '四', '五', '六', '日'];
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: controller,
       builder: (BuildContext context, Widget child) {
-        return new Container(
-          child: new Column(
+        return Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Container(height: ScreenUtil().setWidth(150)),
-              new Row(
+              Container(height: ScreenUtil().setWidth(150)),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Container(
+                  Container(
                     width: ScreenUtil().setWidth(60),
                   ),
-                  new Text(
+                  Text(
                     '星期${_week[DateTime.now().weekday - 1]}',
                     style: TextStyle(
                       letterSpacing: ScreenUtil().setWidth(4),
                       fontSize: ScreenUtil().setWidth(100),
                       fontWeight: FontWeight.bold,
-                      color: Color(AppColors.AppWhiteColor)
+                      color: Color(AppColors.AppMainColor)
                           .withOpacity(_alpha.value),
                     ),
                   ),
-                  new Container(
+                  Container(
                     width: ScreenUtil().setWidth(40),
                   ),
-                  new Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new Text(
+                      Text(
                         '${DateTime.now().year.toString().padLeft(2, '0')} / ${DateTime.now().month.toString().padLeft(2, '0')} / ${DateTime.now().day.toString().padLeft(2, '0')} ${cnCal[1]}',
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(50),
                           fontWeight: FontWeight.bold,
-                          color: Color(AppColors.AppWhiteColor)
+                          color: Color(AppColors.AppMainColor)
                               .withOpacity(_alpha.value),
                         ),
                       ),
-                      new Text(
+                      Text(
                         cnCal[0],
                         style: TextStyle(
                           fontSize: ScreenUtil().setWidth(30),
                           fontWeight: FontWeight.bold,
-                          color: Color(AppColors.AppWhiteColor)
+                          color: Color(AppColors.AppMainColor)
                               .withOpacity(_alpha.value),
                         ),
                       ),

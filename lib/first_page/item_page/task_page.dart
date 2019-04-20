@@ -46,7 +46,8 @@ const List<Map<String, dynamic>> LABELS = [
 
 const int LABEL_INDEX = 0;
 
-class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMixin {
+class _RewardPageState extends State<RewardPage>
+    with AutomaticKeepAliveClientMixin {
   static const loadingTag = "##loading##"; //表尾标记
   var _wordsData = <String>[loadingTag];
 
@@ -60,7 +61,8 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
 
   void _retrieveData(List<String> _wordsData) {
     new Future.delayed(Duration(seconds: 1)).then((e) {
-      _wordsData.insertAll(_wordsData.length - 1, generateWordPairs().take(3).map((e) => e.asPascalCase).toList());
+      _wordsData.insertAll(_wordsData.length - 1,
+          generateWordPairs().take(3).map((e) => e.asPascalCase).toList());
       setState(() {});
     });
   }
@@ -72,13 +74,15 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
 
   @override
   void initState() {
-    _wordsData.insertAll(_wordsData.length - 1, generateWordPairs().take(3).map((e) => e.asPascalCase).toList());
+    _wordsData.insertAll(_wordsData.length - 1,
+        generateWordPairs().take(3).map((e) => e.asPascalCase).toList());
     super.initState();
   }
 
   DropdownMenu _buildDropdownMenu() {
     return new DropdownMenu(
-      maxMenuHeight: kDropdownMenuItemHeight * ScreenUtil().setWidth(100), //  activeIndex: activeIndex,
+      maxMenuHeight: kDropdownMenuItemHeight *
+          ScreenUtil().setWidth(100), //  activeIndex: activeIndex,
       menus: [
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -88,7 +92,8 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * TYPES.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * TYPES.length +
+              ScreenUtil().setWidth(100),
         ),
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -98,7 +103,8 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * ORDERS.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * ORDERS.length +
+              ScreenUtil().setWidth(100),
         ),
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -108,7 +114,8 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * LABELS.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * LABELS.length +
+              ScreenUtil().setWidth(100),
         ),
       ],
     );
@@ -130,50 +137,56 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
           new Expanded(
             child: new Stack(
               children: <Widget>[
-                new ListView.separated(
-                  padding: EdgeInsets.only(
-                    bottom: ScreenUtil().setWidth(250),
-                  ),
-                  itemCount: _wordsData.length,
-                  itemBuilder: (context, index) {
-                    if (_wordsData[index] == loadingTag) {
-                      if (_wordsData.length - 1 < 100) {
-                        _retrieveData(_wordsData);
-                        return Container(
-                          padding: const EdgeInsets.all(16.0),
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: 24.0,
-                            height: 24.0,
-                            child: CircularProgressIndicator(strokeWidth: 3.0),
-                          ),
-                        );
-                      } else {
-                        return Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            "没有更多了",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        );
+                RefreshIndicator(
+                  backgroundColor: Color(AppColors.AppThemeColor),
+                  onRefresh: _onRefresh,
+                  color: Color(AppColors.AppMainColor),
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(
+                      bottom: ScreenUtil().setWidth(250),
+                    ),
+                    itemCount: _wordsData.length,
+                    itemBuilder: (context, index) {
+                      if (_wordsData[index] == loadingTag) {
+                        if (_wordsData.length - 1 < 100) {
+                          _retrieveData(_wordsData);
+                          return Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 24.0,
+                              height: 24.0,
+                              child:
+                                  CircularProgressIndicator(strokeWidth: 3.0),
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              "没有更多了",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          );
+                        }
                       }
-                    }
-                    return new TaskItem(
-                      index: index,
-                      credit: Random().nextInt(999),
-                      distance: Random().nextInt(999),
-                      reward: double.parse(
-                        Random().nextInt(999).toString(),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return new Container(
-                      height: ScreenUtil().setWidth(20),
-                      color: Color(AppColors.AppDeepColor),
-                    );
-                  },
+                      return new TaskItem(
+                        index: index,
+                        credit: Random().nextInt(999),
+                        distance: Random().nextInt(999),
+                        reward: double.parse(
+                          Random().nextInt(999).toString(),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return new Container(
+                        height: ScreenUtil().setWidth(20),
+                        color: Color(AppColors.AppDeepColor),
+                      );
+                    },
+                  ),
                 ),
                 _buildDropdownMenu(),
               ],
@@ -186,12 +199,7 @@ class _RewardPageState extends State<RewardPage> with AutomaticKeepAliveClientMi
 
   @override
   Widget build(BuildContext context) {
-    return new RefreshIndicator(
-      backgroundColor: Color(AppColors.AppLabelColor),
-      onRefresh: _onRefresh,
-      color: Color(AppColors.AppWhiteColor),
-      child: _buildFixHeaderDropdownMenu(),
-    );
+    return _buildFixHeaderDropdownMenu();
   }
 
   @override
@@ -204,7 +212,13 @@ class TaskItem extends StatelessWidget {
   final int distance;
   final double reward;
 
-  const TaskItem({Key key, @required this.index, @required this.credit, @required this.distance, @required this.reward}) : super(key: key);
+  const TaskItem(
+      {Key key,
+      @required this.index,
+      @required this.credit,
+      @required this.distance,
+      @required this.reward})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -226,8 +240,11 @@ class TaskItem extends StatelessWidget {
                 height: ScreenUtil().setWidth(350),
                 decoration: BoxDecoration(
                   color: Color(AppColors.AppDeepColor),
-                  image: DecorationImage(image: AssetImage(_url), fit: BoxFit.cover),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius), topRight: Radius.circular(AppStyle.appRadius)),
+                  image: DecorationImage(
+                      image: AssetImage(_url), fit: BoxFit.cover),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppStyle.appRadius),
+                      topRight: Radius.circular(AppStyle.appRadius)),
                 ),
                 margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
               ),
@@ -235,10 +252,14 @@ class TaskItem extends StatelessWidget {
           ),
           new Container(
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(
+                left: ScreenUtil().setWidth(30),
+                right: ScreenUtil().setWidth(30)),
             child: new Text(
               '任务标题  任务简介任务简介介任务简介任务简介介任务简介介介任务简介介任务简介任务简介任介任任务简介任务简介任任务简务简介任务简介任务简介任务简介任务简介任务简介任务简介任务',
-              style: TextStyle(fontSize: ScreenUtil().setSp(38), color: Color(AppColors.AppTextColor1)),
+              style: TextStyle(
+                  fontSize: ScreenUtil().setSp(38),
+                  color: Color(AppColors.AppSubtitleColor)),
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
               softWrap: true,
@@ -258,7 +279,7 @@ class TaskItem extends StatelessWidget {
                   color: Color(AppColors.AppDeepColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
                   border: Border.all(
-                    color: Color(AppColors.AppBorderColor),
+                    color: Color(AppColors.AppSubtitleColor),
                   ),
                   image: DecorationImage(
                     image: AssetImage(AppStyle.userPicture1),
@@ -270,21 +291,26 @@ class TaskItem extends StatelessWidget {
                 '信用度 ${Random().nextInt(999)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(35),
-                  color: Color(AppColors.AppTextColor2),
+                  fontSize: ScreenUtil().setSp(40),
+                  color: Color(AppColors.AppTitleColor),
                 ),
               ),
               new Text(
                 '   ￥$reward   ${Random().nextInt(999)}m',
-                style: TextStyle(fontSize: ScreenUtil().setSp(41), color: Color(AppColors.AppTextColor2), fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(40),
+                    color: Color(AppColors.AppTitleColor),
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
           new Container(
             width: double.infinity,
             height: ScreenUtil().setWidth(1),
-            color: Color(AppColors.AppBorderColor),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
+            color: Color(AppColors.AppSubtitleColor),
+            margin: EdgeInsets.only(
+                left: ScreenUtil().setWidth(50),
+                right: ScreenUtil().setWidth(50)),
           ),
           new OperationBar(),
         ],
@@ -308,9 +334,11 @@ class _OperationBarState extends State<OperationBar> {
         new Flexible(
             child: new IconButton(
                 icon: Icon(
-                  _like ? Boxicons.bxsLike:Boxicons.bxLike,
+                  _like ? Boxicons.bxsLike : Boxicons.bxLike,
                   size: ScreenUtil().setWidth(56),
-                  color: Color(_like ? AppColors.AppLabelColor : AppColors.AppBorderColor),
+                  color: Color(_like
+                      ? AppColors.AppThemeColor
+                      : AppColors.AppSubtitleColor),
                 ),
                 onPressed: () {
                   setState(() {
@@ -321,8 +349,10 @@ class _OperationBarState extends State<OperationBar> {
             child: new IconButton(
                 icon: Icon(
                   _star ? Boxicons.bxsStar : Boxicons.bxStar,
-                  size: ScreenUtil().setWidth(58),
-                  color: Color(_star ? AppColors.AppLabelColor : AppColors.AppBorderColor),
+                  size: ScreenUtil().setWidth(64),
+                  color: Color(_star
+                      ? AppColors.AppThemeColor
+                      : AppColors.AppSubtitleColor),
                 ),
                 onPressed: () {
                   setState(() {
@@ -334,7 +364,7 @@ class _OperationBarState extends State<OperationBar> {
                 icon: Icon(
                   Icons.chat_bubble_outline,
                   size: ScreenUtil().setWidth(56),
-                  color: Color(AppColors.AppBorderColor),
+                  color: Color(AppColors.AppSubtitleColor),
                 ),
                 onPressed: () {
                   Toast.toast(context, '评论');
@@ -344,7 +374,7 @@ class _OperationBarState extends State<OperationBar> {
                 icon: Icon(
                   Icons.reply,
                   size: ScreenUtil().setWidth(56),
-                  color: Color(AppColors.AppBorderColor),
+                  color: Color(AppColors.AppSubtitleColor),
                 ),
                 onPressed: () {
                   Toast.toast(context, '转发');

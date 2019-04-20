@@ -59,7 +59,8 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
 
   void _retrieveData(List<String> _wordsData) {
     new Future.delayed(Duration(seconds: 1)).then((e) {
-      _wordsData.insertAll(_wordsData.length - 1, generateWordPairs().take(8).map((e) => e.asPascalCase).toList());
+      _wordsData.insertAll(_wordsData.length - 1,
+          generateWordPairs().take(8).map((e) => e.asPascalCase).toList());
       setState(() {});
     });
   }
@@ -71,13 +72,15 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    _wordsData.insertAll(_wordsData.length - 1, generateWordPairs().take(8).map((e) => e.asPascalCase).toList());
+    _wordsData.insertAll(_wordsData.length - 1,
+        generateWordPairs().take(8).map((e) => e.asPascalCase).toList());
     super.initState();
   }
 
   DropdownMenu _buildDropdownMenu() {
     return new DropdownMenu(
-      maxMenuHeight: kDropdownMenuItemHeight * ScreenUtil().setWidth(100), //  activeIndex: activeIndex,
+      maxMenuHeight: kDropdownMenuItemHeight *
+          ScreenUtil().setWidth(100), //  activeIndex: activeIndex,
       menus: [
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -87,7 +90,8 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * TYPES.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * TYPES.length +
+              ScreenUtil().setWidth(100),
         ),
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -97,7 +101,8 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * ORDERS.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * ORDERS.length +
+              ScreenUtil().setWidth(100),
         ),
         new DropdownMenuBuilder(
           builder: (BuildContext context) {
@@ -107,7 +112,8 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
               itemBuilder: buildCheckItem,
             );
           },
-          height: kDropdownMenuItemHeight * LABELS.length + ScreenUtil().setWidth(100),
+          height: kDropdownMenuItemHeight * LABELS.length +
+              ScreenUtil().setWidth(100),
         ),
       ],
     );
@@ -129,46 +135,55 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
           new Expanded(
             child: new Stack(
               children: <Widget>[
-                new ListView.separated(
-                  padding: EdgeInsets.only(
-                    bottom: ScreenUtil().setWidth(200),
-                  ),
-                  itemCount: _wordsData.length,
-                  itemBuilder: (context, index) {
-//                if (index == 0)
-//                  return new SortItem(title: '排序方式', sortList: _sortMethod);
-                    if (_wordsData[index] == loadingTag) {
-                      if (_wordsData.length - 1 < 100) {
-                        _retrieveData(_wordsData);
-                        return Container(
-                          padding: const EdgeInsets.all(16.0),
-                          alignment: Alignment.center,
-                          child: SizedBox(width: 24.0, height: 24.0, child: CircularProgressIndicator(strokeWidth: 3.0)),
-                        );
-                      } else {
-                        return Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            "没有更多了",
-                            style: TextStyle(color: Color(AppColors.AppTextColor1)),
-                          ),
-                        );
+                RefreshIndicator(
+                  backgroundColor: Color(AppColors.AppThemeColor),
+                  onRefresh: _onRefresh,
+                  color: Color(AppColors.AppMainColor),
+                  child: new ListView.separated(
+                    padding: EdgeInsets.only(
+                      bottom: ScreenUtil().setWidth(200),
+                    ),
+                    itemCount: _wordsData.length,
+                    itemBuilder: (context, index) {
+                      if (_wordsData[index] == loadingTag) {
+                        if (_wordsData.length - 1 < 100) {
+                          _retrieveData(_wordsData);
+                          return Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                                width: 24.0,
+                                height: 24.0,
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 3.0)),
+                          );
+                        } else {
+                          return Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              "没有更多了",
+                              style: TextStyle(
+                                  color: Color(AppColors.AppTitleColor)),
+                            ),
+                          );
+                        }
                       }
-                    }
-                    return new UserItem(
-                      index: index,
-                      title: _wordsData[index],
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-//                if (index != 0)
-                    return new Container(
-                      height: ScreenUtil().setWidth(3),
-                      color: Color(AppColors.AppDeepColor),
-                      margin: EdgeInsets.only(left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
-                    );
-                  },
+                      return new UserItem(
+                        index: index,
+                        title: _wordsData[index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return new Container(
+                        height: ScreenUtil().setWidth(3),
+                        color: Color(AppColors.AppDeepColor),
+                        margin: EdgeInsets.only(
+                            left: ScreenUtil().setWidth(50),
+                            right: ScreenUtil().setWidth(50)),
+                      );
+                    },
+                  ),
                 ),
                 _buildDropdownMenu(),
               ],
@@ -181,22 +196,10 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        new Flexible(
-          child: new RefreshIndicator(
-            backgroundColor: Color(AppColors.AppLabelColor),
-            onRefresh: _onRefresh,
-            color: Color(AppColors.AppWhiteColor),
-            child: _buildFixHeaderDropdownMenu(),
-          ),
-        ),
-      ],
-    );
+    return _buildFixHeaderDropdownMenu();
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -213,8 +216,8 @@ class UserItem extends StatelessWidget {
       leading: new Hero(
         tag: 'headpicture$index',
         child: new Container(
-          width: ScreenUtil().setWidth(150),
-          height: ScreenUtil().setWidth(150),
+          width: ScreenUtil().setWidth(140),
+          height: ScreenUtil().setWidth(140),
           decoration: BoxDecoration(
             color: Color(AppColors.AppDeepColor),
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
@@ -222,7 +225,6 @@ class UserItem extends StatelessWidget {
               image: AssetImage(AppStyle.userPicture1),
               fit: BoxFit.cover,
             ),
-            border: Border.all(color: Color(AppColors.AppWhiteColor), width: 2),
           ),
         ),
       ),
@@ -233,7 +235,7 @@ class UserItem extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: ScreenUtil().setSp(40),
-          color: Color(AppColors.AppTextColor2),
+          color: Color(AppColors.AppTitleColor),
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -242,14 +244,19 @@ class UserItem extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: Color(AppColors.AppTextColor),
+          color: Color(AppColors.AppSubtitleColor),
           fontSize: ScreenUtil().setSp(35),
         ),
       ),
       trailing: new Container(
         padding: new EdgeInsets.all(3),
-        child: new Text('${Random().nextInt(999)}m', style: TextStyle(color: Color(AppColors.AppWhiteColor), fontSize: ScreenUtil().setSp(35))),
-        decoration: new BoxDecoration(color: Color(AppColors.AppLabelColor), borderRadius: BorderRadius.circular(AppStyle.appRadius / 4)),
+        child: new Text('${Random().nextInt(999)}m',
+            style: TextStyle(
+                color: Color(AppColors.AppMainColor),
+                fontSize: ScreenUtil().setSp(35))),
+        decoration: new BoxDecoration(
+            color: Color(AppColors.AppThemeColor),
+            borderRadius: BorderRadius.circular(AppStyle.appRadius / 4)),
       ),
       contentPadding: new EdgeInsets.only(
         left: ScreenUtil().setWidth(25),

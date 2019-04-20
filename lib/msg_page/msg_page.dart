@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flash_help/basic_functions/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/search_bar.dart';
@@ -10,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MsgPage extends StatefulWidget {
   @override
-  _MsgPageState createState() => new _MsgPageState();
+  _MsgPageState createState() => _MsgPageState();
 }
 
 class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
@@ -24,7 +26,8 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    _wordsData.insertAll(_wordsData.length - 1, generateWordPairs().take(20).map((e) => e.asPascalCase).toList());
+    _wordsData.insertAll(_wordsData.length - 1,
+        generateWordPairs().take(20).map((e) => e.asPascalCase).toList());
     super.initState();
   }
 
@@ -37,20 +40,52 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new SearchBar(),
-      body: new RefreshIndicator(
+    return Scaffold(
+      appBar: AppBar(
+        leading: null,
+        elevation: 0.0,
+        title: Text(
+          '消息',
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(60),
+            fontWeight: FontWeight.bold,
+            color: Color(AppColors.AppMainColor),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Boxicons.bxSearch,
+              color: Color(AppColors.AppMainColor),
+              size: ScreenUtil().setWidth(70),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                FadeRoute(
+                  builder: (context) {
+                    return SearchPage();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: new ListView.separated(
+        child: ListView.separated(
           padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
           itemCount: _wordsData.length,
           itemBuilder: (BuildContext context, int index) {
             return _buildMsgBox(_wordsData[index], index + 1);
           },
           separatorBuilder: (BuildContext context, int index) {
-            return new Container(
+            return Container(
               height: ScreenUtil().setWidth(2),
-              margin: EdgeInsets.only(left: ScreenUtil().setWidth(100), right: ScreenUtil().setWidth(100)),
+              margin: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(100),
+                  right: ScreenUtil().setWidth(100)),
               color: Color(AppColors.AppDeepColor),
             );
           },
@@ -60,17 +95,17 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
   }
 
   _buildMsgBox(String item, int index) {
-    return new Hero(
+    return Hero(
       tag: 'chatitem$index',
-      child: new Dismissible(
-        key: new Key(item),
-        child: new Material(
-          color: Color(AppColors.AppWhiteColor),
-          child: new ListTile(
+      child: Dismissible(
+        key: Key(item),
+        child: Material(
+          color: Color(AppColors.AppMainColor),
+          child: ListTile(
             dense: true,
-            leading: new Container(
-              width: ScreenUtil().setWidth(150),
-              height: ScreenUtil().setWidth(150),
+            leading: Container(
+              width: ScreenUtil().setWidth(140),
+              height: ScreenUtil().setWidth(140),
               decoration: BoxDecoration(
                 color: Color(AppColors.AppDeepColor),
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
@@ -78,39 +113,45 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
                   image: AssetImage(AppStyle.userPicture2),
                   fit: BoxFit.cover,
                 ),
-                border: Border.all(color: Color(AppColors.AppWhiteColor), width: 2),
               ),
             ),
-            title: new Text(
+            title: Text(
               item,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(40),
                 fontWeight: FontWeight.bold,
+                color: Color(AppColors.AppTitleColor),
               ),
             ),
-            subtitle: new Text('最后一条消息的内容'),
-            trailing: new Text(
+            subtitle: Text(
+              '最后一条消息的内容',
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(36),
+                color: Color(AppColors.AppSubtitleColor),
+              ),
+            ),
+            trailing: Text(
               '${Random().nextInt(23)}:${Random().nextInt(59)}',
               style: TextStyle(
-                color: Color(AppColors.AppTextColor1),
+                color: Color(AppColors.AppSubtitleColor),
                 fontSize: ScreenUtil().setSp(35),
               ),
             ),
-            contentPadding: new EdgeInsets.only(
+            contentPadding: EdgeInsets.only(
               left: ScreenUtil().setWidth(25),
               right: ScreenUtil().setWidth(25),
               top: ScreenUtil().setWidth(15),
               bottom: ScreenUtil().setWidth(15),
             ),
             onTap: () {
-              Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                return new ChatPage(itemTag: 'chatitem$index', userName: item);
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return ChatPage(itemTag: 'chatitem$index', userName: item);
               }));
             },
           ),
         ),
-        background: new Center(
-          child: new Text('侧滑删除'),
+        background: Center(
+          child: Text('侧滑删除'),
         ),
         onDismissed: (direction) {
           _wordsData.removeAt(index - 1);

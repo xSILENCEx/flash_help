@@ -4,19 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchPage extends StatefulWidget {
   @override
-  _SearchPageState createState() => new _SearchPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _editingController;
 
-  List<String> _hList = new List();
+  List<String> _hList = List();
 
-  FocusNode _focusNode = new FocusNode();
+  FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
-    _editingController = new TextEditingController();
+    _editingController = TextEditingController();
     _hList.add('流浪地球');
     _ready();
     super.initState();
@@ -36,27 +36,27 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         brightness: Brightness.dark,
-        backgroundColor: Color(AppColors.AppLabelColor),
+        backgroundColor: Color(AppColors.AppThemeColor),
         elevation: 0.5,
         automaticallyImplyLeading: false,
         leading: null,
-        title: new Container(
+        title: Container(
           alignment: Alignment.centerLeft,
           height: ScreenUtil().setWidth(100),
           decoration: BoxDecoration(
-            color: Color(AppColors.AppWhiteColor3),
+            color: Color(AppColors.AppMainColor),
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
           ),
-          child: new Row(
+          child: Row(
             children: <Widget>[
-              new IconButton(
+              IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
                   size: ScreenUtil().setWidth(45),
-                  color: Color(AppColors.AppTextColor1),
+                  color: Color(AppColors.AppTitleColor),
                 ),
                 onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
@@ -64,10 +64,12 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 padding: EdgeInsets.all(0),
               ),
-              new Flexible(
-                child: new TextField(
+              Flexible(
+                child: TextField(
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppTextColor1)),
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(42),
+                      color: Color(AppColors.AppTitleColor)),
                   textInputAction: TextInputAction.search,
                   controller: _editingController,
                   decoration: InputDecoration(
@@ -86,11 +88,11 @@ class _SearchPageState extends State<SearchPage> {
                   },
                 ),
               ),
-              new IconButton(
+              IconButton(
                 icon: Icon(
                   Icons.close,
                   size: ScreenUtil().setWidth(45),
-                  color: Color(AppColors.AppTextColor1),
+                  color: Color(AppColors.AppTitleColor),
                 ),
                 onPressed: () {
                   if (_editingController.text.length > 0) {
@@ -103,21 +105,21 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Padding(
+          Padding(
             padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
-            child: new Text(
+            child: Text(
               '搜索历史',
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(42),
                 fontWeight: FontWeight.bold,
-                color: Color(AppColors.AppTextColor1),
+                color: Color(AppColors.AppTitleColor),
               ),
             ),
           ),
-          new Container(
-            child: new Wrap(
+          Container(
+            child: Wrap(
               children: _buildHisItem(_hList),
             ),
           ),
@@ -127,13 +129,13 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _buildHisItem(List<String> hisList) {
-    List<Widget> _hisList = new List<Widget>();
+    List<Widget> _hisList = List<Widget>();
 
     for (int i = 0; i < hisList.length; i++) {
       _hisList.add(
-        new Container(
+        Container(
           margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
-          child: new Chip(
+          child: Chip(
             labelPadding: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
             label: Text(hisList[i]),
             onDeleted: () {
@@ -142,7 +144,9 @@ class _SearchPageState extends State<SearchPage> {
                 _hList.removeAt(i);
               });
             },
-            deleteIcon: Icon(Icons.cancel, size: ScreenUtil().setWidth(50), color: Color(AppColors.AppTextColor1)),
+            deleteIcon: Icon(Icons.cancel,
+                size: ScreenUtil().setWidth(50),
+                color: Color(AppColors.AppTitleColor)),
           ),
         ),
       );

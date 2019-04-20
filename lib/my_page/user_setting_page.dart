@@ -8,26 +8,37 @@ import 'package:url_launcher/url_launcher.dart';
 class UserSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const List<String> _itemTitle = ['账户设置', '我的二维码', '通用设置', '通知提醒', '清除缓存', '图片质量', '隐私', '用户协议', '关于', ''];
-    return new Scaffold(
-      backgroundColor: Color(AppColors.AppWhiteColor),
-      appBar: new AppBar(
+    const List<String> _itemTitle = [
+      '账户设置',
+      '我的二维码',
+      '通用设置',
+      '通知提醒',
+      '清除缓存',
+      '图片质量',
+      '隐私',
+      '用户协议',
+      '关于',
+      ''
+    ];
+    return Scaffold(
+      backgroundColor: Color(AppColors.AppMainColor),
+      appBar: AppBar(
         centerTitle: true,
-        title: new Text(
+        title: Text(
           '设置',
           style: TextStyle(
-            color: Color(AppColors.AppWhiteColor),
+            color: Color(AppColors.AppMainColor),
             fontWeight: FontWeight.bold,
             fontSize: ScreenUtil().setSp(55),
           ),
         ),
         elevation: 0.0,
         brightness: Brightness.dark,
-        backgroundColor: Color(AppColors.AppLabelColor),
-        leading: new IconButton(
+        backgroundColor: Color(AppColors.AppThemeColor),
+        leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Color(AppColors.AppWhiteColor),
+            color: Color(AppColors.AppMainColor),
             size: ScreenUtil().setWidth(60),
           ),
           onPressed: () {
@@ -35,28 +46,30 @@ class UserSettingPage extends StatelessWidget {
           },
         ),
       ),
-      body: new ListView.separated(
+      body: ListView.separated(
         itemCount: _itemTitle.length,
         itemBuilder: (BuildContext context, int index) {
-          return new SettingItem(index: index, itemTitle: _itemTitle);
+          return SettingItem(index: index, itemTitle: _itemTitle);
         },
         separatorBuilder: (context, index) {
           bool _isLogIn = AppInfo.getLogFlag();
           if (index == 1 || index == 5) {
-            return new Container(
+            return Container(
               height: ScreenUtil().setWidth(30),
               color: Color(AppColors.AppDeepColor),
             );
           } else if (index == _itemTitle.length - 2 && _isLogIn) {
-            return new Container(
+            return Container(
               height: ScreenUtil().setWidth(100),
               color: Color(AppColors.AppDeepColor),
             );
           }
-          return new Container(
+          return Container(
             height: ScreenUtil().setWidth(2),
             color: Color(AppColors.AppDeepColor),
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(150), right: ScreenUtil().setWidth(150)),
+            margin: EdgeInsets.only(
+                left: ScreenUtil().setWidth(150),
+                right: ScreenUtil().setWidth(150)),
           );
         },
       ),
@@ -68,7 +81,8 @@ class SettingItem extends StatelessWidget {
   final int index;
   final List<String> itemTitle;
 
-  const SettingItem({Key key, @required this.index, @required this.itemTitle}) : super(key: key);
+  const SettingItem({Key key, @required this.index, @required this.itemTitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,56 +100,56 @@ class SettingItem extends StatelessWidget {
     bool _isLogIn = AppInfo.getLogFlag();
     if (index == itemTitle.length - 1) {
       return _isLogIn
-          ? new Container(
+          ? Container(
               height: ScreenUtil().setWidth(140),
               width: double.infinity,
               color: Color(AppColors.AppWaringColor),
-              child: new FlatButton(
+              child: FlatButton(
                 onPressed: () async {
                   AppInfo.setLogFlag(false);
                   await SQLiteSetting.resetUser();
                   Toast.toast(context, '账户已注销');
                   Navigator.of(context).pop(false);
                 },
-                child: new Center(
+                child: Center(
                   child: Text(
                     '注销',
                     style: TextStyle(
-                      color: Color(AppColors.AppWhiteColor),
+                      color: Color(AppColors.AppMainColor),
                       fontSize: ScreenUtil().setSp(42),
                     ),
                   ),
                 ),
               ),
             )
-          : new Container();
+          : Container();
     }
-    return new ListTile(
-      leading: new Container(
+    return ListTile(
+      leading: Container(
         alignment: Alignment.center,
         height: ScreenUtil().setWidth(80),
         width: ScreenUtil().setWidth(80),
         decoration: BoxDecoration(
-          color: Color(AppColors.AppLabelColor2),
+          color: Color(AppColors.AppThemeColor2),
           borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
         ),
-        child: new Icon(
+        child: Icon(
           _itemIcon[index],
           size: ScreenUtil().setWidth(40),
-          color: Color(AppColors.AppWhiteColor),
+          color: Color(AppColors.AppMainColor),
         ),
       ),
       title: Text(
         itemTitle[index],
         style: TextStyle(
-          color: Color(AppColors.AppTextColor2),
+          color: Color(AppColors.AppTitleColor),
           fontSize: ScreenUtil().setSp(42),
         ),
       ),
-      trailing: new Icon(
+      trailing: Icon(
         Icons.arrow_forward_ios,
         size: ScreenUtil().setWidth(50),
-        color: Color(AppColors.AppTextColor),
+        color: Color(AppColors.AppTitleColor),
       ),
       onTap: () {
         if (itemTitle[index] == '用户协议') {

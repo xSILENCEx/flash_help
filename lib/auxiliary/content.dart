@@ -5,46 +5,44 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppColors {
-  static const AppDeepColor = 0xFFEDEDED;
-  static const AppDeepColor2 = 0xEECECECE;
-  static const AppLabelColor = 0xFF2196F3;
-  static const AppLabelColor2 = 0xFFFDA84B;
-  static const AppLabelColor3 = 0x55234183;
-  static const AppLabelColor4 = 0x552196F3;
-  static const AppBarItemColor = 0xFF434343;
-  static const AppWhiteColor = 0xFFFAFAFA;
-  static const AppWhiteColor2 = 0x11FFFFFF;
-  static const AppWhiteColor3 = 0xFFFFFFFF;
-  static const AppWhiteColor4 = 0x33FFFFFF;
-  static const AppWhiteColor5 = 0x33FFFFFF;
-  static const AppShadowColor = 0x33DADADA;
-  static const AppShadowColor2 = 0xAADADADA;
-  static const AppShadowColor3 = 0xFF9B9B9B;
-  static const AppBorderColor = 0xFFC1C1C1;
-  static const AppLightColor = 0xFFFFFFFF;
-  static const AppTextColor = 0xFF989898;
-  static const AppTextColor1 = 0xFF808080;
-  static const AppTextColor2 = 0xFF4B4B4B;
-  static const AppBlackColor1 = 0xDD000000;
-  static const AppBlackColor2 = 0x5F000000;
-  static const AppBlackColor3 = 0x55000000;
-  static const AppTranslateColor = 0x00000000;
-  static const AppWaveColor = 0x05000000;
-  static const AppWaveColor2 = 0x08000000;
-  static const AppItemColor1 = 0xFF6A94FF;
-  static const AppItemColor2 = 0xFF55E25C;
-  static const AppItemColor3 = 0xFF9886FF;
-  static const AppWaringColor = 0xFFFF544A;
+  static const LDeepColor = 0xFFEDEDED;
+  static const DDeepColor = 0xFF000000;
+  static const LMainColor = 0xFEFEFEFE;
+  static const DMainColor = 0xFF111111;
+  static const LThemeColor = 0xFF2196F3;
+  static const DThemeColor = 0xFF111111;
+  static const LThemeColor2 = LThemeColor + 0xFF0B0B0B;
+  static const DThemeColor2 = DThemeColor + 0xFF0B0B0B;
+  static const LTitleColor = 0xFF666666;
+  static const DTitleColor = 0xFF999999;
+  static const LSubtitleColor = 0xFFAAAAAA;
+  static const DSubtitleColor = 0xFF666666;
+  static const DotColor1 = 0xFF835AE2;
+  static const DotColor2 = 0xFFEDEDED;
 
-  static const AppLightTheme = 0xFF2196F3;
-  static const AppDarkTheme = 0xFF606060;
-  static int AppThemeColor = AppLabelColor;
+  static int AppDeepColor = LDeepColor;
+  static int AppMainColor = LMainColor;
+  static int AppThemeColor = DThemeColor;
+  static int AppThemeColor2 = DThemeColor2;
+  static int AppTitleColor = LTitleColor;
+  static int AppSubtitleColor = LSubtitleColor;
+  static int AppDotColor = DotColor1;
+  static int AppShadowColor = 0xFFEEEEEE;
+  static int AppMaskColor = 0x88000000;
+  static int AppWaringColor = 0xFFFF544A;
+
+  static openNightMode() {
+    AppDeepColor = DDeepColor;
+    AppMainColor = DMainColor;
+    AppThemeColor = DThemeColor;
+    AppThemeColor2 = DThemeColor2;
+  }
 }
 
 class AppInfo {
   static bool logFlag = false;
   static const AppName = "闪帮";
-  static const AppVersion = "0.0.3";
+  static const AppVersion = "0.0.4";
   static bool isNightModeOpen = false;
 
   static getLogFlag() {

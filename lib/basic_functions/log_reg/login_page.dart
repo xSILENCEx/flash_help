@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _pageController = new PageController(initialPage: 1);
+    _pageController = PageController(initialPage: 1);
     super.initState();
   }
 
@@ -29,28 +29,31 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         brightness: Brightness.dark,
         centerTitle: true,
         elevation: 0.0,
-        backgroundColor: Color(AppColors.AppLabelColor),
-        leading: new IconButton(
+        backgroundColor: Color(AppColors.AppThemeColor),
+        leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Color(AppColors.AppWhiteColor),
+            color: Color(AppColors.AppMainColor),
             size: ScreenUtil().setWidth(60),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: new Text(
+        title: Text(
           _isLog ? '登录' : '注册',
-          style: TextStyle(color: Color(AppColors.AppWhiteColor), fontSize: ScreenUtil().setSp(65), fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color(AppColors.AppMainColor),
+              fontSize: ScreenUtil().setSp(65),
+              fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
-          new FlatButton(
+          FlatButton(
             onPressed: () {
               FocusScope.of(context).requestFocus(FocusNode());
               if (_isLog)
@@ -61,48 +64,53 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 _isLog = !_isLog;
               });
             },
-            child: new Text(
+            child: Text(
               _isLog ? '注册' : '登录',
-              style: TextStyle(color: Color(AppColors.AppWhiteColor), fontSize: ScreenUtil().setSp(45), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Color(AppColors.AppMainColor),
+                  fontSize: ScreenUtil().setSp(45),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
       ),
-      body: new Column(
+      body: Column(
         children: <Widget>[
-          new ClipPath(
-            clipper: new ArcClipper(),
-            child: new Container(
+          ClipPath(
+            clipper: ArcClipper(),
+            child: Container(
               alignment: Alignment.topCenter,
               height: ScreenUtil().setWidth(400),
-              color: Color(AppColors.AppLabelColor),
-              child: new Container(
+              color: Color(AppColors.AppThemeColor),
+              child: Container(
                 margin: EdgeInsets.only(top: ScreenUtil().setWidth(60)),
                 decoration: BoxDecoration(
-                  color: Color(AppColors.AppLabelColor),
+                  color: Color(AppColors.AppThemeColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-                  border: Border.all(color: Color(AppColors.AppWhiteColor), width: 4),
+                  border: Border.all(
+                      color: Color(AppColors.AppMainColor), width: 4),
                   boxShadow: [
-                    BoxShadow(color: Color(AppColors.AppWhiteColor), blurRadius: 15.0),
+                    BoxShadow(
+                        color: Color(AppColors.AppMainColor), blurRadius: 15.0),
                   ],
                 ),
                 padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
-                child: new Icon(
+                child: Icon(
                   Icons.flash_on,
-                  color: Color(AppColors.AppWhiteColor),
+                  color: Color(AppColors.AppMainColor),
                   size: ScreenUtil().setWidth(100),
                 ),
               ),
             ),
           ),
-          new Flexible(
-            child: new PageView(
+          Flexible(
+            child: PageView(
               physics: NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: <Widget>[
-                new PhoneLog(pageController: _pageController),
-                new AccountLog(pageController: _pageController),
-                new RegPage(),
+                PhoneLog(pageController: _pageController),
+                AccountLog(pageController: _pageController),
+                RegPage(),
               ],
             ),
           ),

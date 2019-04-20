@@ -58,7 +58,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(AppColors.AppWhiteColor),
+          backgroundColor: Color(AppColors.AppMainColor),
           brightness: Brightness.light,
           centerTitle: true,
           elevation: 0.5,
@@ -66,7 +66,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             icon: Icon(
               Icons.arrow_back_ios,
               size: ScreenUtil().setWidth(60),
-              color: Color(AppColors.AppTextColor2),
+              color: Color(AppColors.AppTitleColor),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -77,7 +77,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: ScreenUtil().setSp(55),
-              color: Color(AppColors.AppTextColor2),
+              color: Color(AppColors.AppTitleColor),
             ),
           ),
           actions: <Widget>[
@@ -85,7 +85,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               icon: Icon(
                 Icons.more_vert,
                 size: ScreenUtil().setWidth(60),
-                color: Color(AppColors.AppTextColor2),
+                color: Color(AppColors.AppTitleColor),
               ),
               onPressed: () {
                 Toast.toast(context, '更多');
@@ -111,7 +111,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                       fit: BoxFit.cover,
                     ),
                     border: Border.all(
-                        color: Color(AppColors.AppWhiteColor), width: 2),
+                        color: Color(AppColors.AppMainColor), width: 2),
                   ),
                 ),
               ),
@@ -126,7 +126,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                     style: TextStyle(
                         color: Colors.white, fontSize: ScreenUtil().setSp(35))),
                 decoration: BoxDecoration(
-                    color: Color(AppColors.AppLabelColor),
+                    color: Color(AppColors.AppThemeColor),
                     borderRadius:
                         BorderRadius.circular(AppStyle.appRadius / 4)),
               ),
@@ -150,7 +150,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             _buildTaskDetailItem(),
             _buildInterval(),
             Container(
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
               height: ScreenUtil().setWidth(600),
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: ListView.builder(
@@ -243,10 +243,10 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       alignment: Alignment.center,
       child: Text('${_taskLabels[index]}',
           style: TextStyle(
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
               fontSize: ScreenUtil().setSp(35))),
       decoration: BoxDecoration(
-        color: Color(AppColors.AppLabelColor2),
+        color: Color(AppColors.AppThemeColor2),
         borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
       ),
       margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
@@ -260,7 +260,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   _buildTaskDetailItem() {
     var _pickTime = DateTime.now();
     return Container(
-      color: Color(AppColors.AppWhiteColor),
+      color: Color(AppColors.AppMainColor),
       padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
       child: Column(
         children: <Widget>[
@@ -354,7 +354,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   color: Color(AppColors.AppDeepColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
                   border: Border.all(
-                    color: Color(AppColors.AppBorderColor),
+                    color: Color(AppColors.AppSubtitleColor),
                   ),
                 ),
               ),
@@ -381,12 +381,12 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
               ),
               padding: EdgeInsets.all(0),
-              color: Color(AppColors.AppLabelColor),
+              color: Color(AppColors.AppThemeColor),
               child: Text(
                 '关注',
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
-                  color: Color(AppColors.AppWhiteColor),
+                  color: Color(AppColors.AppMainColor),
                 ),
               ),
               onPressed: () {},
@@ -451,14 +451,14 @@ class PictureDetail extends StatelessWidget {
                     child: Text(
                       '查看原图',
                       style: TextStyle(
-                        color: Color(AppColors.AppWhiteColor),
+                        color: Color(AppColors.AppMainColor),
                         fontSize: ScreenUtil().setSp(42),
                       ),
                     ),
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Color(AppColors.AppWhiteColor),
+                        color: Color(AppColors.AppMainColor),
                         width: ScreenUtil().setWidth(2)),
                     borderRadius: BorderRadius.circular(AppStyle.appRadius),
                   ),
@@ -478,14 +478,14 @@ class PictureDetail extends StatelessWidget {
                     child: Text(
                       '下载图片',
                       style: TextStyle(
-                        color: Color(AppColors.AppWhiteColor),
+                        color: Color(AppColors.AppMainColor),
                         fontSize: ScreenUtil().setSp(42),
                       ),
                     ),
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Color(AppColors.AppWhiteColor),
+                        color: Color(AppColors.AppMainColor),
                         width: ScreenUtil().setWidth(2)),
                     borderRadius: BorderRadius.circular(AppStyle.appRadius),
                   ),
@@ -537,8 +537,8 @@ class _ThreeStateFabState extends State<ThreeStateFab>
     ));
 
     _iconColor = ColorTween(
-            begin: Color(AppColors.AppWhiteColor),
-            end: Color(AppColors.AppLabelColor))
+            begin: Color(AppColors.AppMainColor),
+            end: Color(AppColors.AppThemeColor))
         .animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
@@ -549,8 +549,8 @@ class _ThreeStateFabState extends State<ThreeStateFab>
     ));
 
     _proColor = ColorTween(
-            begin: Color(AppColors.AppLabelColor),
-            end: Color(AppColors.AppWhiteColor))
+            begin: Color(AppColors.AppThemeColor),
+            end: Color(AppColors.AppMainColor))
         .animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
@@ -690,13 +690,13 @@ class _BottomItemsState extends State<BottomItems> {
                   children: <Widget>[
                     Icon(Icons.thumb_up,
                         color: Color(_isLiked
-                            ? AppColors.AppLabelColor
-                            : AppColors.AppTextColor1),
+                            ? AppColors.AppThemeColor
+                            : AppColors.AppTitleColor),
                         size: ScreenUtil().setWidth(50)),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTextColor1),
+                            color: Color(AppColors.AppTitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -723,13 +723,13 @@ class _BottomItemsState extends State<BottomItems> {
                   children: <Widget>[
                     Icon(_isStared ? Icons.star : Icons.star_border,
                         color: Color(_isStared
-                            ? AppColors.AppLabelColor
-                            : AppColors.AppTextColor1),
+                            ? AppColors.AppThemeColor
+                            : AppColors.AppTitleColor),
                         size: ScreenUtil().setWidth(50)),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTextColor1),
+                            color: Color(AppColors.AppTitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -753,7 +753,7 @@ class _BottomItemsState extends State<BottomItems> {
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTextColor1),
+                            color: Color(AppColors.AppTitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -777,7 +777,7 @@ class _BottomItemsState extends State<BottomItems> {
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTextColor1),
+                            color: Color(AppColors.AppTitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),

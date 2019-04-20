@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegPage extends StatefulWidget {
   @override
-  _RegPageState createState() => new _RegPageState();
+  _RegPageState createState() => _RegPageState();
 }
 
 class _RegPageState extends State<RegPage> {
@@ -14,8 +14,8 @@ class _RegPageState extends State<RegPage> {
   TextEditingController _controllerPassword;
   TextEditingController _controllerCheckPassword;
 
-  FocusNode _pswNode = new FocusNode();
-  FocusNode _checkPswNode = new FocusNode();
+  FocusNode _pswNode = FocusNode();
+  FocusNode _checkPswNode = FocusNode();
 
   bool _isPswHide = true;
   bool _isProcess = false;
@@ -30,7 +30,7 @@ class _RegPageState extends State<RegPage> {
   bool _checkName() {
     String name = _controllerUserName.text;
     String regStrName = r"^[\u4e00-\u9fa5_a-zA-Z0-9_-、]{4,16}$";
-    RegExp regExpName = new RegExp(
+    RegExp regExpName = RegExp(
       regStrName,
       caseSensitive: false,
       multiLine: false,
@@ -53,12 +53,12 @@ class _RegPageState extends State<RegPage> {
     } else {
       String regComNum9 = r"^\d{1,8}$";
       String regComSymbol = r"^.*[ \u4e00-\u9fa5]+.*$";
-      RegExp regExpNum9 = new RegExp(
+      RegExp regExpNum9 = RegExp(
         regComNum9,
         caseSensitive: false,
         multiLine: false,
       );
-      RegExp regExpSpace = new RegExp(
+      RegExp regExpSpace = RegExp(
         regComSymbol,
         caseSensitive: false,
         multiLine: false,
@@ -107,17 +107,17 @@ class _RegPageState extends State<RegPage> {
       String regStrNum = r"^.*\d+.*$";
       String regStrLetter = r"^.*[a-zA_Z]+.*$";
       String regStrSymbol = r"^.*[~!@#$%^&*()_+|<>,.?/:;'\\\[\]{}]+.*$";
-      RegExp regExpNum = new RegExp(
+      RegExp regExpNum = RegExp(
         regStrNum,
         caseSensitive: false,
         multiLine: false,
       );
-      RegExp regExpLetter = new RegExp(
+      RegExp regExpLetter = RegExp(
         regStrLetter,
         caseSensitive: false,
         multiLine: false,
       );
-      RegExp regExpSymbol = new RegExp(
+      RegExp regExpSymbol = RegExp(
         regStrSymbol,
         caseSensitive: false,
         multiLine: false,
@@ -141,15 +141,19 @@ class _RegPageState extends State<RegPage> {
     String username = _controllerUserName.text;
     String password = _controllerPassword.text;
     try {
-      FocusScope.of(context).requestFocus(new FocusNode());
+      FocusScope.of(context).requestFocus(FocusNode());
       setState(() {
         _isProcess = true;
       });
-      if (_checkFirstPsw() && _checkSedPsw() && _pswStrength() && _checkName()) {
-       bool log = await HttpSetting.userAccountReg(username, password, context);
-       if(log){
-         Navigator.of(context).pop(true);
-       }
+      if (_checkFirstPsw() &&
+          _checkSedPsw() &&
+          _pswStrength() &&
+          _checkName()) {
+        bool log =
+            await HttpSetting.userAccountReg(username, password, context);
+        if (log) {
+          Navigator.of(context).pop(true);
+        }
       } else {
         Toast.toast(context, '请检查用户名和密码');
       }
@@ -158,7 +162,7 @@ class _RegPageState extends State<RegPage> {
       });
     } catch (e) {
       Toast.toast(context, '未知错误');
-      print('错误信息'+e.toString());
+      print('错误信息' + e.toString());
       setState(() {
         _isProcess = false;
       });
@@ -167,9 +171,9 @@ class _RegPageState extends State<RegPage> {
 
   @override
   void initState() {
-    _controllerUserName = new TextEditingController();
-    _controllerPassword = new TextEditingController();
-    _controllerCheckPassword = new TextEditingController();
+    _controllerUserName = TextEditingController();
+    _controllerPassword = TextEditingController();
+    _controllerCheckPassword = TextEditingController();
     super.initState();
   }
 
@@ -184,11 +188,11 @@ class _RegPageState extends State<RegPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Material(
+    return Material(
       child: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          new Container(
+          Container(
             margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(100),
               left: ScreenUtil().setWidth(100),
@@ -197,17 +201,21 @@ class _RegPageState extends State<RegPage> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(_isNameRight ? AppColors.AppBlackColor2 : AppColors.AppWaringColor),
+                  color: Color(_isNameRight
+                      ? AppColors.AppSubtitleColor
+                      : AppColors.AppWaringColor),
                 ),
               ),
             ),
-            child: new Stack(
+            child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
-                new TextField(
+                TextField(
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(45),
-                    color: Color(_isNameRight ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                    color: Color(_isNameRight
+                        ? AppColors.AppTitleColor
+                        : AppColors.AppWaringColor),
                   ),
                   onTap: () {
                     setState(() {
@@ -225,13 +233,15 @@ class _RegPageState extends State<RegPage> {
                     ),
                     hintText: '支持文字、字母、数字 -_、4-16位',
                     hintStyle: TextStyle(
-                      color: Color(AppColors.AppTextColor1),
+                      color: Color(AppColors.AppTitleColor),
                       fontSize: ScreenUtil().setSp(40),
                       fontWeight: FontWeight.normal,
                     ),
                     labelText: _isNameRight ? '用户名/昵称' : '格式有误',
                     labelStyle: TextStyle(
-                      color: Color(_isNameRight ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                      color: Color(_isNameRight
+                          ? AppColors.AppTitleColor
+                          : AppColors.AppWaringColor),
                       fontSize: ScreenUtil().setSp(42),
                       fontWeight: FontWeight.bold,
                     ),
@@ -247,17 +257,18 @@ class _RegPageState extends State<RegPage> {
                   },
                 ),
                 _controllerUserName.text.length > 0
-                    ? new Container(
+                    ? Container(
                         width: ScreenUtil().setWidth(100),
                         height: ScreenUtil().setWidth(100),
-                        child: new FlatButton(
+                        child: FlatButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppStyle.appRadius * 20),
+                            borderRadius:
+                                BorderRadius.circular(AppStyle.appRadius * 20),
                           ),
                           padding: EdgeInsets.all(0),
-                          child: new Icon(
+                          child: Icon(
                             Icons.clear,
-                            color: Color(AppColors.AppLabelColor),
+                            color: Color(AppColors.AppThemeColor),
                             size: ScreenUtil().setWidth(50),
                           ),
                           onPressed: () {
@@ -266,11 +277,11 @@ class _RegPageState extends State<RegPage> {
                           },
                         ),
                       )
-                    : new Container(),
+                    : Container(),
               ],
             ),
           ),
-          new Container(
+          Container(
             margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(140),
               left: ScreenUtil().setWidth(100),
@@ -280,17 +291,21 @@ class _RegPageState extends State<RegPage> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(_pswC == 0 ? AppColors.AppBlackColor2 : AppColors.AppWaringColor),
+                  color: Color(_pswC == 0
+                      ? AppColors.AppSubtitleColor
+                      : AppColors.AppWaringColor),
                 ),
               ),
             ),
-            child: new Stack(
+            child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
-                new TextField(
+                TextField(
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(45),
-                    color: Color(_pswC == 0 ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                    color: Color(_pswC == 0
+                        ? AppColors.AppTitleColor
+                        : AppColors.AppWaringColor),
                   ),
                   textInputAction: TextInputAction.next,
                   focusNode: _pswNode,
@@ -303,13 +318,15 @@ class _RegPageState extends State<RegPage> {
                     ),
                     labelText: _onPswComplete[_pswC],
                     labelStyle: TextStyle(
-                      color: Color(_pswC == 0 ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                      color: Color(_pswC == 0
+                          ? AppColors.AppTitleColor
+                          : AppColors.AppWaringColor),
                       fontSize: ScreenUtil().setSp(42),
                       fontWeight: FontWeight.bold,
                     ),
                     hintText: '至少6位，不能为9位以下纯数字',
                     hintStyle: TextStyle(
-                      color: Color(AppColors.AppTextColor1),
+                      color: Color(AppColors.AppTitleColor),
                       fontSize: ScreenUtil().setSp(40),
                       fontWeight: FontWeight.normal,
                     ),
@@ -331,17 +348,18 @@ class _RegPageState extends State<RegPage> {
                     });
                   },
                 ),
-                new Container(
+                Container(
                   width: ScreenUtil().setWidth(100),
                   height: ScreenUtil().setWidth(100),
-                  child: new FlatButton(
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppStyle.appRadius * 20),
+                      borderRadius:
+                          BorderRadius.circular(AppStyle.appRadius * 20),
                     ),
                     padding: EdgeInsets.all(0),
-                    child: new Icon(
+                    child: Icon(
                       _isPswHide ? Icons.visibility : Icons.visibility_off,
-                      color: Color(AppColors.AppLabelColor),
+                      color: Color(AppColors.AppThemeColor),
                       size: ScreenUtil().setWidth(50),
                     ),
                     onPressed: () {
@@ -355,7 +373,7 @@ class _RegPageState extends State<RegPage> {
             ),
           ),
           _buildPswStrength(_pswS),
-          new Container(
+          Container(
             margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(100),
               left: ScreenUtil().setWidth(100),
@@ -364,15 +382,19 @@ class _RegPageState extends State<RegPage> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(_isPswSame ? AppColors.AppBlackColor2 : AppColors.AppWaringColor),
+                  color: Color(_isPswSame
+                      ? AppColors.AppSubtitleColor
+                      : AppColors.AppWaringColor),
                 ),
               ),
             ),
-            child: new TextField(
+            child: TextField(
               textInputAction: TextInputAction.done,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(45),
-                color: Color(_isPswSame ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                color: Color(_isPswSame
+                    ? AppColors.AppTitleColor
+                    : AppColors.AppWaringColor),
               ),
               onTap: () {
                 setState(() {
@@ -391,7 +413,9 @@ class _RegPageState extends State<RegPage> {
                 ),
                 labelText: _isPswSame ? '确认密码' : '密码不一致',
                 labelStyle: TextStyle(
-                  color: Color(_isPswSame ? AppColors.AppTextColor1 : AppColors.AppWaringColor),
+                  color: Color(_isPswSame
+                      ? AppColors.AppTitleColor
+                      : AppColors.AppWaringColor),
                   fontSize: ScreenUtil().setSp(42),
                   fontWeight: FontWeight.bold,
                 ),
@@ -402,15 +426,21 @@ class _RegPageState extends State<RegPage> {
               },
             ),
           ),
-          new Container(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(260), right: ScreenUtil().setWidth(260)),
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(120), bottom: ScreenUtil().setWidth(60)),
-            child: new RaisedButton(
-              color: Color(AppColors.AppLabelColor),
+          Container(
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(260),
+                right: ScreenUtil().setWidth(260)),
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setWidth(120),
+                bottom: ScreenUtil().setWidth(60)),
+            child: RaisedButton(
+              color: Color(AppColors.AppThemeColor),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
-              onPressed: _controllerUserName.text.length == 0 || _controllerPassword.text.length == 0 || _controllerCheckPassword.text.length == 0
+              onPressed: _controllerUserName.text.length == 0 ||
+                      _controllerPassword.text.length == 0 ||
+                      _controllerCheckPassword.text.length == 0
                   ? null
                   : () async {
                       await _regFunction();
@@ -425,16 +455,18 @@ class _RegPageState extends State<RegPage> {
 
   _buildProgress(bool p, String label) {
     return p
-        ? new Container(
+        ? Container(
             alignment: Alignment.center,
             child: SizedBox(
                 width: ScreenUtil().setWidth(50),
                 height: ScreenUtil().setWidth(50),
-                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white), strokeWidth: 2)))
-        : new Text(
+                child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                    strokeWidth: 2)))
+        : Text(
             label,
             style: TextStyle(
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
               fontSize: ScreenUtil().setSp(42),
               fontWeight: FontWeight.bold,
             ),
@@ -443,47 +475,54 @@ class _RegPageState extends State<RegPage> {
 
   _buildPswStrength(int index) {
     List<String> strStrength = ['', '弱', '中', '强'];
-    List<int> color = [AppColors.AppTranslateColor, AppColors.AppWaringColor, AppColors.AppLabelColor2, AppColors.AppLabelColor];
+    List<int> color = [
+      0x00FFFFFF,
+      AppColors.AppWaringColor,
+      AppColors.AppThemeColor2,
+      AppColors.AppThemeColor
+    ];
     List<Widget> art = [
-      new Container(),
-      new Row(
+      Container(),
+      Row(
         children: <Widget>[
-          new Flexible(
-              child: new Container(
+          Flexible(
+              child: Container(
             width: ScreenUtil().setWidth(200),
             decoration: BoxDecoration(
               color: Color(color[index]),
               borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
             ),
           )),
-          new Flexible(child: new Container()),
-          new Flexible(child: new Container()),
+          Flexible(child: Container()),
+          Flexible(child: Container()),
         ],
       ),
-      new Row(
+      Row(
         children: <Widget>[
-          new Flexible(
-              child: new Container(
+          Flexible(
+              child: Container(
             width: ScreenUtil().setWidth(200),
             decoration: BoxDecoration(
               color: Color(color[index]),
-              borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(AppStyle.appRadius * 10), bottomLeft: Radius.circular(AppStyle.appRadius * 10)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppStyle.appRadius * 10),
+                  bottomLeft: Radius.circular(AppStyle.appRadius * 10)),
             ),
           )),
-          new Flexible(
-              child: new Container(
+          Flexible(
+              child: Container(
             width: ScreenUtil().setWidth(200),
             decoration: BoxDecoration(
               color: Color(color[index]),
-              borderRadius:
-                  BorderRadius.only(topRight: Radius.circular(AppStyle.appRadius * 10), bottomRight: Radius.circular(AppStyle.appRadius * 10)),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(AppStyle.appRadius * 10),
+                  bottomRight: Radius.circular(AppStyle.appRadius * 10)),
             ),
           )),
-          new Flexible(child: new Container()),
+          Flexible(child: Container()),
         ],
       ),
-      new Container(
+      Container(
         width: ScreenUtil().setWidth(200),
         decoration: BoxDecoration(
           color: Color(color[index]),
@@ -492,32 +531,34 @@ class _RegPageState extends State<RegPage> {
       ),
     ];
 
-    return new Row(
+    return Row(
       children: <Widget>[
-        new Container(width: ScreenUtil().setWidth(100)),
-        new Text(
+        Container(width: ScreenUtil().setWidth(100)),
+        Text(
           '密码强度: ',
           style: TextStyle(
-            color: Color(AppColors.AppTextColor1),
+            color: Color(AppColors.AppTitleColor),
             fontSize: ScreenUtil().setSp(36),
             fontWeight: FontWeight.bold,
           ),
         ),
-        new Container(
+        Container(
           margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
           padding: EdgeInsets.all(ScreenUtil().setWidth(3)),
           width: ScreenUtil().setWidth(400),
           height: ScreenUtil().setWidth(35),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
-            border: Border.all(color: Color(AppColors.AppTextColor1), width: ScreenUtil().setWidth(3)),
+            border: Border.all(
+                color: Color(AppColors.AppTitleColor),
+                width: ScreenUtil().setWidth(3)),
           ),
           child: art[index],
         ),
-        new Text(
+        Text(
           strStrength[index],
           style: TextStyle(
-            color: Color(AppColors.AppTextColor1),
+            color: Color(AppColors.AppTitleColor),
             fontSize: ScreenUtil().setSp(36),
             fontWeight: FontWeight.bold,
           ),

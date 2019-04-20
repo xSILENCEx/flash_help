@@ -8,7 +8,8 @@ class MyAppBar extends StatefulWidget {
   final double navHeight;
   final PageController controller;
 
-  const MyAppBar({Key key, @required this.navHeight, @required this.controller}) : super(key: key);
+  const MyAppBar({Key key, @required this.navHeight, @required this.controller})
+      : super(key: key);
 
   @override
   _MyAppBar createState() => new _MyAppBar();
@@ -28,9 +29,7 @@ class _MyAppBar extends State<MyAppBar> with TickerProviderStateMixin {
     return ClipShadowPath(
       clipper: new BottomClipper(),
       child: new Container(
-        decoration: BoxDecoration(
-          color: Color(AppColors.AppWhiteColor),
-        ),
+        color: Color(AppColors.AppMainColor),
         alignment: Alignment.center,
         height: _navHeight,
         child: new Row(
@@ -84,7 +83,10 @@ class _MyAppBar extends State<MyAppBar> with TickerProviderStateMixin {
           ],
         ),
       ),
-      shadow: BoxShadow(color: Color(AppColors.AppTextColor1), blurRadius: 0.0, offset: Offset(0, -2)),
+      shadow: BoxShadow(
+          color: Color(AppColors.AppShadowColor),
+          blurRadius: 1.0,
+          offset: Offset(0, -2)),
     );
   }
 }
@@ -126,32 +128,40 @@ class _NavItemState extends State<NavItem> {
       child: new FlatButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.elliptical(AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
-            topRight: Radius.elliptical(AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
-            bottomLeft: Radius.elliptical(AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
-            bottomRight: Radius.elliptical(AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
+            topLeft: Radius.elliptical(
+                AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
+            topRight: Radius.elliptical(
+                AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
+            bottomLeft: Radius.elliptical(
+                AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
+            bottomRight: Radius.elliptical(
+                AppStyle.appRadius * 1.5, AppStyle.appRadius * 3),
           ),
         ),
-        splashColor: Color(AppColors.AppWaveColor),
         padding: EdgeInsets.all(0),
         onPressed: _onPressed,
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Icon(
-              ((_controller.page == null && _index == 0) || _controller.page == _index) ? _actIcon : _icon,
-              color: ((_controller.page == null && _index == 0) || _controller.page == _index)
-                  ? Color(AppColors.AppLabelColor)
-                  : Color(AppColors.AppBorderColor),
+              ((_controller.page == null && _index == 0) ||
+                      _controller.page == _index)
+                  ? _actIcon
+                  : _icon,
+              color: ((_controller.page == null && _index == 0) ||
+                      _controller.page == _index)
+                  ? Color(AppColors.AppThemeColor)
+                  : Color(AppColors.AppSubtitleColor),
               size: ScreenUtil().setWidth(60),
             ),
             new Text(
               _title,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(30),
-                color: ((_controller.page == null && _index == 0) || _controller.page == _index)
-                    ? Color(AppColors.AppLabelColor)
-                    : Color(AppColors.AppBorderColor),
+                color: ((_controller.page == null && _index == 0) ||
+                        _controller.page == _index)
+                    ? Color(AppColors.AppThemeColor)
+                    : Color(AppColors.AppSubtitleColor),
               ),
             ),
           ],

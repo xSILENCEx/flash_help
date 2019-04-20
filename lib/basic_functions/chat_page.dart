@@ -13,19 +13,20 @@ class ChatPage extends StatefulWidget {
   const ChatPage({Key key, this.itemTag, this.userName}) : super(key: key);
 
   @override
-  _ChatPageState createState() => new _ChatPageState();
+  _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin {
+class _ChatPageState extends State<ChatPage>
+    with SingleTickerProviderStateMixin {
   String get _itemTag => widget.itemTag;
   String get _userName => widget.userName;
 
   TextEditingController _controllerEdit;
   ScrollController _controllerScroll;
 
-  List<Msg> _listMsg = new List();
+  List<Msg> _listMsg = List();
 
-  FocusNode _focusNode = new FocusNode();
+  FocusNode _focusNode = FocusNode();
 
   Future _onRefresh() async {
     await Future.delayed(Duration(seconds: 1), () {
@@ -35,7 +36,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   Future _sendMsg() async {
-    _listMsg.add(new Msg(1, 1, _controllerEdit.text, new DateTime.now()));
+    _listMsg.add(Msg(1, 1, _controllerEdit.text, DateTime.now()));
     _controllerEdit.clear();
     setState(() {});
     Future.delayed(const Duration(milliseconds: 100), () {
@@ -59,9 +60,13 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
 
   @override
   void initState() {
-    _controllerEdit = new TextEditingController();
-    _controllerScroll = new ScrollController();
-    _listMsg.add(new Msg(-1, 0, '这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息', new DateTime.now()));
+    _controllerEdit = TextEditingController();
+    _controllerScroll = ScrollController();
+    _listMsg.add(Msg(
+        -1,
+        0,
+        '这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息这是一条测试消息',
+        DateTime.now()));
     super.initState();
   }
 
@@ -75,57 +80,66 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     double _position;
-    return new Hero(
+    return Hero(
       tag: _itemTag,
-      child: new Scaffold(
+      child: Scaffold(
         backgroundColor: Color(AppColors.AppDeepColor),
-        appBar: new AppBar(
-          backgroundColor: Color(AppColors.AppWhiteColor),
+        appBar: AppBar(
+          backgroundColor: Color(AppColors.AppMainColor),
           brightness: Brightness.light,
           centerTitle: true,
           elevation: 0.0,
-          title: new Text(
+          title: Text(
             _userName,
             style: TextStyle(
-              color: Color(AppColors.AppTextColor1),
+              color: Color(AppColors.AppTitleColor),
               fontSize: ScreenUtil().setSp(55),
               fontWeight: FontWeight.bold,
             ),
           ),
-          leading: new IconButton(
+          leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
               size: ScreenUtil().setWidth(60),
-              color: Color(AppColors.AppTextColor1),
+              color: Color(AppColors.AppTitleColor),
             ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           actions: <Widget>[
-            new IconButton(
-              icon: Icon(Icons.phone, color: Color(AppColors.AppTextColor1), size: ScreenUtil().setWidth(55)),
+            IconButton(
+              icon: Icon(Icons.phone,
+                  color: Color(AppColors.AppTitleColor),
+                  size: ScreenUtil().setWidth(55)),
               onPressed: () {
                 Toast.toast(context, '语音通话');
               },
             ),
-            new IconButton(
-              icon: Icon(Icons.person, color: Color(AppColors.AppTextColor1), size: ScreenUtil().setWidth(55)),
+            IconButton(
+              icon: Icon(Icons.person,
+                  color: Color(AppColors.AppTitleColor),
+                  size: ScreenUtil().setWidth(55)),
               onPressed: () {
-                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                  return new PersonalPage(name: _userName, headTag: '666', headUrl: AppStyle.userPicture2);
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  return PersonalPage(
+                      name: _userName,
+                      headTag: '666',
+                      headUrl: AppStyle.userPicture2);
                 }));
               },
             ),
           ],
         ),
-        body: new Stack(
+        body: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            new RefreshIndicator(
-              child: new Listener(
-                child: new ListView.separated(
-                  padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(260), top: ScreenUtil().setWidth(100)),
+            RefreshIndicator(
+              child: Listener(
+                child: ListView.separated(
+                  padding: EdgeInsets.only(
+                      bottom: ScreenUtil().setWidth(260),
+                      top: ScreenUtil().setWidth(100)),
                   shrinkWrap: false,
                   physics: BouncingScrollPhysics(),
                   itemCount: _listMsg.length,
@@ -134,7 +148,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                     return _buildMsgItem(index, _listMsg[index]);
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return new Container(
+                    return Container(
                       height: ScreenUtil().setWidth(80),
                     );
                   },
@@ -143,11 +157,15 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                   _position = detail.position.dy;
                 },
                 onPointerUp: (detail) {
-                  if (_position + ScreenUtil().setWidth(200) < detail.position.dy &&
-                      _controllerScroll.offset > _controllerScroll.position.minScrollExtent) {
+                  if (_position + ScreenUtil().setWidth(200) <
+                          detail.position.dy &&
+                      _controllerScroll.offset >
+                          _controllerScroll.position.minScrollExtent) {
                     _focusNode.unfocus();
-                  } else if (_position - ScreenUtil().setWidth(200) > detail.position.dy &&
-                      _controllerScroll.offset >= _controllerScroll.position.maxScrollExtent) {
+                  } else if (_position - ScreenUtil().setWidth(200) >
+                          detail.position.dy &&
+                      _controllerScroll.offset >=
+                          _controllerScroll.position.maxScrollExtent) {
                     FocusScope.of(context).requestFocus(_focusNode);
                     Future.delayed(const Duration(milliseconds: 300), () {
                       _controllerScroll.animateTo(
@@ -169,21 +187,21 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   _buildMsgEditBox() {
-    return new Container(
+    return Container(
       height: ScreenUtil().setWidth(160),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(AppColors.AppWhiteColor),
+        color: Color(AppColors.AppMainColor),
         boxShadow: [
-          BoxShadow(color: Color(AppColors.AppShadowColor2), blurRadius: 4.0),
+          BoxShadow(color: Color(AppColors.AppShadowColor), blurRadius: 4.0),
         ],
       ),
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Container(
+          Container(
             width: ScreenUtil().setWidth(110),
             height: ScreenUtil().setWidth(110),
-            child: new FlatButton(
+            child: FlatButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
@@ -192,27 +210,33 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                 FocusScope.of(context).requestFocus(FocusNode());
                 Toast.toast(context, '语音');
               },
-              child: new Icon(Icons.mic, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
-              color: Color(AppColors.AppLabelColor),
+              child: Icon(Icons.mic,
+                  color: Color(AppColors.AppMainColor),
+                  size: ScreenUtil().setWidth(60)),
+              color: Color(AppColors.AppThemeColor),
             ),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
           ),
-          new Flexible(
-            child: new Container(
+          Flexible(
+            child: Container(
               height: ScreenUtil().setWidth(110),
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: ScreenUtil().setWidth(60), right: ScreenUtil().setWidth(20)),
+              padding: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(60),
+                  right: ScreenUtil().setWidth(20)),
               margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
               decoration: BoxDecoration(
                 color: Color(AppColors.AppDeepColor),
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
-              child: new Row(
+              child: Row(
                 children: <Widget>[
-                  new Flexible(
-                    child: new TextField(
+                  Flexible(
+                    child: TextField(
                       focusNode: _focusNode,
-                      style: TextStyle(fontSize: ScreenUtil().setSp(42), color: Color(AppColors.AppBlackColor1)),
+                      style: TextStyle(
+                          fontSize: ScreenUtil().setSp(42),
+                          color: Color(AppColors.AppTitleColor)),
                       textInputAction: TextInputAction.send,
                       controller: _controllerEdit,
                       decoration: InputDecoration(
@@ -224,7 +248,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                       onChanged: (value) {
                         setState(() {});
                       },
-                      onEditingComplete: () async{
+                      onEditingComplete: () async {
                         if (_controllerEdit.text.length != 0) {
                           await _sendMsg();
                         } else
@@ -235,46 +259,55 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                       },
                     ),
                   ),
-                  new Container(
+                  Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
                     width: ScreenUtil().setWidth(80),
                     height: ScreenUtil().setWidth(80),
-                    child: new FlatButton(
+                    child: FlatButton(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                        borderRadius:
+                            BorderRadius.circular(AppStyle.appRadius * 40),
                       ),
                       padding: EdgeInsets.all(0),
                       onPressed: () {
                         FocusScope.of(context).requestFocus(FocusNode());
                         Toast.toast(context, '表情');
                       },
-                      child: new Icon(Icons.mood, color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(45)),
-                      color: Color(AppColors.AppLabelColor3),
+                      child: Icon(Icons.mood,
+                          color: Color(AppColors.AppMainColor),
+                          size: ScreenUtil().setWidth(45)),
+                      color: Color(AppColors.AppDotColor),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          new Container(
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20)),
+          Container(
+            margin: EdgeInsets.only(
+                left: ScreenUtil().setWidth(20),
+                right: ScreenUtil().setWidth(20)),
             width: ScreenUtil().setWidth(110),
             height: ScreenUtil().setWidth(110),
-            child: new FlatButton(
+            child: FlatButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
               padding: EdgeInsets.all(0),
-              onPressed: () async{
+              onPressed: () async {
                 if (_controllerEdit.text.length == 0) {
                   Toast.toast(context, '添加');
                 } else {
                   await _sendMsg();
                 }
               },
-              child: new Icon(_controllerEdit.text.length == 0 ? Icons.add : Boxicons.bxsSend,
-                  color: Color(AppColors.AppWhiteColor), size: ScreenUtil().setWidth(60)),
-              color: Color(AppColors.AppLabelColor2),
+              child: Icon(
+                  _controllerEdit.text.length == 0
+                      ? Icons.add
+                      : Boxicons.bxsSend,
+                  color: Color(AppColors.AppMainColor),
+                  size: ScreenUtil().setWidth(60)),
+              color: Color(AppColors.AppThemeColor2),
             ),
           ),
         ],
@@ -283,38 +316,46 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   _buildMsgItem(int index, Msg msg) {
-    return msg.id == 0 ? _leftMsgBox(msg.msgContent, msg.uId, index) : _rightMsgBox(msg.msgContent, msg.uId, index);
+    return msg.id == 0
+        ? _leftMsgBox(msg.msgContent, msg.uId, index)
+        : _rightMsgBox(msg.msgContent, msg.uId, index);
   }
 
   _leftMsgBox(String content, int uId, int index) {
-    return new Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new ConstrainedBox(
+        ConstrainedBox(
           constraints: BoxConstraints(maxWidth: ScreenUtil().setWidth(850)),
-          child: new Container(
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(30), left: ScreenUtil().setWidth(50)),
+          child: Container(
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setWidth(20),
+                bottom: ScreenUtil().setWidth(30),
+                left: ScreenUtil().setWidth(50)),
             padding: EdgeInsets.only(
                 top: ScreenUtil().setHeight(30),
                 bottom: ScreenUtil().setHeight(30),
                 left: ScreenUtil().setWidth(30),
                 right: ScreenUtil().setWidth(30)),
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(AppStyle.appRadius * 3),
                 bottomLeft: Radius.circular(AppStyle.appRadius * 3),
                 bottomRight: Radius.circular(AppStyle.appRadius * 3),
               ),
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
               boxShadow: [
-                BoxShadow(color: Color(AppColors.AppShadowColor), offset: Offset(0, 2), blurRadius: 5.0),
+                BoxShadow(
+                    color: Color(AppColors.AppShadowColor),
+                    offset: Offset(0, 2),
+                    blurRadius: 5.0),
               ],
             ),
-            child: new Text(
+            child: Text(
               content,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(42),
-                color: Color(AppColors.AppTextColor2),
+                color: Color(AppColors.AppTitleColor),
               ),
             ),
           ),
@@ -324,35 +365,41 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   _rightMsgBox(String content, int uId, int index) {
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new ConstrainedBox(
+        ConstrainedBox(
           constraints: BoxConstraints(maxWidth: ScreenUtil().setWidth(850)),
-          child: new Container(
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(20), bottom: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(50)),
+          child: Container(
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setWidth(20),
+                bottom: ScreenUtil().setWidth(30),
+                right: ScreenUtil().setWidth(50)),
             padding: EdgeInsets.only(
                 top: ScreenUtil().setHeight(30),
                 bottom: ScreenUtil().setHeight(30),
                 left: ScreenUtil().setWidth(30),
                 right: ScreenUtil().setWidth(30)),
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(AppStyle.appRadius * 3),
                 bottomLeft: Radius.circular(AppStyle.appRadius * 3),
                 bottomRight: Radius.circular(AppStyle.appRadius * 3),
               ),
-              color: Color(AppColors.AppLabelColor),
+              color: Color(AppColors.AppThemeColor),
               boxShadow: [
-                BoxShadow(color: Color(AppColors.AppLabelColor).withOpacity(0.3), offset: Offset(0, 2), blurRadius: 5.0),
+                BoxShadow(
+                    color: Color(AppColors.AppThemeColor).withOpacity(0.3),
+                    offset: Offset(0, 2),
+                    blurRadius: 5.0),
               ],
             ),
-            child: new Text(
+            child: Text(
               content,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(42),
-                color: Color(AppColors.AppWhiteColor),
+                color: Color(AppColors.AppMainColor),
               ),
             ),
           ),

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:boxicons_flutter/boxicons_flutter.dart';
+import 'package:flash_help/basic_functions/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/search_bar.dart';
@@ -12,7 +14,7 @@ import 'package:english_words/english_words.dart';
 
 class NearPage extends StatefulWidget {
   @override
-  _NearPageState createState() => new _NearPageState();
+  _NearPageState createState() => _NearPageState();
 }
 
 class _NearPageState extends State<NearPage> {
@@ -43,25 +45,55 @@ class _NearPageState extends State<NearPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Color(AppColors.AppDeepColor),
-      appBar: new SearchBar(),
-      body: new RefreshIndicator(
-        child: new ListView(
+      appBar: AppBar(
+        leading: null,
+        elevation: 0.0,
+        title: Text(
+          '附近',
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(60),
+            fontWeight: FontWeight.bold,
+            color: Color(AppColors.AppMainColor),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Boxicons.bxSearch,
+              color: Color(AppColors.AppMainColor),
+              size: ScreenUtil().setWidth(70),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                FadeRoute(
+                  builder: (context) {
+                    return SearchPage();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        child: ListView(
           padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
           children: <Widget>[
-            new Container(
+            Container(
               padding: EdgeInsets.all(5),
               width: double.infinity,
               height: ScreenUtil().setHeight(360),
-              child: new Swiper(
+              child: Swiper(
                 itemCount: _sweeperUrl.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return new Container(
+                  return Container(
                     width: double.infinity,
                     height: double.infinity,
-                    decoration: new BoxDecoration(
-                      color: Color(AppColors.AppWhiteColor),
+                    decoration: BoxDecoration(
+                      color: Color(AppColors.AppMainColor),
                       borderRadius: BorderRadius.circular(AppStyle.appRadius),
                       image: DecorationImage(
                           image: NetworkImage(_sweeperUrl[index]),
@@ -72,26 +104,26 @@ class _NearPageState extends State<NearPage> {
                 autoplay: true,
               ),
             ),
-            new Container(
+            Container(
               height: ScreenUtil().setWidth(30),
             ),
-            new Material(
-              child: new Column(
+            Material(
+              child: Column(
                 children: <Widget>[
-                  new ListTile(
-                    title: new Text(
+                  ListTile(
+                    title: Text(
                       '附近的人',
                       style: TextStyle(
-                        color: Color(AppColors.AppTextColor2),
+                        color: Color(AppColors.AppTitleColor),
                         fontSize: ScreenUtil().setSp(40),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     leading: null,
-                    trailing: new Icon(
+                    trailing: Icon(
                       Icons.arrow_forward_ios,
                       size: ScreenUtil().setWidth(45),
-                      color: Color(AppColors.AppTextColor),
+                      color: Color(AppColors.AppTitleColor),
                     ),
                     contentPadding: EdgeInsets.only(
                       right: ScreenUtil().setWidth(20),
@@ -102,45 +134,45 @@ class _NearPageState extends State<NearPage> {
                       Toast.toast(context, '查看更多');
                     },
                   ),
-                  new Container(
+                  Container(
                     height: ScreenUtil().setWidth(360),
                     width: double.infinity,
-                    child: new ListView.builder(
+                    child: ListView.builder(
                       padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                       physics: BouncingScrollPhysics(),
                       itemCount: _personNum,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        return new PersonItem(
+                        return PersonItem(
                             index: index, name: WordPair.random().asPascalCase);
                       },
                     ),
                   ),
                 ],
               ),
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
             ),
-            new Container(
+            Container(
               height: ScreenUtil().setWidth(30),
             ),
-            new Material(
-              color: Color(AppColors.AppWhiteColor),
-              child: new Column(
+            Material(
+              color: Color(AppColors.AppMainColor),
+              child: Column(
                 children: <Widget>[
-                  new ListTile(
-                    title: new Text(
+                  ListTile(
+                    title: Text(
                       '附近的悬赏',
                       style: TextStyle(
-                        color: Color(AppColors.AppTextColor2),
+                        color: Color(AppColors.AppTitleColor),
                         fontSize: ScreenUtil().setSp(40),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     leading: null,
-                    trailing: new Icon(
+                    trailing: Icon(
                       Icons.arrow_forward_ios,
                       size: ScreenUtil().setWidth(45),
-                      color: Color(AppColors.AppTextColor),
+                      color: Color(AppColors.AppTitleColor),
                     ),
                     contentPadding: EdgeInsets.only(
                       right: ScreenUtil().setWidth(20),
@@ -151,14 +183,14 @@ class _NearPageState extends State<NearPage> {
                       Toast.toast(context, '查看更多');
                     },
                   ),
-                  new Container(
+                  Container(
                     height: ScreenUtil().setWidth(780),
-                    child: new ListView.builder(
+                    child: ListView.builder(
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        return new TaskItem(
+                        return TaskItem(
                             index: index,
                             reward: Random().nextInt(999).toDouble());
                       },
@@ -167,10 +199,10 @@ class _NearPageState extends State<NearPage> {
                 ],
               ),
             ),
-            new Container(
+            Container(
               height: ScreenUtil().setWidth(30),
             ),
-            new ListView.builder(
+            ListView.builder(
                 itemCount: 4,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -185,15 +217,15 @@ class _NearPageState extends State<NearPage> {
   }
 
   _buildAddItem() {
-    return new Container(
+    return Container(
       height: ScreenUtil().setHeight(360),
       width: double.infinity,
-      decoration: new BoxDecoration(
-        color: Color(AppColors.AppWhiteColor),
+      decoration: BoxDecoration(
+        color: Color(AppColors.AppMainColor),
         borderRadius: BorderRadius.circular(AppStyle.appRadius),
       ),
       margin: EdgeInsets.all(5),
-      child: new Center(child: Text('活动广告位')),
+      child: Center(child: Text('活动广告位')),
     );
   }
 }
@@ -207,26 +239,26 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _url = 'images/task_main.jpeg';
-    return new InkWell(
+    return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      child: new Container(
+      child: Container(
         margin: EdgeInsets.all(ScreenUtil().setWidth(20)),
         decoration: BoxDecoration(
-          color: Color(AppColors.AppWhiteColor),
+          color: Color(AppColors.AppMainColor),
           borderRadius: BorderRadius.circular(AppStyle.appRadius),
           boxShadow: [
-            BoxShadow(color: Color(AppColors.AppShadowColor2), blurRadius: 5.0),
+            BoxShadow(color: Color(AppColors.AppShadowColor), blurRadius: 5.0),
           ],
         ),
         width: ScreenUtil().setWidth(650),
-        child: new Column(
+        child: Column(
           children: <Widget>[
-            new Hero(
+            Hero(
               tag: 'np$index',
-              child: new Material(
+              child: Material(
                 color: Colors.transparent,
-                child: new Container(
+                child: Container(
                   height: ScreenUtil().setWidth(360),
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -236,7 +268,7 @@ class TaskItem extends StatelessWidget {
                         topRight: Radius.circular(AppStyle.appRadius)),
                     boxShadow: [
                       BoxShadow(
-                          color: Color(AppColors.AppShadowColor2),
+                          color: Color(AppColors.AppShadowColor),
                           offset: Offset(0.0, 0.0),
                           blurRadius: 3.0),
                     ],
@@ -244,18 +276,18 @@ class TaskItem extends StatelessWidget {
                 ),
               ),
             ),
-            new Container(
+            Container(
               width: double.infinity,
               margin: EdgeInsets.only(
                   left: ScreenUtil().setWidth(30),
                   right: ScreenUtil().setWidth(30),
                   top: ScreenUtil().setWidth(30)),
               padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-              child: new Text(
+              child: Text(
                 '任务标题  任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介',
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(38),
-                    color: Color(AppColors.AppTextColor1)),
+                    color: Color(AppColors.AppSubtitleColor)),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
@@ -264,9 +296,9 @@ class TaskItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppStyle.appRadius),
               ),
             ),
-            new Row(
+            Row(
               children: <Widget>[
-                new Container(
+                Container(
                   width: ScreenUtil().setWidth(100),
                   height: ScreenUtil().setWidth(100),
                   margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
@@ -275,7 +307,7 @@ class TaskItem extends StatelessWidget {
                     borderRadius:
                         BorderRadius.circular(AppStyle.appRadius * 40),
                     border: Border.all(
-                      color: Color(AppColors.AppBorderColor),
+                      color: Color(AppColors.AppSubtitleColor),
                     ),
                     image: DecorationImage(
                       image: AssetImage(AppStyle.userPicture1),
@@ -283,19 +315,19 @@ class TaskItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                new Text(
+                Text(
                   '信用度 ${Random().nextInt(999)}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(AppColors.AppTextColor2),
-                    fontSize: ScreenUtil().setSp(35),
+                    color: Color(AppColors.AppTitleColor),
+                    fontSize: ScreenUtil().setSp(40),
                   ),
                 ),
-                new Text(
+                Text(
                   '  ￥$reward',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(AppColors.AppTextColor2),
+                    color: Color(AppColors.AppTitleColor),
                     fontSize: ScreenUtil().setSp(40),
                   ),
                 ),
@@ -305,8 +337,8 @@ class TaskItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-          return new TaskDetailPage(pictureTag: "np$index", reward: '$reward');
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return TaskDetailPage(pictureTag: "np$index", reward: '$reward');
         }));
       },
     );
@@ -322,36 +354,36 @@ class PersonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new InkWell(
+    return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      child: new Container(
+      child: Container(
         width: ScreenUtil().setWidth(260),
         margin: EdgeInsets.all(ScreenUtil().setWidth(15)),
         decoration: BoxDecoration(
-          color: Color(AppColors.AppWhiteColor),
+          color: Color(AppColors.AppMainColor),
           borderRadius: BorderRadius.circular(AppStyle.appRadius),
           boxShadow: [
             BoxShadow(
-                color: Color(AppColors.AppShadowColor2),
+                color: Color(AppColors.AppShadowColor),
                 offset: Offset(0, 1),
                 blurRadius: 4.0),
           ],
         ),
         alignment: Alignment.center,
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Hero(
+            Hero(
               tag: 'headpicture$index',
-              child: new Container(
+              child: Container(
                 width: ScreenUtil().setWidth(160),
                 height: ScreenUtil().setWidth(160),
-                decoration: new BoxDecoration(
-                  color: Color(AppColors.AppWhiteColor),
+                decoration: BoxDecoration(
+                  color: Color(AppColors.AppMainColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
                   border: Border.all(
-                      color: Color(AppColors.AppBorderColor), width: 2),
+                      color: Color(AppColors.AppSubtitleColor), width: 2),
                   image: DecorationImage(
                     image: AssetImage(AppStyle.userPicture2),
                     fit: BoxFit.cover,
@@ -359,20 +391,20 @@ class PersonItem extends StatelessWidget {
                 ),
               ),
             ),
-            new Text(
+            Text(
               name,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(35),
-                color: Color(AppColors.AppTextColor2),
+                color: Color(AppColors.AppTitleColor),
                 fontWeight: FontWeight.bold,
                 height: ScreenUtil().setWidth(4),
               ),
             ),
-            new Text(
+            Text(
               '${Random().nextInt(999)}m',
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(30),
-                color: Color(AppColors.AppTextColor),
+                color: Color(AppColors.AppSubtitleColor),
                 fontWeight: FontWeight.bold,
                 height: ScreenUtil().setWidth(3),
               ),
@@ -381,8 +413,8 @@ class PersonItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-          return new PersonalPage(
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return PersonalPage(
               headTag: 'headpicture$index',
               name: name,
               headUrl: AppStyle.userPicture2);

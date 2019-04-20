@@ -90,15 +90,15 @@ class _NewTaskPageState extends State<NewTaskPage>
   void _pickAsset(PickType type, {List<AssetPathEntity> pathList}) async {
     List<AssetEntity> imgList = await PhotoPicker.pickAsset(
       context: context,
-      themeColor: Color(AppColors.AppLabelColor),
+      themeColor: Color(AppColors.AppThemeColor),
       padding: 1.0,
-      dividerColor: Color(AppColors.AppWhiteColor),
-      disableColor: Color(AppColors.AppWhiteColor),
+      dividerColor: Color(AppColors.AppMainColor),
+      disableColor: Color(AppColors.AppMainColor),
       itemRadio: 0.88,
       maxSelected: 10,
       provider: I18nProvider.chinese,
       rowCount: 3,
-      textColor: Color(AppColors.AppWhiteColor),
+      textColor: Color(AppColors.AppMainColor),
       thumbSize: 150,
       sortDelegate: SortDelegate.common,
       checkBoxBuilderDelegate: DefaultCheckBoxBuilderDelegate(
@@ -192,11 +192,12 @@ class _NewTaskPageState extends State<NewTaskPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Color(AppColors.AppDeepColor),
       appBar: new AppBar(
         centerTitle: true,
         leading: new IconButton(
             icon: Icon(Icons.close,
-                color: Color(AppColors.AppWhiteColor),
+                color: Color(AppColors.AppMainColor),
                 size: ScreenUtil().setWidth(60)),
             onPressed: () {
               Navigator.pop(context);
@@ -207,7 +208,7 @@ class _NewTaskPageState extends State<NewTaskPage>
         actions: <Widget>[
           new IconButton(
               icon: Icon(Icons.help_outline,
-                  color: Color(AppColors.AppWhiteColor),
+                  color: Color(AppColors.AppMainColor),
                   size: ScreenUtil().setWidth(60)),
               onPressed: () {
                 Toast.toast(context, '帮助');
@@ -232,20 +233,20 @@ class _NewTaskPageState extends State<NewTaskPage>
               controller: _controllerTaskName,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(42),
-                  color: Color(AppColors.AppTextColor1)),
+                  color: Color(AppColors.AppTitleColor)),
               onEditingComplete: () {
                 FocusScope.of(context).requestFocus(_focusNode);
               },
             ),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
             margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
           ),
           new Container(
             width: double.infinity,
             height: 0.5,
-            color: Color(AppColors.AppBorderColor),
+            color: Color(AppColors.AppDeepColor),
             margin: EdgeInsets.only(
                 left: ScreenUtil().setWidth(15),
                 right: ScreenUtil().setWidth(15)),
@@ -265,10 +266,10 @@ class _NewTaskPageState extends State<NewTaskPage>
               controller: _controllerTaskInfo,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(42),
-                  color: Color(AppColors.AppTextColor1)),
+                  color: Color(AppColors.AppTitleColor)),
             ),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
           ),
           new Container(
@@ -291,13 +292,13 @@ class _NewTaskPageState extends State<NewTaskPage>
               scrollDirection: Axis.horizontal,
             ),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
           ),
           new Container(
             width: double.infinity,
             height: 0.5,
-            color: Color(AppColors.AppBorderColor),
+            color: Color(AppColors.AppSubtitleColor),
             margin: EdgeInsets.only(left: 5, right: 5),
           ),
           new Container(
@@ -306,7 +307,7 @@ class _NewTaskPageState extends State<NewTaskPage>
                 left: ScreenUtil().setWidth(30),
                 right: ScreenUtil().setWidth(30)),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,7 +317,7 @@ class _NewTaskPageState extends State<NewTaskPage>
                     new Icon(
                       _isLocationOpen ? Icons.location_on : Icons.location_off,
                       color: Color(_isLocationOpen
-                          ? AppColors.AppLabelColor
+                          ? AppColors.AppThemeColor
                           : AppColors.AppDeepColor),
                       size: ScreenUtil().setWidth(50),
                     ),
@@ -354,13 +355,13 @@ class _NewTaskPageState extends State<NewTaskPage>
                   width: double.infinity,
                   padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
-                    color: Color(AppColors.AppLightColor),
+                    color: Color(AppColors.AppMainColor),
                   ),
                   child: new Text(
                     '$_location',
                     style: TextStyle(
                       fontSize: ScreenUtil().setSp(38),
-                      color: Color(AppColors.AppTextColor2),
+                      color: Color(AppColors.AppTitleColor),
                     ),
                   ),
                 )
@@ -370,7 +371,7 @@ class _NewTaskPageState extends State<NewTaskPage>
             margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -396,7 +397,7 @@ class _NewTaskPageState extends State<NewTaskPage>
               ? new Container(
                   height: ScreenUtil().setWidth(150),
                   decoration: BoxDecoration(
-                    color: Color(AppColors.AppLightColor),
+                    color: Color(AppColors.AppMainColor),
                   ),
                   child: new FlatButton(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
@@ -426,7 +427,7 @@ class _NewTaskPageState extends State<NewTaskPage>
             margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -454,7 +455,7 @@ class _NewTaskPageState extends State<NewTaskPage>
             margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
             padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
             decoration: BoxDecoration(
-              color: Color(AppColors.AppLightColor),
+              color: Color(AppColors.AppMainColor),
             ),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -480,7 +481,7 @@ class _NewTaskPageState extends State<NewTaskPage>
                   height: ScreenUtil().setWidth(150),
                   margin: EdgeInsets.only(top: ScreenUtil().setWidth(30)),
                   decoration: BoxDecoration(
-                    color: Color(AppColors.AppLightColor),
+                    color: Color(AppColors.AppMainColor),
                   ),
                   child: new FlatButton(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
@@ -501,15 +502,15 @@ class _NewTaskPageState extends State<NewTaskPage>
                         locale: LocaleType.zh,
                         theme: DatePickerTheme(
                           cancelStyle: TextStyle(
-                              color: Color(AppColors.AppBlackColor1),
+                              color: Color(AppColors.AppTitleColor),
                               fontSize: 16),
                           itemStyle: TextStyle(
-                              color: Color(AppColors.AppLabelColor),
+                              color: Color(AppColors.AppThemeColor),
                               fontSize: 18),
                           doneStyle: TextStyle(
-                              color: Color(AppColors.AppLabelColor),
+                              color: Color(AppColors.AppThemeColor),
                               fontSize: 16),
-                          backgroundColor: Color(AppColors.AppWhiteColor),
+                          backgroundColor: Color(AppColors.AppMainColor),
                         ),
                       );
                     },
@@ -536,9 +537,9 @@ class _NewTaskPageState extends State<NewTaskPage>
       ),
       bottomNavigationBar: new Container(
         child: new RaisedButton(
-          color: Color(AppColors.AppLabelColor),
+          color: Color(AppColors.AppThemeColor),
           child: new Text('确认发布',
-              style: TextStyle(color: Color(AppColors.AppWhiteColor))),
+              style: TextStyle(color: Color(AppColors.AppMainColor))),
           onPressed: () {
             Toast.toast(context, '暂未开放');
           },
@@ -547,7 +548,8 @@ class _NewTaskPageState extends State<NewTaskPage>
             left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: Color(AppColors.AppBorderColor), width: 0.5),
+            top: BorderSide(
+                color: Color(AppColors.AppSubtitleColor), width: 0.5),
             bottom: BorderSide.none,
             left: BorderSide.none,
             right: BorderSide.none,
@@ -564,8 +566,8 @@ class _NewTaskPageState extends State<NewTaskPage>
       child: new FlatButton(
         padding: EdgeInsets.all(0),
         color: _chooseClass == index
-            ? Color(AppColors.AppLabelColor)
-            : Color(AppColors.AppWhiteColor),
+            ? Color(AppColors.AppThemeColor)
+            : Color(AppColors.AppMainColor),
         onPressed: () {
           setState(() {
             _chooseClass = index;
@@ -575,13 +577,13 @@ class _NewTaskPageState extends State<NewTaskPage>
           _taskClass[index],
           style: TextStyle(
               color: _chooseClass == index
-                  ? Color(AppColors.AppWhiteColor)
-                  : Color(AppColors.AppTextColor1),
+                  ? Color(AppColors.AppMainColor)
+                  : Color(AppColors.AppTitleColor),
               fontSize: ScreenUtil().setSp(35)),
         ),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: Color(AppColors.AppTextColor1),
+              color: Color(AppColors.AppTitleColor),
               width: _chooseClass == index ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
@@ -596,8 +598,8 @@ class _NewTaskPageState extends State<NewTaskPage>
       child: new FlatButton(
         padding: EdgeInsets.all(0),
         color: _isTaskChosen[index]
-            ? Color(AppColors.AppLabelColor)
-            : Color(AppColors.AppWhiteColor),
+            ? Color(AppColors.AppThemeColor)
+            : Color(AppColors.AppMainColor),
         onPressed: () {
           setState(() {
             _isTaskChosen[index] = !_isTaskChosen[index];
@@ -606,12 +608,12 @@ class _NewTaskPageState extends State<NewTaskPage>
         child: new Text(_taskLabels[index],
             style: TextStyle(
                 color: _isTaskChosen[index]
-                    ? Color(AppColors.AppWhiteColor)
-                    : Color(AppColors.AppTextColor1),
+                    ? Color(AppColors.AppMainColor)
+                    : Color(AppColors.AppTitleColor),
                 fontSize: ScreenUtil().setSp(35))),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: Color(AppColors.AppTextColor1),
+              color: Color(AppColors.AppTitleColor),
               width: _isTaskChosen[index] ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
@@ -626,8 +628,8 @@ class _NewTaskPageState extends State<NewTaskPage>
       child: new FlatButton(
         padding: EdgeInsets.all(0),
         color: _chooseLimit == index
-            ? Color(AppColors.AppLabelColor)
-            : Color(AppColors.AppWhiteColor),
+            ? Color(AppColors.AppThemeColor)
+            : Color(AppColors.AppMainColor),
         onPressed: () {
           setState(() {
             _chooseLimit = index;
@@ -637,12 +639,12 @@ class _NewTaskPageState extends State<NewTaskPage>
         child: new Text(_timeLimit[index],
             style: TextStyle(
                 color: _chooseLimit == index
-                    ? Color(AppColors.AppWhiteColor)
-                    : Color(AppColors.AppTextColor1),
+                    ? Color(AppColors.AppMainColor)
+                    : Color(AppColors.AppTitleColor),
                 fontSize: ScreenUtil().setSp(35))),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: Color(AppColors.AppTextColor1),
+              color: Color(AppColors.AppTitleColor),
               width: _chooseLimit == index ? 0.0 : 1.0),
           borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
         ),
@@ -707,12 +709,12 @@ class _NewTaskPageState extends State<NewTaskPage>
                 },
                 child: new Icon(
                   Icons.close,
-                  color: Color(AppColors.AppLightColor),
+                  color: Color(AppColors.AppMainColor),
                   size: 10,
                 ),
               ),
               decoration: BoxDecoration(
-                color: Color(AppColors.AppLabelColor),
+                color: Color(AppColors.AppThemeColor),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(AppStyle.appRadius * 40),
                   bottomRight: Radius.circular(AppStyle.appRadius * 40),
@@ -749,7 +751,7 @@ class _NewTaskPageState extends State<NewTaskPage>
           height: double.infinity,
           child: new Icon(
             Icons.add,
-            color: Color(AppColors.AppLabelColor),
+            color: Color(AppColors.AppThemeColor),
           ),
         ),
       ),
@@ -762,7 +764,7 @@ class _NewTaskPageState extends State<NewTaskPage>
       barrierDismissible: false,
       builder: (context) {
         return new Material(
-          color: Color(AppColors.AppTranslateColor),
+          color: Colors.transparent,
           child: new InkWell(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
@@ -774,7 +776,7 @@ class _NewTaskPageState extends State<NewTaskPage>
               children: <Widget>[
                 new Container(
                   decoration: BoxDecoration(
-                    color: Color(AppColors.AppWhiteColor),
+                    color: Color(AppColors.AppMainColor),
                     borderRadius: BorderRadius.circular(AppStyle.appRadius),
                   ),
                   child: new Column(
@@ -783,13 +785,13 @@ class _NewTaskPageState extends State<NewTaskPage>
                         _chooseClass == 0 ? '金额' : '积分数量',
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(40),
-                          color: Color(AppColors.AppTextColor2),
+                          color: Color(AppColors.AppTitleColor),
                         ),
                       ),
                       new Container(
                         width: double.infinity,
                         height: ScreenUtil().setWidth(2),
-                        color: Color(AppColors.AppTextColor),
+                        color: Color(AppColors.AppTitleColor),
                         margin: EdgeInsets.only(
                             top: ScreenUtil().setWidth(40),
                             bottom: ScreenUtil().setWidth(60)),
@@ -813,7 +815,7 @@ class _NewTaskPageState extends State<NewTaskPage>
                           autofocus: true,
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(38),
-                              color: Color(AppColors.AppTextColor1)),
+                              color: Color(AppColors.AppTitleColor)),
                           controller: _controllerTaskReward,
                           decoration: InputDecoration(
                             hintText: _chooseClass == 0
@@ -846,12 +848,12 @@ class _NewTaskPageState extends State<NewTaskPage>
                               child: new Text(
                                 '取消',
                                 style: TextStyle(
-                                  color: Color(AppColors.AppLabelColor),
+                                  color: Color(AppColors.AppThemeColor),
                                   fontSize: ScreenUtil().setSp(46),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              color: Color(AppColors.AppTranslateColor),
+                              color: Colors.transparent,
                               padding: EdgeInsets.all(0),
                             ),
                             fit: FlexFit.tight,
@@ -869,12 +871,12 @@ class _NewTaskPageState extends State<NewTaskPage>
                               child: new Text(
                                 '确定',
                                 style: TextStyle(
-                                  color: Color(AppColors.AppLabelColor),
+                                  color: Color(AppColors.AppThemeColor),
                                   fontSize: ScreenUtil().setSp(46),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              color: Color(AppColors.AppTranslateColor),
+                              color: Colors.transparent,
                               padding: EdgeInsets.all(0),
                             ),
                             fit: FlexFit.tight,

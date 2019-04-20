@@ -9,7 +9,7 @@ class PhoneLog extends StatefulWidget {
   const PhoneLog({Key key, this.pageController}) : super(key: key);
 
   @override
-  _PhoneLogState createState() => new _PhoneLogState();
+  _PhoneLogState createState() => _PhoneLogState();
 }
 
 class _PhoneLogState extends State<PhoneLog> {
@@ -26,8 +26,8 @@ class _PhoneLogState extends State<PhoneLog> {
 
   @override
   void initState() {
-    _controllerPhone = new TextEditingController();
-    _controllerCode = new TextEditingController();
+    _controllerPhone = TextEditingController();
+    _controllerCode = TextEditingController();
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _PhoneLogState extends State<PhoneLog> {
       _isClick = true;
     });
     Timer countdownTimer;
-    countdownTimer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+    countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (countdownTimer.tick > 59) {
         countdownTimer.cancel();
         countdownTimer = null;
@@ -55,13 +55,14 @@ class _PhoneLogState extends State<PhoneLog> {
         return null;
       }
       setState(() {
-        _btnContent = (60 - countdownTimer.tick).toString().padLeft(2, '0') + ' s';
+        _btnContent =
+            (60 - countdownTimer.tick).toString().padLeft(2, '0') + ' s';
       });
     });
   }
 
   _logFunction() async {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       _isProcess = true;
     });
@@ -73,27 +74,25 @@ class _PhoneLogState extends State<PhoneLog> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      child: new ListView(
+    return Material(
+      child: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          new Container(
+          Container(
             margin: EdgeInsets.all(ScreenUtil().setWidth(100)),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(AppColors.AppBlackColor2),
+                  color: Color(AppColors.AppSubtitleColor),
                 ),
               ),
             ),
-            child: new Stack(
+            child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
-                new TextField(
+                TextField(
                   keyboardType: TextInputType.number,
                   controller: _controllerPhone,
                   decoration: InputDecoration(
@@ -103,7 +102,7 @@ class _PhoneLogState extends State<PhoneLog> {
                     ),
                     labelText: '手机号',
                     labelStyle: TextStyle(
-                      color: Color(AppColors.AppTextColor1),
+                      color: Color(AppColors.AppTitleColor),
                       fontSize: ScreenUtil().setSp(42),
                       fontWeight: FontWeight.bold,
                     ),
@@ -114,17 +113,18 @@ class _PhoneLogState extends State<PhoneLog> {
                   },
                 ),
                 _controllerPhone.text.length > 0
-                    ? new Container(
+                    ? Container(
                         width: ScreenUtil().setWidth(100),
                         height: ScreenUtil().setWidth(100),
-                        child: new FlatButton(
+                        child: FlatButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppStyle.appRadius * 20),
+                            borderRadius:
+                                BorderRadius.circular(AppStyle.appRadius * 20),
                           ),
                           padding: EdgeInsets.all(0),
-                          child: new Icon(
+                          child: Icon(
                             Icons.clear,
-                            color: Color(AppColors.AppLabelColor),
+                            color: Color(AppColors.AppThemeColor),
                             size: ScreenUtil().setWidth(50),
                           ),
                           onPressed: () {
@@ -133,15 +133,15 @@ class _PhoneLogState extends State<PhoneLog> {
                           },
                         ),
                       )
-                    : new Container(),
+                    : Container(),
               ],
             ),
           ),
-          new Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              new Flexible(
-                child: new Container(
+              Flexible(
+                child: Container(
                   margin: EdgeInsets.only(
                     left: ScreenUtil().setWidth(100),
                     right: ScreenUtil().setWidth(100),
@@ -149,11 +149,11 @@ class _PhoneLogState extends State<PhoneLog> {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(AppColors.AppBlackColor2),
+                        color: Color(AppColors.AppSubtitleColor),
                       ),
                     ),
                   ),
-                  child: new TextField(
+                  child: TextField(
                     keyboardType: TextInputType.number,
                     controller: _controllerCode,
                     decoration: InputDecoration(
@@ -163,7 +163,7 @@ class _PhoneLogState extends State<PhoneLog> {
                       ),
                       labelText: '验证码',
                       labelStyle: TextStyle(
-                        color: Color(AppColors.AppTextColor1),
+                        color: Color(AppColors.AppTitleColor),
                         fontSize: ScreenUtil().setSp(42),
                         fontWeight: FontWeight.bold,
                       ),
@@ -175,20 +175,24 @@ class _PhoneLogState extends State<PhoneLog> {
                   ),
                 ),
               ),
-              new Container(
+              Container(
                 margin: EdgeInsets.only(right: ScreenUtil().setWidth(100)),
                 height: ScreenUtil().setWidth(110),
                 width: ScreenUtil().setWidth(400),
-                child: new RaisedButton(
+                child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
+                    borderRadius:
+                        BorderRadius.circular(AppStyle.appRadius * 40),
                   ),
-                  color: Color(AppColors.AppLabelColor),
-                  onPressed: _isNotCountDown && _controllerPhone.text.length != 0 ? _countDown : null,
-                  child: new Text(
+                  color: Color(AppColors.AppThemeColor),
+                  onPressed:
+                      _isNotCountDown && _controllerPhone.text.length != 0
+                          ? _countDown
+                          : null,
+                  child: Text(
                     _btnContent,
                     style: TextStyle(
-                      color: Color(AppColors.AppWhiteColor),
+                      color: Color(AppColors.AppMainColor),
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(42),
                     ),
@@ -197,21 +201,21 @@ class _PhoneLogState extends State<PhoneLog> {
               ),
             ],
           ),
-          new Container(
+          Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(100)),
             width: double.infinity,
             height: ScreenUtil().setWidth(150),
-            child: new FlatButton(
-              highlightColor: Color(AppColors.AppTranslateColor),
-              splashColor: Color(AppColors.AppTranslateColor),
+            child: FlatButton(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
               onPressed: () {
                 _controllerPage.jumpToPage(1);
               },
-              child: new Text(
+              child: Text(
                 '账号密码登录',
                 style: TextStyle(
-                  color: Color(AppColors.AppLabelColor),
+                  color: Color(AppColors.AppThemeColor),
                   fontWeight: FontWeight.bold,
                   fontSize: ScreenUtil().setSp(42),
                 ),
@@ -219,15 +223,22 @@ class _PhoneLogState extends State<PhoneLog> {
               padding: EdgeInsets.all(0),
             ),
           ),
-          new Container(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(260), right: ScreenUtil().setWidth(260)),
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(300), bottom: ScreenUtil().setWidth(60)),
-            child: new RaisedButton(
-              color: Color(AppColors.AppLabelColor),
+          Container(
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(260),
+                right: ScreenUtil().setWidth(260)),
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setWidth(300),
+                bottom: ScreenUtil().setWidth(60)),
+            child: RaisedButton(
+              color: Color(AppColors.AppThemeColor),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
-              onPressed: _controllerPhone.text.length == 0 || _controllerCode.text.length == 0 ? null : _logFunction,
+              onPressed: _controllerPhone.text.length == 0 ||
+                      _controllerCode.text.length == 0
+                  ? null
+                  : _logFunction,
               child: _buildProgress(_isProcess, '登录'),
             ),
           ),
@@ -238,17 +249,21 @@ class _PhoneLogState extends State<PhoneLog> {
 
   _buildProgress(bool p, String label) {
     return p
-        ? new Container(
-        alignment: Alignment.center,
-        child: SizedBox(
-            width: ScreenUtil().setWidth(50),
-            height: ScreenUtil().setWidth(50),
-            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white), strokeWidth: 2)))
-        : new Text(label,
-      style: TextStyle(
-        color: Color(AppColors.AppWhiteColor),
-        fontSize: ScreenUtil().setSp(42),
-        fontWeight: FontWeight.bold,
-      ),);
+        ? Container(
+            alignment: Alignment.center,
+            child: SizedBox(
+                width: ScreenUtil().setWidth(50),
+                height: ScreenUtil().setWidth(50),
+                child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                    strokeWidth: 2)))
+        : Text(
+            label,
+            style: TextStyle(
+              color: Color(AppColors.AppMainColor),
+              fontSize: ScreenUtil().setSp(42),
+              fontWeight: FontWeight.bold,
+            ),
+          );
   }
 }

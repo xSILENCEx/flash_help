@@ -11,7 +11,7 @@ class AccountLog extends StatefulWidget {
   const AccountLog({Key key, this.pageController}) : super(key: key);
 
   @override
-  _AccountLogState createState() => new _AccountLogState();
+  _AccountLogState createState() => _AccountLogState();
 }
 
 class _AccountLogState extends State<AccountLog> {
@@ -20,7 +20,7 @@ class _AccountLogState extends State<AccountLog> {
   TextEditingController _controllerAccount;
   TextEditingController _controllerPassword;
 
-  FocusNode _pswNode = new FocusNode();
+  FocusNode _pswNode = FocusNode();
 
   bool _isPswHide = true;
   bool _isProcess = false;
@@ -34,7 +34,7 @@ class _AccountLogState extends State<AccountLog> {
   _logFunction(String username, String password) async {
     bool log;
 
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
 
     setState(() {
       _isProcess = true;
@@ -57,8 +57,8 @@ class _AccountLogState extends State<AccountLog> {
 
   @override
   void initState() {
-    _controllerAccount = new TextEditingController();
-    _controllerPassword = new TextEditingController();
+    _controllerAccount = TextEditingController();
+    _controllerPassword = TextEditingController();
     super.initState();
   }
 
@@ -72,11 +72,11 @@ class _AccountLogState extends State<AccountLog> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Material(
+    return Material(
       child: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          new Container(
+          Container(
             margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(100),
               left: ScreenUtil().setWidth(100),
@@ -85,14 +85,14 @@ class _AccountLogState extends State<AccountLog> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(AppColors.AppBlackColor2),
+                  color: Color(AppColors.AppSubtitleColor),
                 ),
               ),
             ),
-            child: new Stack(
+            child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
-                new TextField(
+                TextField(
                   textInputAction: TextInputAction.next,
                   controller: _controllerAccount,
                   decoration: InputDecoration(
@@ -102,7 +102,7 @@ class _AccountLogState extends State<AccountLog> {
                     ),
                     labelText: '昵称/手机号/邮箱',
                     labelStyle: TextStyle(
-                      color: Color(AppColors.AppTextColor1),
+                      color: Color(AppColors.AppTitleColor),
                       fontSize: ScreenUtil().setSp(42),
                       fontWeight: FontWeight.bold,
                     ),
@@ -116,17 +116,18 @@ class _AccountLogState extends State<AccountLog> {
                   },
                 ),
                 _controllerAccount.text.length > 0
-                    ? new Container(
+                    ? Container(
                         width: ScreenUtil().setWidth(100),
                         height: ScreenUtil().setWidth(100),
-                        child: new FlatButton(
+                        child: FlatButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppStyle.appRadius * 20),
+                            borderRadius:
+                                BorderRadius.circular(AppStyle.appRadius * 20),
                           ),
                           padding: EdgeInsets.all(0),
-                          child: new Icon(
+                          child: Icon(
                             Icons.clear,
-                            color: Color(AppColors.AppLabelColor),
+                            color: Color(AppColors.AppThemeColor),
                             size: ScreenUtil().setWidth(50),
                           ),
                           onPressed: () {
@@ -135,11 +136,11 @@ class _AccountLogState extends State<AccountLog> {
                           },
                         ),
                       )
-                    : new Container(),
+                    : Container(),
               ],
             ),
           ),
-          new Container(
+          Container(
             margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(100),
               left: ScreenUtil().setWidth(100),
@@ -148,14 +149,14 @@ class _AccountLogState extends State<AccountLog> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(AppColors.AppBlackColor2),
+                  color: Color(AppColors.AppSubtitleColor),
                 ),
               ),
             ),
-            child: new Stack(
+            child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
-                new TextField(
+                TextField(
                   focusNode: _pswNode,
                   controller: _controllerPassword,
                   obscureText: _isPswHide,
@@ -166,7 +167,7 @@ class _AccountLogState extends State<AccountLog> {
                     ),
                     labelText: '密码',
                     labelStyle: TextStyle(
-                      color: Color(AppColors.AppTextColor1),
+                      color: Color(AppColors.AppTitleColor),
                       fontSize: ScreenUtil().setSp(42),
                       fontWeight: FontWeight.bold,
                     ),
@@ -176,17 +177,18 @@ class _AccountLogState extends State<AccountLog> {
                     setState(() {});
                   },
                 ),
-                new Container(
+                Container(
                   width: ScreenUtil().setWidth(100),
                   height: ScreenUtil().setWidth(100),
-                  child: new FlatButton(
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppStyle.appRadius * 20),
+                      borderRadius:
+                          BorderRadius.circular(AppStyle.appRadius * 20),
                     ),
                     padding: EdgeInsets.all(0),
-                    child: new Icon(
+                    child: Icon(
                       _isPswHide ? Icons.visibility : Icons.visibility_off,
-                      color: Color(AppColors.AppLabelColor),
+                      color: Color(AppColors.AppThemeColor),
                       size: ScreenUtil().setWidth(50),
                     ),
                     onPressed: () {
@@ -199,22 +201,22 @@ class _AccountLogState extends State<AccountLog> {
               ],
             ),
           ),
-          new Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Container(
+              Container(
                 margin: EdgeInsets.only(left: ScreenUtil().setWidth(100)),
                 height: ScreenUtil().setWidth(150),
-                child: new FlatButton(
-                  highlightColor: Color(AppColors.AppTranslateColor),
-                  splashColor: Color(AppColors.AppTranslateColor),
+                child: FlatButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onPressed: () {
                     _controllerPage.jumpToPage(0);
                   },
-                  child: new Text(
+                  child: Text(
                     '手机验证码登录',
                     style: TextStyle(
-                      color: Color(AppColors.AppLabelColor),
+                      color: Color(AppColors.AppThemeColor),
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(42),
                     ),
@@ -222,19 +224,19 @@ class _AccountLogState extends State<AccountLog> {
                   padding: EdgeInsets.all(0),
                 ),
               ),
-              new Container(
+              Container(
                 margin: EdgeInsets.only(right: ScreenUtil().setWidth(50)),
                 height: ScreenUtil().setWidth(150),
-                child: new FlatButton(
-                  highlightColor: Color(AppColors.AppTranslateColor),
-                  splashColor: Color(AppColors.AppTranslateColor),
+                child: FlatButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onPressed: () {
                     Toast.toast(context, '忘记密码');
                   },
-                  child: new Text(
+                  child: Text(
                     '忘记密码?',
                     style: TextStyle(
-                      color: Color(AppColors.AppLabelColor),
+                      color: Color(AppColors.AppThemeColor),
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(42),
                     ),
@@ -244,43 +246,52 @@ class _AccountLogState extends State<AccountLog> {
               ),
             ],
           ),
-          new Container(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(260), right: ScreenUtil().setWidth(260)),
-            margin: EdgeInsets.only(top: ScreenUtil().setWidth(120), bottom: ScreenUtil().setWidth(60)),
-            child: new RaisedButton(
-              color: Color(AppColors.AppLabelColor),
+          Container(
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(260),
+                right: ScreenUtil().setWidth(260)),
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setWidth(120),
+                bottom: ScreenUtil().setWidth(60)),
+            child: RaisedButton(
+              color: Color(AppColors.AppThemeColor),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
               ),
-              onPressed: _controllerAccount.text.length == 0 || _controllerPassword.text.length == 0
+              onPressed: _controllerAccount.text.length == 0 ||
+                      _controllerPassword.text.length == 0
                   ? null
                   : () async {
-                      await _logFunction(_controllerAccount.text, _controllerPassword.text);
+                      await _logFunction(
+                          _controllerAccount.text, _controllerPassword.text);
                     },
               child: _buildProgress(_isProcess, '登录'),
             ),
           ),
-          new Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Container(
+              Container(
                 width: ScreenUtil().setWidth(250),
-                height: ScreenUtil().setWidth(3),
-                color: Color(AppColors.AppTextColor1),
+                height: ScreenUtil().setWidth(1),
+                color: Color(AppColors.AppTitleColor),
                 margin: EdgeInsets.only(
                   top: ScreenUtil().setWidth(100),
                   bottom: ScreenUtil().setWidth(100),
                   right: ScreenUtil().setWidth(20),
                 ),
               ),
-              new Text(
+              Text(
                 '其它登录方式',
-                style: TextStyle(color: Color(AppColors.AppTextColor1), fontSize: ScreenUtil().setSp(35), fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Color(AppColors.AppTitleColor),
+                    fontSize: ScreenUtil().setSp(35),
+                    fontWeight: FontWeight.bold),
               ),
-              new Container(
+              Container(
                 width: ScreenUtil().setWidth(250),
-                height: ScreenUtil().setWidth(3),
-                color: Color(AppColors.AppTextColor1),
+                height: ScreenUtil().setWidth(1),
+                color: Color(AppColors.AppTitleColor),
                 margin: EdgeInsets.only(
                   top: ScreenUtil().setWidth(100),
                   bottom: ScreenUtil().setWidth(100),
@@ -289,24 +300,24 @@ class _AccountLogState extends State<AccountLog> {
               ),
             ],
           ),
-          new Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildOtherSignUpItem(
                 Icons.alternate_email,
-                Color(AppColors.AppLabelColor2),
+                Color(AppColors.AppThemeColor),
               ),
               _buildOtherSignUpItem(
                 Icons.audiotrack,
-                Color(AppColors.AppItemColor1),
+                Color(AppColors.AppThemeColor),
               ),
               _buildOtherSignUpItem(
                 Icons.beach_access,
-                Color(AppColors.AppItemColor2),
+                Color(AppColors.AppThemeColor),
               ),
               _buildOtherSignUpItem(
                 Icons.beenhere,
-                Color(AppColors.AppItemColor3),
+                Color(AppColors.AppThemeColor),
               ),
             ],
           ),
@@ -316,18 +327,18 @@ class _AccountLogState extends State<AccountLog> {
   }
 
   _buildOtherSignUpItem(IconData mIcon, Color mColor) {
-    return new Container(
+    return Container(
       width: ScreenUtil().setWidth(150),
       height: ScreenUtil().setWidth(150),
-      child: new FlatButton(
+      child: FlatButton(
         color: mColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
         ),
         onPressed: () async {},
-        child: new Icon(
+        child: Icon(
           mIcon,
-          color: Color(AppColors.AppWhiteColor),
+          color: Color(AppColors.AppMainColor),
           size: ScreenUtil().setWidth(60),
         ),
         padding: EdgeInsets.all(0),
@@ -338,16 +349,18 @@ class _AccountLogState extends State<AccountLog> {
 
   _buildProgress(bool p, String label) {
     return p
-        ? new Container(
+        ? Container(
             alignment: Alignment.center,
             child: SizedBox(
                 width: ScreenUtil().setWidth(50),
                 height: ScreenUtil().setWidth(50),
-                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white), strokeWidth: 2)))
-        : new Text(
+                child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                    strokeWidth: 2)))
+        : Text(
             label,
             style: TextStyle(
-              color: Color(AppColors.AppWhiteColor),
+              color: Color(AppColors.AppMainColor),
               fontSize: ScreenUtil().setSp(42),
               fontWeight: FontWeight.bold,
             ),
