@@ -242,9 +242,7 @@ class TaskItem extends StatelessWidget {
                   color: Color(AppColors.AppDeepColor),
                   image: DecorationImage(
                       image: AssetImage(_url), fit: BoxFit.cover),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(AppStyle.appRadius),
-                      topRight: Radius.circular(AppStyle.appRadius)),
+                  borderRadius: BorderRadius.circular(AppStyle.appRadius),
                 ),
                 margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
               ),
@@ -296,7 +294,14 @@ class TaskItem extends StatelessWidget {
                 ),
               ),
               new Text(
-                '   ￥$reward   ${Random().nextInt(999)}m',
+                '   ￥$reward   ',
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(40),
+                    color: Color(AppColors.AppDotColor),
+                    fontWeight: FontWeight.bold),
+              ),
+              new Text(
+                '距离：${Random().nextInt(999)}m',
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(40),
                     color: Color(AppColors.AppTitleColor),
@@ -307,7 +312,7 @@ class TaskItem extends StatelessWidget {
           new Container(
             width: double.infinity,
             height: ScreenUtil().setWidth(1),
-            color: Color(AppColors.AppSubtitleColor),
+            color: Color(AppColors.AppDeepColor),
             margin: EdgeInsets.only(
                 left: ScreenUtil().setWidth(50),
                 right: ScreenUtil().setWidth(50)),

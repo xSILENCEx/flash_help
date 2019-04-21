@@ -211,8 +211,8 @@ class _HomePageState extends State<HomePage>
             color: Color(AppColors.AppThemeColor),
             boxShadow: [
               BoxShadow(
-                color: Color(AppColors.AppThemeColor),
-                offset: Offset(1, 1),
+                color: Color(AppColors.AppThemeColor - 0x33FFFFFF),
+                offset: Offset(0, 2),
                 blurRadius: 4.0,
               ),
             ],

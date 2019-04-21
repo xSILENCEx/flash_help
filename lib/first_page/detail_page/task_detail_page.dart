@@ -65,7 +65,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
-              size: ScreenUtil().setWidth(60),
+              size: ScreenUtil().setWidth(50),
               color: Color(AppColors.AppTitleColor),
             ),
             onPressed: () {
@@ -76,7 +76,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             '￥$_reward',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(55),
+              fontSize: ScreenUtil().setSp(50),
               color: Color(AppColors.AppTitleColor),
             ),
           ),
@@ -84,7 +84,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             IconButton(
               icon: Icon(
                 Icons.more_vert,
-                size: ScreenUtil().setWidth(60),
+                size: ScreenUtil().setWidth(54),
                 color: Color(AppColors.AppTitleColor),
               ),
               onPressed: () {
@@ -110,25 +110,39 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                       image: AssetImage(AppStyle.userPicture1),
                       fit: BoxFit.cover,
                     ),
-                    border: Border.all(
-                        color: Color(AppColors.AppMainColor), width: 2),
                   ),
                 ),
               ),
               title: Text(
                 _name,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(AppColors.AppTitleColor),
+                ),
               ),
-              subtitle: Text('这个人很懒，什么都没有留下'),
+              subtitle: Text(
+                '这个人很懒，什么都没有留下',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Color(AppColors.AppSubtitleColor),
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
               trailing: Container(
                 padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
-                child: Text('在线',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: ScreenUtil().setSp(35))),
+                child: Text(
+                  '在线',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: ScreenUtil().setSp(35),
+                  ),
+                ),
                 decoration: BoxDecoration(
-                    color: Color(AppColors.AppThemeColor),
-                    borderRadius:
-                        BorderRadius.circular(AppStyle.appRadius / 4)),
+                  color: Color(AppColors.AppThemeColor),
+                  borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
+                ),
               ),
               contentPadding: EdgeInsets.only(
                 left: ScreenUtil().setWidth(20),
@@ -246,7 +260,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               color: Color(AppColors.AppMainColor),
               fontSize: ScreenUtil().setSp(35))),
       decoration: BoxDecoration(
-        color: Color(AppColors.AppThemeColor2),
+        color: Color(AppColors.AppDotColor),
         borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
       ),
       margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
@@ -261,14 +275,23 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     var _pickTime = DateTime.now();
     return Container(
       color: Color(AppColors.AppMainColor),
-      padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+      padding: EdgeInsets.only(
+        left: ScreenUtil().setWidth(30),
+        right: ScreenUtil().setWidth(30),
+        top: ScreenUtil().setWidth(30),
+        bottom: ScreenUtil().setWidth(50),
+      ),
       child: Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(20)),
             child: Text(
               '任务标题  任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务',
-              style: TextStyle(fontSize: ScreenUtil().setSp(36)),
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(36),
+                color: Color(AppColors.AppSubtitleColor),
+              ),
             ),
             decoration: BoxDecoration(
               color: Color(AppColors.AppDeepColor),
@@ -281,14 +304,15 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 '现金任务',
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(40),
+                  color: Color(AppColors.AppTitleColor),
                 ),
               ),
               Flexible(
                 child: Container(
                   margin: EdgeInsets.only(
                     left: ScreenUtil().setWidth(20),
-                    top: ScreenUtil().setWidth(10),
-                    bottom: ScreenUtil().setWidth(10),
+                    top: ScreenUtil().setWidth(20),
+                    bottom: ScreenUtil().setWidth(20),
                   ),
                   alignment: Alignment.center,
                   height: ScreenUtil().setWidth(120),
@@ -310,7 +334,13 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('截止时间', style: TextStyle(fontSize: ScreenUtil().setSp(40))),
+              Text(
+                '截止时间',
+                style: TextStyle(
+                  color: Color(AppColors.AppTitleColor),
+                  fontSize: ScreenUtil().setSp(40),
+                ),
+              ),
               _dateBuilder(_pickTime, ScreenUtil().setSp(40)),
             ],
           ),
@@ -327,13 +357,18 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           '${date.hour.toString().padLeft(2, '0')}:'
           '${date.minute.toString().padLeft(2, '0')}:'
           '${date.second.toString().padLeft(2, '0')}',
-      style: TextStyle(fontSize: fontSize),
+      style: TextStyle(
+        fontSize: fontSize,
+        color: Color(
+          AppColors.AppSubtitleColor,
+        ),
+      ),
     );
   }
 
   _buildInterval() {
     return Container(
-      height: 20,
+      height: ScreenUtil().setWidth(30),
       color: Color(AppColors.AppDeepColor),
     );
   }

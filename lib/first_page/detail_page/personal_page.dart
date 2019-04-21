@@ -214,7 +214,7 @@ class _PersonalPageState extends State<PersonalPage> {
           icon: Icon(
             Icons.arrow_back_ios,
             color: Color(AppColors.AppMainColor),
-            size: ScreenUtil().setWidth(60),
+            size: ScreenUtil().setWidth(50),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -232,7 +232,7 @@ class _PersonalPageState extends State<PersonalPage> {
             icon: Icon(
               Icons.more_vert,
               color: Color(AppColors.AppMainColor),
-              size: ScreenUtil().setWidth(60),
+              size: ScreenUtil().setWidth(54),
             ),
             onPressed: () {
               _showMoreFunctions(context);
