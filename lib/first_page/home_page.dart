@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage>
           '排行',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            height: ScreenUtil().setSp(2),
           ),
         ),
       ),
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage>
           '悬赏',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            height: ScreenUtil().setSp(2),
           ),
         ),
       ),
@@ -73,11 +75,11 @@ class _HomePageState extends State<HomePage>
             ),
             Container(
               padding: EdgeInsets.only(
-                left: ScreenUtil().setWidth(20),
-                top: ScreenUtil().setWidth(44),
-                bottom: ScreenUtil().setWidth(36),
+                left: ScreenUtil().setWidth(40),
+                top: ScreenUtil().setWidth(34),
+                bottom: ScreenUtil().setWidth(30),
               ),
-              width: ScreenUtil().setWidth(360),
+              width: ScreenUtil().setWidth(400),
               child: TabBar(
                 controller: _tabController,
                 labelPadding: EdgeInsets.only(top: ScreenUtil().setWidth(10)),
@@ -126,9 +128,9 @@ class _HomePageState extends State<HomePage>
 
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     final List<String> _sweeperUrl = [
-      'http://img4.333cn.com/img333cn/2018/05/16/1526457986805.jpg',
-      'http://img4.333cn.com/img333cn/2018/05/16/1526457993890.jpg',
-      'http://img4.333cn.com/img333cn/2018/05/16/1526457989896.jpg'
+      'images/car.jpg',
+      'images/sun.jpg',
+      'images/pen.jpg'
     ];
     return <Widget>[
       SliverAppBar(
@@ -158,7 +160,9 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     width: double.infinity,
                     height: double.infinity,
-                    margin: EdgeInsets.all(ScreenUtil().setWidth(40)),
+                    margin: EdgeInsets.only(
+                        top: ScreenUtil().setWidth(10),
+                        bottom: ScreenUtil().setWidth(30)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(AppStyle.appRadius),
                       child: Swiper(
@@ -173,12 +177,15 @@ class _HomePageState extends State<HomePage>
                               borderRadius:
                                   BorderRadius.circular(AppStyle.appRadius),
                               image: DecorationImage(
-                                image: NetworkImage(_sweeperUrl[index]),
+                                image: AssetImage(_sweeperUrl[index]),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           );
                         },
+                        itemWidth: double.infinity,
+                        itemHeight: double.infinity,
+                        layout: SwiperLayout.TINDER,
                       ),
                     ),
                   ),

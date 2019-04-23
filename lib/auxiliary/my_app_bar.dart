@@ -50,7 +50,7 @@ class _MyAppBar extends State<MyAppBar> with TickerProviderStateMixin {
               index: 1,
               icon: Boxicons.bxCompass,
               actIcon: Boxicons.bxsCompass,
-              title: '附近',
+              title: '发现',
               controller: _controller,
               onPressed: () {
                 _controller.jumpToPage(1);

@@ -17,7 +17,7 @@ class AppColors {
   static const DTitleColor = 0xFF999999;
   static const LSubtitleColor = 0xFF999999;
   static const DSubtitleColor = 0xFF666666;
-  static const DotColor1 = 0xFF835AE2;
+  static const DotColor1 = 0xFF8D6AEA;
   static const DotColor2 = 0xFFEDEDED;
 
   static int AppDeepColor = LDeepColor;

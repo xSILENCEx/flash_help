@@ -256,7 +256,7 @@ class TaskItem extends StatelessWidget {
             child: new Text(
               '任务标题  任务简介任务简介介任务简介任务简介介任务简介介介任务简介介任务简介任务简介任介任任务简介任务简介任任务简务简介任务简介任务简介任务简介任务简介任务简介任务简介任务',
               style: TextStyle(
-                  fontSize: ScreenUtil().setSp(38),
+                  fontSize: ScreenUtil().setSp(34),
                   color: Color(AppColors.AppSubtitleColor)),
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
@@ -276,9 +276,6 @@ class TaskItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Color(AppColors.AppDeepColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-                  border: Border.all(
-                    color: Color(AppColors.AppSubtitleColor),
-                  ),
                   image: DecorationImage(
                     image: AssetImage(AppStyle.userPicture1),
                     fit: BoxFit.cover,
@@ -289,21 +286,21 @@ class TaskItem extends StatelessWidget {
                 '信用度 ${Random().nextInt(999)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(40),
+                  fontSize: ScreenUtil().setSp(34),
                   color: Color(AppColors.AppTitleColor),
                 ),
               ),
               new Text(
                 '   ￥$reward   ',
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(40),
+                    fontSize: ScreenUtil().setSp(34),
                     color: Color(AppColors.AppDotColor),
                     fontWeight: FontWeight.bold),
               ),
               new Text(
                 '距离：${Random().nextInt(999)}m',
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(40),
+                    fontSize: ScreenUtil().setSp(34),
                     color: Color(AppColors.AppTitleColor),
                     fontWeight: FontWeight.bold),
               ),

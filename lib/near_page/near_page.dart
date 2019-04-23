@@ -18,12 +18,6 @@ class NearPage extends StatefulWidget {
 }
 
 class _NearPageState extends State<NearPage> {
-  final List<String> _sweeperUrl = [
-    'http://img02.sogoucdn.com/app/a/200716/34a5d3dcd1e4a161467d6255e61b2652',
-    'http://tc.sinaimg.cn/maxwidth.800/tc.service.weibo.com/mmbiz_qpic_cn/e097afcb83c69e3f0af7b677e19bfa04.jpg',
-    'http://img.mp.itc.cn/upload/20160825/1d77345e8fe84a6280ec74bc7db885ab_th.jpg'
-  ];
-
   int _personNum = 5;
 
   @override
@@ -47,9 +41,193 @@ class _NearPageState extends State<NearPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(AppColors.AppDeepColor),
-      appBar: AppBar(
-        leading: null,
-        elevation: 0.0,
+      body: NestedScrollView(
+        controller: ScrollController(),
+        headerSliverBuilder: _buildSliver,
+        body: RefreshIndicator(
+          child: ListView(
+            padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
+            children: <Widget>[
+              Material(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Boxicons.bxBullseye,
+                            size: ScreenUtil().setWidth(60),
+                            color: Color(AppColors.AppTitleColor),
+                          ),
+                          Text(
+                            ' 附近的人',
+                            style: TextStyle(
+                              color: Color(AppColors.AppTitleColor),
+                              fontSize: ScreenUtil().setSp(40),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      leading: null,
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: ScreenUtil().setWidth(45),
+                        color: Color(AppColors.AppTitleColor),
+                      ),
+                      contentPadding: EdgeInsets.only(
+                        right: ScreenUtil().setWidth(40),
+                        left: ScreenUtil().setWidth(40),
+                        top: ScreenUtil().setWidth(20),
+                        bottom: ScreenUtil().setWidth(20),
+                      ),
+                      dense: true,
+                      onTap: () {
+                        Toast.toast(context, '查看更多');
+                      },
+                    ),
+                    Container(
+                      height: ScreenUtil().setWidth(360),
+                      width: double.infinity,
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(
+                          left: ScreenUtil().setWidth(20),
+                        ),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: _personNum,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PersonItem(
+                            index: index,
+                            name: WordPair.random().asPascalCase,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                color: Color(AppColors.AppMainColor),
+              ),
+              Material(
+                color: Color(AppColors.AppMainColor),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(
+                            Boxicons.bxDollarCircle,
+                            size: ScreenUtil().setWidth(60),
+                            color: Color(AppColors.AppTitleColor),
+                          ),
+                          Text(
+                            ' 附近的悬赏',
+                            style: TextStyle(
+                              color: Color(AppColors.AppTitleColor),
+                              fontSize: ScreenUtil().setSp(40),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      leading: null,
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: ScreenUtil().setWidth(45),
+                        color: Color(AppColors.AppTitleColor),
+                      ),
+                      contentPadding: EdgeInsets.only(
+                        right: ScreenUtil().setWidth(40),
+                        left: ScreenUtil().setWidth(40),
+                        top: ScreenUtil().setWidth(20),
+                        bottom: ScreenUtil().setWidth(20),
+                      ),
+                      dense: true,
+                      onTap: () {
+                        Toast.toast(context, '查看更多');
+                      },
+                    ),
+                    Container(
+                      height: ScreenUtil().setWidth(780),
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(
+                          left: ScreenUtil().setWidth(20),
+                        ),
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return TaskItem(
+                            index: index,
+                            reward: Random().nextInt(999).toDouble(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Color(AppColors.AppMainColor),
+                child: ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(
+                        Boxicons.bxGroup,
+                        size: ScreenUtil().setWidth(60),
+                        color: Color(AppColors.AppTitleColor),
+                      ),
+                      Text(
+                        ' 闪友动态',
+                        style: TextStyle(
+                          color: Color(AppColors.AppTitleColor),
+                          fontSize: ScreenUtil().setSp(40),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  leading: null,
+                  contentPadding: EdgeInsets.only(
+                    right: ScreenUtil().setWidth(40),
+                    left: ScreenUtil().setWidth(40),
+                    top: ScreenUtil().setWidth(20),
+                    bottom: ScreenUtil().setWidth(20),
+                  ),
+                  dense: true,
+                ),
+              ),
+              ListView.separated(
+                padding: EdgeInsets.all(0),
+                itemCount: 4,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildLifeItem();
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: ScreenUtil().setWidth(20),
+                  );
+                },
+              ),
+            ],
+          ),
+          onRefresh: _onRefresh,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildSliver(BuildContext context, bool innerBoxIsScrolled) {
+    final List<String> _sweeperUrl = [
+      'images/book.jpeg',
+      'images/black.jpg',
+      'images/coffee.JPEG'
+    ];
+    return <Widget>[
+      SliverAppBar(
         title: Text(
           '附近',
           style: TextStyle(
@@ -77,155 +255,184 @@ class _NearPageState extends State<NearPage> {
             },
           ),
         ],
-      ),
-      body: RefreshIndicator(
-        child: ListView(
-          padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(5),
-              width: double.infinity,
-              height: ScreenUtil().setHeight(360),
-              child: Swiper(
-                itemCount: _sweeperUrl.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color(AppColors.AppMainColor),
-                      borderRadius: BorderRadius.circular(AppStyle.appRadius),
-                      image: DecorationImage(
-                          image: NetworkImage(_sweeperUrl[index]),
-                          fit: BoxFit.cover),
-                    ),
-                  );
-                },
-                autoplay: true,
-              ),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(30),
-            ),
-            Material(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      '附近的人',
-                      style: TextStyle(
-                        color: Color(AppColors.AppTitleColor),
-                        fontSize: ScreenUtil().setSp(40),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    leading: null,
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: ScreenUtil().setWidth(45),
-                      color: Color(AppColors.AppTitleColor),
-                    ),
-                    contentPadding: EdgeInsets.only(
-                      right: ScreenUtil().setWidth(20),
-                      left: ScreenUtil().setWidth(20),
-                    ),
-                    dense: true,
-                    onTap: () {
-                      Toast.toast(context, '查看更多');
-                    },
-                  ),
-                  Container(
-                    height: ScreenUtil().setWidth(360),
-                    width: double.infinity,
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
-                      physics: BouncingScrollPhysics(),
-                      itemCount: _personNum,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PersonItem(
-                            index: index, name: WordPair.random().asPascalCase);
-                      },
-                    ),
-                  ),
+        expandedHeight: ScreenUtil().setHeight(800),
+        elevation: 0.0,
+        floating: false,
+        pinned: true,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Container(
+            width: double.infinity,
+            height: ScreenUtil().setHeight(800),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(AppColors.AppThemeColor),
+                  Color(AppColors.AppMainColor),
                 ],
-              ),
-              color: Color(AppColors.AppMainColor),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(30),
-            ),
-            Material(
-              color: Color(AppColors.AppMainColor),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      '附近的悬赏',
-                      style: TextStyle(
-                        color: Color(AppColors.AppTitleColor),
-                        fontSize: ScreenUtil().setSp(40),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    leading: null,
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: ScreenUtil().setWidth(45),
-                      color: Color(AppColors.AppTitleColor),
-                    ),
-                    contentPadding: EdgeInsets.only(
-                      right: ScreenUtil().setWidth(20),
-                      left: ScreenUtil().setWidth(20),
-                    ),
-                    dense: true,
-                    onTap: () {
-                      Toast.toast(context, '查看更多');
-                    },
-                  ),
-                  Container(
-                    height: ScreenUtil().setWidth(780),
-                    child: ListView.builder(
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return TaskItem(
-                            index: index,
-                            reward: Random().nextInt(999).toDouble());
-                      },
-                    ),
-                  ),
-                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            Container(
-              height: ScreenUtil().setWidth(30),
+            child: Swiper(
+              itemCount: _sweeperUrl.length,
+              scale: 0.6,
+              viewportFraction: 1.2,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppMainColor),
+                    image: DecorationImage(
+                      image: AssetImage(_sweeperUrl[index]),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius),
+                  ),
+                );
+              },
+              pagination: SwiperPagination(),
             ),
-            ListView.builder(
-                itemCount: 4,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildAddItem();
-                }),
-          ],
+          ),
         ),
-        onRefresh: _onRefresh,
       ),
-    );
+    ];
   }
 
-  _buildAddItem() {
+  _buildLifeItem() {
     return Container(
-      height: ScreenUtil().setHeight(360),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Color(AppColors.AppMainColor),
-        borderRadius: BorderRadius.circular(AppStyle.appRadius),
+      padding: EdgeInsets.only(
+        top: ScreenUtil().setWidth(20),
       ),
-      margin: EdgeInsets.all(5),
-      child: Center(child: Text('活动广告位')),
+      color: Color(AppColors.AppMainColor),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Container(
+              width: ScreenUtil().setWidth(100),
+              height: ScreenUtil().setWidth(100),
+              decoration: BoxDecoration(
+                color: Color(AppColors.AppDeepColor),
+                borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
+              ),
+            ),
+            title: Text(
+              '用户昵称',
+              style: TextStyle(
+                color: Color(AppColors.AppTitleColor),
+                fontSize: ScreenUtil().setSp(32),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              '发布于xxxxxxxxxxxxxx',
+              style: TextStyle(
+                color: Color(AppColors.AppTitleColor),
+                fontSize: ScreenUtil().setSp(30),
+              ),
+            ),
+            trailing: Container(
+              width: ScreenUtil().setWidth(120),
+              height: ScreenUtil().setWidth(60),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
+                ),
+                padding: EdgeInsets.all(0),
+                color: Color(AppColors.AppThemeColor),
+                child: Text(
+                  '关注',
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(28),
+                    color: Color(AppColors.AppMainColor),
+                  ),
+                ),
+                onPressed: () {
+                  Toast.toast(context, '关注');
+                },
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: ScreenUtil().setWidth(50),
+              right: ScreenUtil().setWidth(50),
+            ),
+            child: Text(
+              '这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容',
+              style: TextStyle(
+                color: Color(AppColors.AppTitleColor),
+                fontSize: ScreenUtil().setSp(34),
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: ScreenUtil().setWidth(50),
+              right: ScreenUtil().setWidth(50),
+            ),
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisSpacing: ScreenUtil().setWidth(10),
+                mainAxisSpacing: ScreenUtil().setWidth(10),
+                crossAxisCount: 3,
+              ),
+              itemCount: 9,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppDeepColor),
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius / 2),
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: ScreenUtil().setWidth(2),
+            color: Color(AppColors.AppDeepColor),
+            margin: EdgeInsets.only(
+              top: ScreenUtil().setWidth(60),
+              left: ScreenUtil().setWidth(80),
+              right: ScreenUtil().setWidth(80),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Boxicons.bxLike,
+                  size: ScreenUtil().setWidth(56),
+                  color: Color(AppColors.AppSubtitleColor),
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  Boxicons.bxMessage,
+                  size: ScreenUtil().setWidth(56),
+                  color: Color(AppColors.AppSubtitleColor),
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  Boxicons.bxShare,
+                  size: ScreenUtil().setWidth(56),
+                  color: Color(AppColors.AppSubtitleColor),
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -286,7 +493,7 @@ class TaskItem extends StatelessWidget {
               child: Text(
                 '任务标题  任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介任务简介',
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(38),
+                    fontSize: ScreenUtil().setSp(34),
                     color: Color(AppColors.AppSubtitleColor)),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -306,9 +513,6 @@ class TaskItem extends StatelessWidget {
                     color: Color(AppColors.AppDeepColor),
                     borderRadius:
                         BorderRadius.circular(AppStyle.appRadius * 40),
-                    border: Border.all(
-                      color: Color(AppColors.AppSubtitleColor),
-                    ),
                     image: DecorationImage(
                       image: AssetImage(AppStyle.userPicture1),
                       fit: BoxFit.cover,
@@ -320,15 +524,15 @@ class TaskItem extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(AppColors.AppTitleColor),
-                    fontSize: ScreenUtil().setSp(40),
+                    fontSize: ScreenUtil().setSp(34),
                   ),
                 ),
                 Text(
                   '  ￥$reward',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(AppColors.AppTitleColor),
-                    fontSize: ScreenUtil().setSp(40),
+                    color: Color(AppColors.AppDotColor),
+                    fontSize: ScreenUtil().setSp(34),
                   ),
                 ),
               ],

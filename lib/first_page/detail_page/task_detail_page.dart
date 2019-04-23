@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:boxicons_flutter/boxicons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_help/auxiliary/content.dart';
 import 'package:flash_help/auxiliary/toast.dart';
@@ -57,11 +58,12 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
+        backgroundColor: Color(AppColors.AppDeepColor),
         appBar: AppBar(
           backgroundColor: Color(AppColors.AppMainColor),
           brightness: Brightness.light,
           centerTitle: true,
-          elevation: 0.5,
+          elevation: 0.0,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
@@ -95,78 +97,82 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
         ),
         body: ListView(
           children: <Widget>[
-            ListTile(
-              dense: true,
-              leading: Hero(
-                tag: 'headpicture',
-                child: Container(
-                  width: ScreenUtil().setWidth(140),
-                  height: ScreenUtil().setWidth(140),
-                  decoration: BoxDecoration(
-                    color: Color(AppColors.AppDeepColor),
-                    borderRadius:
-                        BorderRadius.circular(AppStyle.appRadius * 40),
-                    image: DecorationImage(
-                      image: AssetImage(AppStyle.userPicture1),
-                      fit: BoxFit.cover,
+            Container(
+              color: Color(AppColors.AppMainColor),
+              child: ListTile(
+                dense: true,
+                leading: Hero(
+                  tag: 'headpicture',
+                  child: Container(
+                    width: ScreenUtil().setWidth(140),
+                    height: ScreenUtil().setWidth(140),
+                    decoration: BoxDecoration(
+                      color: Color(AppColors.AppDeepColor),
+                      borderRadius:
+                          BorderRadius.circular(AppStyle.appRadius * 40),
+                      image: DecorationImage(
+                        image: AssetImage(AppStyle.userPicture1),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              title: Text(
-                _name,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(AppColors.AppTitleColor),
-                ),
-              ),
-              subtitle: Text(
-                '这个人很懒，什么都没有留下',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Color(AppColors.AppSubtitleColor),
-                  fontSize: ScreenUtil().setSp(35),
-                ),
-              ),
-              trailing: Container(
-                padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
-                child: Text(
-                  '在线',
+                title: Text(
+                  _name,
                   style: TextStyle(
-                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppColors.AppTitleColor),
+                  ),
+                ),
+                subtitle: Text(
+                  '这个人很懒，什么都没有留下',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Color(AppColors.AppSubtitleColor),
                     fontSize: ScreenUtil().setSp(35),
                   ),
                 ),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppThemeColor),
-                  borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
+                trailing: Container(
+                  padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                  child: Text(
+                    '在线',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil().setSp(35),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppThemeColor),
+                    borderRadius: BorderRadius.circular(AppStyle.appRadius / 4),
+                  ),
                 ),
+                contentPadding: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(20),
+                  right: ScreenUtil().setWidth(20),
+                  top: ScreenUtil().setWidth(10),
+                  bottom: ScreenUtil().setWidth(10),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                    return PersonalPage(
+                      headTag: 'headpicture',
+                      name: _name,
+                      headUrl: null,
+                    );
+                  }));
+                },
               ),
-              contentPadding: EdgeInsets.only(
-                left: ScreenUtil().setWidth(20),
-                right: ScreenUtil().setWidth(20),
-                top: ScreenUtil().setWidth(10),
-                bottom: ScreenUtil().setWidth(10),
-              ),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                  return PersonalPage(
-                    headTag: 'headpicture',
-                    name: _name,
-                    headUrl: null,
-                  );
-                }));
-              },
             ),
-            _buildInterval(),
             _buildTaskDetailItem(),
-            _buildInterval(),
             Container(
               color: Color(AppColors.AppMainColor),
               height: ScreenUtil().setWidth(600),
-              padding: EdgeInsets.only(top: 10, bottom: 10),
+              padding: EdgeInsets.only(
+                  top: ScreenUtil().setWidth(30),
+                  bottom: ScreenUtil().setWidth(30)),
+              margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(30)),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -182,7 +188,6 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 },
               ),
             ),
-            _buildInterval(),
             Container(
               child: ListView.separated(
                 padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(100)),
@@ -195,7 +200,10 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 separatorBuilder: (BuildContext context, int index) {
                   return Container(
                     color: Color(AppColors.AppDeepColor),
-                    height: ScreenUtil().setWidth(4),
+                    height: ScreenUtil().setWidth(2),
+                    margin: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(30),
+                        right: ScreenUtil().setWidth(30)),
                   );
                 },
               ),
@@ -280,6 +288,10 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
         right: ScreenUtil().setWidth(30),
         top: ScreenUtil().setWidth(30),
         bottom: ScreenUtil().setWidth(50),
+      ),
+      margin: EdgeInsets.only(
+        top: ScreenUtil().setWidth(30),
+        bottom: ScreenUtil().setWidth(30),
       ),
       child: Column(
         children: <Widget>[
@@ -366,82 +378,86 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     );
   }
 
-  _buildInterval() {
-    return Container(
-      height: ScreenUtil().setWidth(30),
-      color: Color(AppColors.AppDeepColor),
-    );
-  }
-
   _buildTalkItem(int index) {
-    return ListTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: ScreenUtil().setWidth(80),
-                height: ScreenUtil().setWidth(80),
-                margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
-                decoration: BoxDecoration(
-                  color: Color(AppColors.AppDeepColor),
-                  borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-                  border: Border.all(
-                    color: Color(AppColors.AppSubtitleColor),
+    return Container(
+      padding: EdgeInsets.only(
+        top: ScreenUtil().setWidth(20),
+        bottom: ScreenUtil().setWidth(20),
+      ),
+      color: Color(AppColors.AppMainColor),
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: ScreenUtil().setWidth(80),
+                  height: ScreenUtil().setWidth(80),
+                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
+                  decoration: BoxDecoration(
+                    color: Color(AppColors.AppDeepColor),
+                    borderRadius:
+                        BorderRadius.circular(AppStyle.appRadius * 40),
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '留言用户$index',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '留言用户$index',
+                      style: TextStyle(
+                        color: Color(AppColors.AppTitleColor),
+                        fontWeight: FontWeight.bold,
+                        fontSize: ScreenUtil().setSp(30),
+                      ),
                     ),
-                  ),
-                  _dateBuilder(DateTime.now(), ScreenUtil().setSp(32)),
-                ],
-              ),
-            ],
-          ),
-          Container(
-            width: ScreenUtil().setWidth(120),
-            height: ScreenUtil().setWidth(60),
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
-              ),
-              padding: EdgeInsets.all(0),
-              color: Color(AppColors.AppThemeColor),
-              child: Text(
-                '关注',
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(28),
-                  color: Color(AppColors.AppMainColor),
+                    _dateBuilder(DateTime.now(), ScreenUtil().setSp(32)),
+                  ],
                 ),
+              ],
+            ),
+            Container(
+              width: ScreenUtil().setWidth(120),
+              height: ScreenUtil().setWidth(60),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
+                ),
+                padding: EdgeInsets.all(0),
+                color: Color(AppColors.AppThemeColor),
+                child: Text(
+                  '关注',
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(28),
+                    color: Color(AppColors.AppMainColor),
+                  ),
+                ),
+                onPressed: () {
+                  Toast.toast(context, '关注$index');
+                },
               ),
-              onPressed: () {},
+            ),
+          ],
+        ),
+        subtitle: Container(
+          margin: EdgeInsets.only(top: ScreenUtil().setWidth(40)),
+          padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+          child: Text(
+            '哈哈哈哈哈哈哈嘎嘎嘎嘎嘎嘎啊嘎嘎嘎嘎哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈，这是什么沙雕软件',
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(38),
+              color: Color(AppColors.AppSubtitleColor),
             ),
           ),
-        ],
-      ),
-      subtitle: Container(
-        margin: EdgeInsets.only(top: ScreenUtil().setWidth(20)),
-        padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
-        child: Text(
-          '哈哈哈哈哈哈哈嘎嘎嘎嘎嘎嘎啊嘎嘎嘎嘎哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈，这是什么沙雕软件',
-          style: TextStyle(fontSize: ScreenUtil().setSp(38)),
+          decoration: BoxDecoration(
+            color: Color(AppColors.AppDeepColor),
+            borderRadius: BorderRadius.circular(AppStyle.appRadius),
+          ),
         ),
-        decoration: BoxDecoration(
-          color: Color(AppColors.AppDeepColor),
-          borderRadius: BorderRadius.circular(AppStyle.appRadius),
-        ),
+        contentPadding: EdgeInsets.all(ScreenUtil().setWidth(30)),
       ),
-      contentPadding: EdgeInsets.all(ScreenUtil().setWidth(30)),
     );
   }
 }
@@ -625,6 +641,7 @@ class _ThreeStateFabState extends State<ThreeStateFab>
       animation: _animationController,
       builder: (BuildContext context, Widget child) {
         return FloatingActionButton(
+          backgroundColor: Color(AppColors.AppThemeColor),
           onPressed: () async {
             if (AppInfo.getLogFlag()) {
               if (_isAccept)
@@ -679,7 +696,7 @@ class _ThreeStateFabState extends State<ThreeStateFab>
             valueColor: AlwaysStoppedAnimation(
               color.value,
             ),
-            strokeWidth: 3),
+            strokeWidth: 2),
       ),
     );
   }
@@ -723,10 +740,10 @@ class _BottomItemsState extends State<BottomItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.thumb_up,
+                    Icon(_isLiked ? Boxicons.bxsLike : Boxicons.bxLike,
                         color: Color(_isLiked
                             ? AppColors.AppThemeColor
-                            : AppColors.AppTitleColor),
+                            : AppColors.AppSubtitleColor),
                         size: ScreenUtil().setWidth(50)),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',

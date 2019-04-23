@@ -28,7 +28,10 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 2160)..init(context);
+    ScreenUtil.instance = ScreenUtil(
+        width: window.physicalSize.width.toInt(),
+        height: window.physicalSize.height.toInt())
+      ..init(context);
     DateTime _lastPressedAt;
     return WillPopScope(
       onWillPop: () async {
@@ -303,9 +306,9 @@ class _ToolItemState extends State<ToolItem> {
     Icons.brightness_4,
     Icons.color_lens,
     Boxicons.bxFullscreen,
-    Icons.share,
-    Icons.cancel,
-    Icons.edit,
+    Boxicons.bxsEdit,
+    Boxicons.bxsShareAlt,
+    Boxicons.bxXCircle,
   ];
   List<String> _titles = [
     '发布悬赏',
@@ -313,9 +316,9 @@ class _ToolItemState extends State<ToolItem> {
     '夜间模式',
     '主题颜色',
     '扫一扫',
+    '发布动态',
     '分享软件',
-    '退出软件',
-    '编辑'
+    '退出软件'
   ];
   String _barcode = "";
 
