@@ -586,8 +586,6 @@ class PersonItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Color(AppColors.AppMainColor),
                   borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),
-                  border: Border.all(
-                      color: Color(AppColors.AppSubtitleColor), width: 2),
                   image: DecorationImage(
                     image: AssetImage(AppStyle.userPicture2),
                     fit: BoxFit.cover,

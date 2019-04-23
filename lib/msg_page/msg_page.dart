@@ -9,6 +9,7 @@ import 'package:flash_help/auxiliary/search_bar.dart';
 import 'package:flash_help/auxiliary/toast.dart';
 import 'package:flash_help/basic_functions/chat_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MsgPage extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     _wordsData.insertAll(_wordsData.length - 1,
-        generateWordPairs().take(20).map((e) => e.asPascalCase).toList());
+        generateWordPairs().take(12).map((e) => e.asPascalCase).toList());
     super.initState();
   }
 
@@ -75,10 +76,19 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: ListView.separated(
+          shrinkWrap: true,
           padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(250)),
           itemCount: _wordsData.length,
           itemBuilder: (BuildContext context, int index) {
-            return _buildMsgBox(_wordsData[index], index + 1);
+            return MsgBox(
+              item: _wordsData[index],
+              index: index,
+              onTap: () {
+                _wordsData.removeAt(index);
+                Toast.toast(context, '删除成功');
+                setState(() {});
+              },
+            );
           },
           separatorBuilder: (BuildContext context, int index) {
             return Container(
@@ -94,13 +104,30 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  _buildMsgBox(String item, int index) {
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+}
+
+class MsgBox extends StatefulWidget {
+  final String item;
+  final int index;
+  final VoidCallback onTap;
+
+  const MsgBox({Key key, this.item, this.index, this.onTap}) : super(key: key);
+
+  @override
+  _MsgBoxState createState() => _MsgBoxState();
+}
+
+class _MsgBoxState extends State<MsgBox> {
+  @override
+  Widget build(BuildContext context) {
     return Hero(
-      tag: 'chatitem$index',
-      child: Dismissible(
-        key: Key(item),
+      tag: 'chatitem${widget.index}',
+      child: Slidable(
+        key: Key(widget.item),
         child: Material(
-          color: Color(AppColors.AppMainColor),
           child: ListTile(
             dense: true,
             leading: Container(
@@ -116,7 +143,7 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
               ),
             ),
             title: Text(
-              item,
+              widget.item,
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(40),
                 fontWeight: FontWeight.bold,
@@ -145,24 +172,38 @@ class _MsgPageState extends State<MsgPage> with AutomaticKeepAliveClientMixin {
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                return ChatPage(itemTag: 'chatitem$index', userName: item);
+                return ChatPage(
+                    itemTag: 'chatitem${widget.index}',
+                    userName: '${widget.item}');
               }));
             },
           ),
         ),
-        background: Center(
-          child: Text('侧滑删除'),
-        ),
-        onDismissed: (direction) {
-          _wordsData.removeAt(index - 1);
-          Toast.toast(context, '删除成功');
-          setState(() {});
-        },
+        delegate: SlidableDrawerDelegate(),
+        actionExtentRatio: 0.25,
+        actions: <Widget>[
+          new IconSlideAction(
+            caption: '置顶',
+            color: Color(AppColors.AppThemeColor),
+            icon: Boxicons.bxUpvote,
+            onTap: () {},
+          ),
+        ],
+        secondaryActions: <Widget>[
+          new IconSlideAction(
+            caption: '更多',
+            color: Color(AppColors.AppSubtitleColor),
+            icon: Icons.more_horiz,
+            onTap: () => {},
+          ),
+          new IconSlideAction(
+            caption: '删除',
+            color: Color(AppColors.AppWaringColor),
+            icon: Boxicons.bxTrash,
+            onTap: widget.onTap,
+          ),
+        ],
       ),
     );
   }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }
