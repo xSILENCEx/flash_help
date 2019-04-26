@@ -536,7 +536,10 @@ class _NewTaskPageState extends State<NewTaskPage>
         ],
       ),
       bottomNavigationBar: new Container(
-        child: new RaisedButton(
+        child: new FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppStyle.appRadius * 10),
+          ),
           color: Color(AppColors.AppThemeColor),
           child: new Text('确认发布',
               style: TextStyle(color: Color(AppColors.AppMainColor))),
@@ -547,13 +550,7 @@ class _NewTaskPageState extends State<NewTaskPage>
         padding: EdgeInsets.only(
             left: ScreenUtil().setWidth(50), right: ScreenUtil().setWidth(50)),
         decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-                color: Color(AppColors.AppSubtitleColor), width: 0.5),
-            bottom: BorderSide.none,
-            left: BorderSide.none,
-            right: BorderSide.none,
-          ),
+          color: Color(AppColors.AppMainColor),
         ),
       ),
     );

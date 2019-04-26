@@ -354,7 +354,7 @@ class _ChatPageState extends State<ChatPage>
             child: Text(
               content,
               style: TextStyle(
-                fontSize: ScreenUtil().setSp(42),
+                fontSize: ScreenUtil().setSp(38),
                 color: Color(AppColors.AppTitleColor),
               ),
             ),
@@ -398,7 +398,7 @@ class _ChatPageState extends State<ChatPage>
             child: Text(
               content,
               style: TextStyle(
-                fontSize: ScreenUtil().setSp(42),
+                fontSize: ScreenUtil().setSp(38),
                 color: Color(AppColors.AppMainColor),
               ),
             ),

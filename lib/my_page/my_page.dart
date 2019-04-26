@@ -378,7 +378,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         child: Container(
           width: ScreenUtil().setWidth(360),
           height: ScreenUtil().setWidth(100),
-          child: RaisedButton(
+          child: FlatButton(
             color: Color(AppColors.AppThemeColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppStyle.appRadius * 40),

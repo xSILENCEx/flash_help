@@ -748,7 +748,7 @@ class _BottomItemsState extends State<BottomItems> {
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTitleColor),
+                            color: Color(AppColors.AppSubtitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -773,15 +773,15 @@ class _BottomItemsState extends State<BottomItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(_isStared ? Icons.star : Icons.star_border,
+                    Icon(_isStared ? Boxicons.bxsStar : Boxicons.bxStar,
                         color: Color(_isStared
                             ? AppColors.AppThemeColor
-                            : AppColors.AppTitleColor),
-                        size: ScreenUtil().setWidth(50)),
+                            : AppColors.AppSubtitleColor),
+                        size: ScreenUtil().setWidth(60)),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTitleColor),
+                            color: Color(AppColors.AppSubtitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -801,11 +801,15 @@ class _BottomItemsState extends State<BottomItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.textsms, size: ScreenUtil().setWidth(50)),
+                    Icon(
+                      Icons.textsms,
+                      size: ScreenUtil().setWidth(50),
+                      color: Color(AppColors.AppSubtitleColor),
+                    ),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTitleColor),
+                            color: Color(AppColors.AppSubtitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
@@ -825,11 +829,15 @@ class _BottomItemsState extends State<BottomItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.share, size: ScreenUtil().setWidth(50)),
+                    Icon(
+                      Icons.share,
+                      size: ScreenUtil().setWidth(50),
+                      color: Color(AppColors.AppSubtitleColor),
+                    ),
                     Container(width: ScreenUtil().setWidth(20)),
                     Text('99+',
                         style: TextStyle(
-                            color: Color(AppColors.AppTitleColor),
+                            color: Color(AppColors.AppSubtitleColor),
                             fontSize: ScreenUtil().setSp(36))),
                   ],
                 ),
